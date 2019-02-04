@@ -56,28 +56,15 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <!--PopupMenu-->
-    <style name="Widget.TJ.PopupMenu" parent="@style/Widget.AppCompat.PopupMenu">
-        <item name="android:dropDownHorizontalOffset">0dp</item>
-        <item name="android:dropDownVerticalOffset">0dp</item>
-    </style>
-
     <style name="TabWidget">
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="SearchView">
-        <item name="android:inputType">text</item>
-        <item name="android:imeOptions">actionSearch|flagNoExtractUi</item>
-        <item name="android:lines">1</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:hint">@string/hint_search</item>
-        <item name="android:typeface">normal</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textColorHint">?android:attr/textColorHint</item>
+    <!--PopupMenu-->
+    <style name="Widget.TJ.PopupMenu" parent="@style/Widget.AppCompat.PopupMenu">
+        <item name="android:dropDownHorizontalOffset">0dp</item>
+        <item name="android:dropDownVerticalOffset">0dp</item>
     </style>
 
     <style name="Button.Borderless" parent="Widget.AppCompat.Button.Borderless">
@@ -91,5 +78,11 @@
 
     <style name="TextInputCounterOverflow" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/error_text</item>
+    </style>
+
+    <style name="AppTheme.Transparent" parent="AppTheme">
+        <!--<item name="android:windowLightStatusBar">false</item>-->
+        <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>
