@@ -37,7 +37,7 @@ import org.michaelbel.tjgram.utils.getListenerOrThrowException
 import org.michaelbel.tjgram.utils.recycler.LinearSmoothScrollerMiddle
 import java.util.*
 
-// FIXME сделать неявную привязку к activity
+// FIXME неявная привязка к activity
 class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefreshLayout.OnRefreshListener {
 
     interface Listener {
@@ -225,7 +225,10 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
         }
 
         swipe_refresh_layout.isRefreshing = false
-        error_view.visibility = VISIBLE
+
+        if (adapter.itemCount == 0) {
+            error_view.visibility = VISIBLE
+        }
     }
 
     override fun likeEntry(entry: Entry, sign: Int) {
