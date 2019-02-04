@@ -1,6 +1,7 @@
 package org.michaelbel.tjgram.ui;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -14,10 +15,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.zxing.Result;
 
 import org.michaelbel.tjgram.R;
 import org.michaelbel.tjgram.ui.profile.view.QrFinderView;
+import org.michaelbel.tjgram.utils.DeviceUtil;
 import org.michaelbel.tjgram.utils.ViewUtil;
 import org.michaelbel.tjgram.utils.qrscanner.camera.CameraManager;
 import org.michaelbel.tjgram.utils.qrscanner.decode.CaptureActivityHandler;
@@ -29,6 +32,9 @@ import java.util.Objects;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import timber.log.Timber;
 
 public class QrCodeActivity extends AppCompatActivity implements Callback {
@@ -54,6 +60,11 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
     private AppCompatTextView flashText;
 
     @Override
+    public void setTheme(int resId) {
+        super.setTheme(R.style.AppTheme_Transparent);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (resultCode != RESULT_OK) {
             return;
@@ -66,7 +77,6 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code);
 
@@ -127,7 +137,7 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
             mCaptureActivityHandler.quitSynchronously();
             mCaptureActivityHandler = null;
         }
-        CameraManager.Companion.get().closeDriver();
+        Objects.requireNonNull(CameraManager.Companion.get()).closeDriver();
     }
 
     @Override
@@ -224,7 +234,7 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
         flashIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_flash, R.color.md_yellow_500));
 
         mNeedFlashLightOpen = false;
-        CameraManager.Companion.get().setFlashLight(true);
+        Objects.requireNonNull(CameraManager.Companion.get()).setFlashLight(true);
     }
 
     private void turnFlashLightOff() {
@@ -232,7 +242,7 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
         flashIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_flash, R.color.md_white));
 
         mNeedFlashLightOpen = true;
-        CameraManager.Companion.get().setFlashLight(false);
+        Objects.requireNonNull(CameraManager.Companion.get()).setFlashLight(false);
     }
 
     private void handleResult(String resultString) {
