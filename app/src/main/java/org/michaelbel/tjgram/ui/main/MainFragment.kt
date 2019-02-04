@@ -27,13 +27,14 @@ import org.michaelbel.tjgram.data.entity.Likes
 import org.michaelbel.tjgram.data.entity.LikesResult
 import org.michaelbel.tjgram.data.enums.TJGRAM
 import org.michaelbel.tjgram.data.wss.model.SocketResponse
+import org.michaelbel.tjgram.ui.main.MainContract
 import org.michaelbel.tjgram.ui.main.adapter.EntriesAdapter
 import org.michaelbel.tjgram.ui.main.adapter.EntriesListener
+import org.michaelbel.tjgram.utils.getListenerOrThrowException
 import org.michaelbel.tjgram.ui.main.decoration.EntrySpacingDecoration
 import org.michaelbel.tjgram.utils.DeviceUtil
 import org.michaelbel.tjgram.utils.NetworkUtil
 import org.michaelbel.tjgram.utils.customtabs.Browser
-import org.michaelbel.tjgram.utils.getListenerOrThrowException
 import org.michaelbel.tjgram.utils.recycler.LinearSmoothScrollerMiddle
 import java.util.*
 
@@ -79,14 +80,14 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(org.michaelbel.tjgram.R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipe_refresh_layout.setColorSchemeColors(ContextCompat.getColor(requireContext(), org.michaelbel.tjgram.R.color.accent))
-        swipe_refresh_layout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), org.michaelbel.tjgram.R.color.primary))
+        swipe_refresh_layout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.accent))
+        swipe_refresh_layout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.primary))
         swipe_refresh_layout.setOnRefreshListener(this)
         swipe_refresh_layout.isRefreshing = true
 
@@ -166,14 +167,14 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
 
     override fun onAuthorLongClick(authorId: Int): Boolean {
         DeviceUtil.copyToClipboard(requireContext(), String.format(Locale.getDefault(), TJ_USER, authorId))
-        Toast.makeText(requireContext(), org.michaelbel.tjgram.R.string.msg_author_url_copied, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), R.string.msg_author_url_copied, Toast.LENGTH_SHORT).show()
         return true
     }
 
     override fun popupItemClick(itemId: Int, entryId: Int): Boolean {
-        if (itemId == org.michaelbel.tjgram.R.id.item_report) {
+        if (itemId == R.id.item_report) {
             presenter.complaintEntry(entryId)
-        } else if (itemId == org.michaelbel.tjgram.R.id.item_open_entry) {
+        } else if (itemId == R.id.item_open_entry) {
             val entryLink = String.format(Locale.getDefault(), TJ_ENTRY, entryId)
             val tjApp = DeviceUtil.isAppInstalled(requireContext(), TJ_PACKAGE_NAME)
             if (tjApp) {
@@ -182,10 +183,10 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
             } else {
                 Browser.openUrl(requireContext(), entryLink)
             }
-        } else if (itemId == org.michaelbel.tjgram.R.id.item_copy_link) {
+        } else if (itemId == R.id.item_copy_link) {
             DeviceUtil.copyToClipboard(requireContext(), String.format(Locale.getDefault(), TJ_ENTRY, entryId))
-            Toast.makeText(requireContext(), org.michaelbel.tjgram.R.string.msg_link_copied, Toast.LENGTH_SHORT).show()
-        } else if (itemId == org.michaelbel.tjgram.R.id.item_share_link) {
+            Toast.makeText(requireContext(), R.string.msg_link_copied, Toast.LENGTH_SHORT).show()
+        } else if (itemId == R.id.item_share_link) {
             val intent = Intent(Intent.ACTION_SEND).setType("text/plain")
             intent.putExtra(Intent.EXTRA_TEXT, String.format(Locale.getDefault(), TJ_ENTRY, entryId))
             startActivity(Intent.createChooser(intent, getString(R.string.menu_share_link)))
@@ -197,7 +198,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     }
 
     override fun complaintSent(status: Boolean) {
-        Toast.makeText(requireContext(), if (status) org.michaelbel.tjgram.R.string.msg_complaint_sent else org.michaelbel.tjgram.R.string.err_complaint_sent, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), if (status) R.string.msg_complaint_sent else R.string.err_complaint_sent, Toast.LENGTH_SHORT).show()
     }
 
     override fun addEntries(entries: ArrayList<Entry>, entriesCount: Int) {
@@ -220,7 +221,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
 
     override fun errorEntries(throwable: Throwable, upd: Boolean) {
         if (upd) {
-            Toast.makeText(requireContext(), org.michaelbel.tjgram.R.string.err_load_data, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.err_load_data, Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -243,7 +244,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
 
     override fun updateLikesError(entry: Entry, throwable: Throwable) {
         if (NetworkUtil.isHttpStatusCode(throwable, 400)) {
-            Toast.makeText(requireContext(), org.michaelbel.tjgram.R.string.msg_like_old_entry, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.msg_like_old_entry, Toast.LENGTH_SHORT).show()
         }
 
         adapter.changeLikes(entry)
