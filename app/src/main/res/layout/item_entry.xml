@@ -1,0 +1,271 @@
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?android:attr/colorForeground">
+
+    <!--TopBar-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginEnd="40dp">
+
+            <!--Author Card-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/author_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
+
+                <!--Avatar-->
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/author_icon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_gravity="start|center_vertical"
+                    tools:background="#000"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="56dp"
+                    android:paddingStart="0dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="4dp">
+
+                    <!--Name-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/author_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:fontFamily="sans-serif-medium"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        tools:text="Трехтысячилетний пёс"/>
+
+                    <!--Date-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/date_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:fontFamily="sans-serif"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_below="@+id/author_name"
+                        tools:text="14 световых лет назад"/>
+
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!--Pin Icon-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/pin_icon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="top"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
+                tools:srcCompat="@drawable/ic_pin"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <!--Menu Icon-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            tools:srcCompat="@drawable/ic_dots_vertical"/>
+
+    </FrameLayout>
+
+    <!--Media-->
+    <FrameLayout
+        android:id="@+id/media_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/colorBackground">
+
+        <!--Image-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/entry_cover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            tools:src="@mipmap/ic_launcher"
+            tools:visibility="visible"/>
+
+        <!--Gif-->
+        <FrameLayout
+            android:id="@+id/gif_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="gone">
+
+            <VideoView
+                android:id="@+id/video_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--GIF Badge-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:cardBackgroundColor="@color/transparent40"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:maxLines="1"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="?android:attr/colorForeground"
+                    android:text="@string/gif"
+                    android:textAllCaps="true"/>
+
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
+
+        <!--Double Tap Like-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/like_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+
+    </FrameLayout>
+
+    <!--Title-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:lineSpacingMultiplier="1.10"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="Никита сказал, что лучше здесь публиковать фотографии, чем в Instagram"/>
+
+    <!--Intro-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/intro_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:lineSpacingMultiplier="1.10"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="В поддержку писал, там молчат, что за дела? Выдает ошибку 403 уже не первый день!"/>
+
+    <!--Divider-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="14dp"
+        android:background="?android:attr/divider"
+        tools:layout_height="1dp"
+        tools:background="@color/error_text"/>
+
+    <!--BottomBar-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <!--Heart Icon-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/like_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:srcCompat="@drawable/ic_heart"/>
+
+            <!--Rating Value-->
+            <TextSwitcher
+                android:id="@+id/likes_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:inAnimation="@anim/slide_in_likes_counter"
+                android:outAnimation="@anim/slide_out_likes_counter">
+
+                <TextView
+                    android:id="@+id/text_like1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14sp"
+                    tools:text="1487"/>
+
+                <TextView
+                    android:id="@+id/text_like2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14sp"/>
+
+            </TextSwitcher>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

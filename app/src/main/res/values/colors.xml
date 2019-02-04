@@ -1,0 +1,50 @@
+<resources>
+    <color name="primary">#FFFFFF</color>
+    <color name="accent">#2196F3</color>
+
+    <color name="transparent10">#1a000000</color> <!--10% opacity-->
+    <color name="transparent20">#33000000</color> <!--20% opacity-->
+    <color name="transparent30">#4d000000</color> <!--30% opacity-->
+    <color name="transparent40">#66000000</color> <!--40% opacity-->
+    <color name="transparent50">#80000000</color> <!--50% opacity-->
+    <color name="transparent60">#99000000</color> <!--60% opacity-->
+    <color name="transparent70">#b3000000</color> <!--70% opacity-->
+    <color name="transparent80">#cc000000</color> <!--80% opacity-->
+    <color name="transparent90">#e6000000</color> <!--90% opacity-->
+    <color name="transparent">#00000000</color>   <!--100% opacity-->
+
+    <color name="icon_active">#DE000000</color>           <!--Active + Focused, 87%-->
+    <color name="icon_active_unfocused">#8A000000</color> <!--Active + Unfocused, 54%-->
+    <color name="icon_inactive">#61000000</color>         <!--Inactive, 38%-->
+    <color name="divider">#1F000000</color>               <!--12%-->
+
+    <color name="background">#F4F4F4</color>
+    <color name="foreground">#FFFFFF</color>
+    <color name="navigation_bar">#000000</color>
+    <color name="primary_text">#000000</color>
+    <color name="secondary_text">#757575</color><!--fixme-->
+    <color name="error_text">#B00020</color>
+    <color name="action_bar">#757575</color>
+
+    <color name="like_color">#388E3C</color>
+    <color name="dislike_color">#D32F2F</color>
+
+    <color name="social_vk">#5181B8</color>
+    <color name="social_fb">#4267B2</color>
+    <color name="social_gp">#DD4B39</color>
+    <color name="social_tw">#1DA1F2</color>
+
+    <color name="karma_value">@color/md_grey_500</color>
+    <color name="karma_value_pos">@color/md_green_500</color>
+    <color name="karma_value_neg">@color/md_red_500</color>
+
+    <color name="karma_background">@color/md_grey_100</color>
+    <color name="karma_background_pos">@color/md_light_green_50</color>
+    <color name="karma_background_neg">@color/md_red_50</color>
+
+    <color name="placeholder">#E0E0E0</color>
+    <color name="error">#E57373</color>
+
+    <color name="instagram_like">#EB4B57</color>
+    <color name="double_heart">#CCFFFFFF</color> <!--80% opacity-->
+</resources>

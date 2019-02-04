@@ -1,0 +1,110 @@
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?android:attr/colorForeground"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <!--Account info-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--Avatar-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/avatar_image"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal"
+            tools:background="@mipmap/ic_launcher"/>
+
+        <!--Karma-->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/karma_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginStart="112dp"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/karma_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="18sp"
+                tools:text="+148,787"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal">
+
+        <!--User name-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="26sp"
+            android:lineSpacingMultiplier="1.2"
+            android:textColor="?android:attr/textColorPrimary"
+            android:fontFamily="sans-serif-medium"
+            tools:text="Ded Pihto"/>
+
+        <!--Advanced Account-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/paid_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            tools:srcCompat="@drawable/ic_check_decagram"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <!--Sign up date-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/signup_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:textSize="17sp"
+        android:lineSpacingMultiplier="1.2"
+        android:textColor="?android:attr/textColorSecondary"
+        android:fontFamily="sans-serif-medium"
+        tools:text="Зарегистрировался 25 июля 2015"/>
+
+    <org.michaelbel.tjgram.ui.profile.view.ExpandableView
+        android:id="@+id/contacts_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:inner_view="@layout/view_collapsed"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

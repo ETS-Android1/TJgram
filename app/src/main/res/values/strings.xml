@@ -1,0 +1,99 @@
+<resources>
+    <string name="app_name">TJgram</string>
+    <string name="language_code">en</string>
+
+    <string name="msg_pre_auth">Please sign in to start voting and bookmarking</string>
+    <string name="msg_complaint_sent">Complaint was sent</string>
+    <string name="msg_author_url_copied">Author Url copied to clipboard</string>
+    <string name="msg_link_copied">Link copied to clipboard</string>
+    <string name="msg_login_first">Please, login first</string>
+    <string name="msg_like_old_entry">&#129412; Entry is too old for voting</string>
+    <string name="msg_qr_camera_not_open">Could not open your camera</string>
+    <string name="msg_qr_code_not_read">Could not open scan content</string>
+    <string name="msg_gallery_permission_stub">Post photos from your phone on TJgram</string>
+    <string name="msg_permission_camera">Please go to the Permissions section inside the application Settings and toggle the Camera permission switch</string>
+    <string name="msg_permission_storage">Please go to the Permissions section inside the application Settings and toggle the Storage permission switch</string>
+    <string name="msg_permission_camera_storage">Please go to the Permissions section inside the application Settings and toggle the Camera and Storage permissions switch</string>
+    <string name="msg_wait_image_load">Please wait image to load</string>
+    <string name="msg_enter_header">Please enter a header</string>
+    <string name="msg_posted_successfully">Posted successfully</string>
+
+    <string name="err_complaint_sent">Error while sending complaint</string>
+    <string name="err_invalid_token">Error while scanning code</string>
+    <string name="err_load_data">Error loading data</string>
+    <string name="err_auth">Error while authorization</string>
+    <string name="err_loading_image">Error loading image</string>
+    <string name="err_while_posting">Error while posting</string>
+
+    <string name="menu_report">Report</string>
+    <string name="menu_open_entry">Open Entry</string>
+    <string name="menu_copy_link">Copy Link</string>
+    <string name="menu_share_link">Share Link</string>
+    <string name="menu_publish">Publish</string>
+    <string name="menu_log_out">Log out</string>
+    <string name="menu_camera">Take Photo</string>
+    <string name="menu_gallery">Choose from Gallery</string>
+
+    <string name="action_ok">OK</string>
+    <string name="action_go">Go it</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_turn_on">Turn On</string>
+
+    <string name="settings">Settings</string>
+    <string name="sign_in">Authorization</string>
+    <string name="profile">Profile</string>
+    <string name="login_qr">Authorization with QR</string>
+    <string name="frame_qr_code">Position QR Code</string>
+    <string name="enable_flash">Enable flash light</string>
+    <string name="disable_flash">Disable flash light</string>
+    <string name="sign_up_date">Sign up: %1$s</string>
+    <string name="advanced_account">Advanced account</string>
+    <string name="contacts_info">Contact info</string>
+    <string name="account">Account</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="header">Header</string>
+    <string name="entry_text">Entry text…</string>
+    <string name="choose_photo">Select photo</string>
+    <string name="post_entry">Post entry</string>
+    
+    <plurals name="paid_days_until">
+        <item quantity="zero">Subscription ends today</item>
+        <item quantity="one">%1$d day left</item>
+        <item quantity="two">%1$d days left</item>
+        <item quantity="few">%1$d days left</item>
+        <item quantity="many">%1$d days left</item>
+        <item quantity="other">%1$d days left</item>
+    </plurals>
+
+    <!--Entry Date Formats-->
+    <string name="just_now">just now</string>
+    <string name="minute_ago">a minute ago</string>
+    <string name="hour_ago">a hour ago</string>
+    <string name="today_at">today at %s</string>
+    <string name="yesterday_at">yesterday at %s</string>
+    <string name="default_date">%1$s at %2$s</string>
+    <string name="unknown_date">unknown date</string>
+
+    <plurals name="minutes">
+        <item quantity="zero">@string/just_now</item>
+        <item quantity="one">@string/minute_ago</item>
+        <item quantity="two">%1$d min ago</item>
+        <item quantity="few">%1$d min ago</item>
+        <item quantity="many">%1$d min ago</item>
+        <item quantity="other">%1$d min ago</item>
+    </plurals>
+
+    <plurals name="hours">
+        <item quantity="zero">59 min ago</item>
+        <item quantity="one">@string/hour_ago</item>
+        <item quantity="two">%1$d hours ago</item>
+        <item quantity="few">%1$d hours ago</item>
+        <item quantity="many">%1$d hours ago</item>
+        <item quantity="other">%1$d hours ago</item>
+    </plurals>
+
+    <string name="gif" translatable="false">GIF</string>
+
+    <string name="hint_search">hs</string>
+</resources>
