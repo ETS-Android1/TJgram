@@ -2,6 +2,7 @@ package org.michaelbel.tjgram.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
@@ -50,6 +51,9 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (Build.VERSION.SDK_INT >= 21) {
+            appbar.stateListAnimator = null
+        }
         ViewCompat.setElevation(appbar, DeviceUtil.dp(this, 1.5F).toFloat())
         setSupportActionBar(toolbar)
 
@@ -66,8 +70,7 @@ class MainActivity : AppCompatActivity(),
 
         when {
             menuItem.itemId == R.id.navigation_main -> {
-                toolbar_title.setText(R.string.app_name)
-                ViewUtil.setScrollFlags(toolbar, SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS)
+                setActionBar(R.string.app_name, SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS)
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_view, MainFragment.newInstance(NEW)).commit()
             }
             menuItem.itemId == R.id.navigation_add -> {
@@ -81,8 +84,7 @@ class MainActivity : AppCompatActivity(),
                 return false
             }
             menuItem.itemId == R.id.navigation_user -> {
-                toolbar_title.setText(R.string.profile)
-                ViewUtil.setScrollFlags(toolbar, 0)
+                setActionBar(R.string.profile, 0)
                 supportFragmentManager.beginTransaction().replace(R.id.fragment_view, ProfileFragment.newInstance()).commit()
             }
         }
@@ -100,5 +102,10 @@ class MainActivity : AppCompatActivity(),
 
         snack.setAction(R.string.action_go) { bottom_navigation.selectedItemId = R.id.navigation_user }
         snack.show()
+    }
+
+    private fun setActionBar(textRes: Int, flags: Int) {
+        supportActionBar!!.setTitle(textRes)
+        ViewUtil.setScrollFlags(toolbar, flags)
     }
 }

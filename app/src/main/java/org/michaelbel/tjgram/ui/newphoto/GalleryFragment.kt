@@ -144,7 +144,7 @@ class GalleryFragment : Fragment(), PhotoClickListener {
         super.onViewCreated(view, savedInstanceState)
         activity!!.toolbar.navigationIcon = ViewUtil.getIcon(requireContext(), R.drawable.ic_clear, R.color.icon_active)
         activity!!.toolbar.setNavigationOnClickListener { activity!!.finish() }
-        activity!!.toolbar_title.setText(R.string.choose_photo)
+        activity!!.supportActionBar!!.setTitle(R.string.choose_photo)
 
         adapter = PhotosAdapter(this)
 
