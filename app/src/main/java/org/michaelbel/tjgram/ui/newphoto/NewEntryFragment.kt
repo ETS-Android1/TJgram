@@ -62,7 +62,7 @@ class NewEntryFragment : Fragment(), NewEntryContract.View {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         activity = getActivity() as NewPhotoActivity?
-        presenter.setView(this)
+        presenter.view = this
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

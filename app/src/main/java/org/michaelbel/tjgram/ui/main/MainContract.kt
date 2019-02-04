@@ -3,6 +3,7 @@ package org.michaelbel.tjgram.ui.main
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
+import org.michaelbel.tjgram.BasePresenter
 import org.michaelbel.tjgram.data.entity.BooleanResult
 import org.michaelbel.tjgram.data.entity.EntriesResult
 import org.michaelbel.tjgram.data.entity.Entry
@@ -22,16 +23,13 @@ interface MainContract {
         fun sentWssResponse(socket: SocketResponse)
     }
 
-    interface Presenter {
-        fun setView(view: View)
-        fun getView() : View
+    interface Presenter: BasePresenter<View> {
         fun entries(subsiteId: Long, sorting: String, offset: Int, upd: Boolean)
         fun likeEntry(entry: Entry, sign: Int)
         fun complaintEntry(contentId: Int)
         fun wwsConnect()
         fun wwsDisconnect()
         fun wwsEventStream()
-        fun onDestroy()
     }
 
     interface Repository {

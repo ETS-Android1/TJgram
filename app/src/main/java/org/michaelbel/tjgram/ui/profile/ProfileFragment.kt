@@ -94,7 +94,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter.setView(this)
+        presenter.view = this
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

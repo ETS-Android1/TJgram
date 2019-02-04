@@ -27,7 +27,6 @@ import org.michaelbel.tjgram.data.entity.Likes
 import org.michaelbel.tjgram.data.entity.LikesResult
 import org.michaelbel.tjgram.data.enums.TJGRAM
 import org.michaelbel.tjgram.data.wss.model.SocketResponse
-import org.michaelbel.tjgram.ui.main.MainContract
 import org.michaelbel.tjgram.ui.main.adapter.EntriesAdapter
 import org.michaelbel.tjgram.ui.main.adapter.EntriesListener
 import org.michaelbel.tjgram.utils.getListenerOrThrowException
@@ -75,7 +74,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter.setView(this)
+        presenter.view = this
         //presenter.wwsConnect()
     }
 

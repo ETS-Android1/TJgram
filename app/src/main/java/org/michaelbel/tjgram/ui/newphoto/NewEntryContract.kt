@@ -2,6 +2,7 @@ package org.michaelbel.tjgram.ui.newphoto
 
 import io.reactivex.Observable
 import okhttp3.MultipartBody
+import org.michaelbel.tjgram.BasePresenter
 import org.michaelbel.tjgram.data.entity.AttachResponse
 import org.michaelbel.tjgram.data.entity.Entry
 import org.michaelbel.tjgram.data.entity.EntryResult
@@ -18,12 +19,9 @@ interface NewEntryContract {
         fun setError(throwable: Throwable)
     }
 
-    interface Presenter {
-        fun setView(view: View)
-        fun getView() : View
+    interface Presenter: BasePresenter<View> {
         fun uploadFile(file: File)
         fun createEntry(title: String, text: String, subsiteId: Long, attaches: Map<String, String>)
-        fun onDestroy()
     }
 
     interface Repository {
