@@ -95,7 +95,7 @@ class NewEntryFragment : Fragment(), NewEntryContract.View {
             hideKeyboard(intro_edit_text)
             activity!!.finishFragment()
         }
-        activity!!.toolbar_title.setText(R.string.post_entry)
+        activity!!.supportActionBar!!.setTitle(R.string.post_entry)
 
         image_progress_bar.indeterminateDrawable.setColorFilter(ContextCompat.getColor(requireContext(), R.color.foreground), PorterDuff.Mode.MULTIPLY)
 

@@ -1,5 +1,6 @@
 package org.michaelbel.tjgram.ui
 
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +16,9 @@ class NewPhotoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_photo)
 
+        if (Build.VERSION.SDK_INT >= 21) {
+            appbar.stateListAnimator = null
+        }
         ViewCompat.setElevation(appbar, DeviceUtil.dp(this, 1.5F).toFloat())
 
         setSupportActionBar(toolbar)
