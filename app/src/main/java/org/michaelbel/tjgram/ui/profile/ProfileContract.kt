@@ -1,6 +1,7 @@
 package org.michaelbel.tjgram.ui.profile
 
 import io.reactivex.Observable
+import org.michaelbel.tjgram.BasePresenter
 import org.michaelbel.tjgram.data.entity.User
 import org.michaelbel.tjgram.data.entity.UserResult
 import retrofit2.Response
@@ -12,12 +13,9 @@ interface ProfileContract {
         fun setError(throwable: Throwable)
     }
 
-    interface Presenter {
-        fun setView(view: View)
-        fun getView() : View
+    interface Presenter: BasePresenter<View> {
         fun authQr(token: String)
         fun userMe()
-        fun onDestroy()
     }
 
     interface Repository {

@@ -25,14 +25,13 @@ public class MainPresenter implements MainContract.Presenter {
         this.repository = repository;
     }
 
-    @NotNull
     @Override
     public MainContract.View getView() {
         return view;
     }
 
     @Override
-    public void setView(@NotNull MainContract.View view) {
+    public void setView(MainContract.View view) {
         this.view = view;
     }
 
