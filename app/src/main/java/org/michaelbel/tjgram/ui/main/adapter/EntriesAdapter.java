@@ -36,10 +36,6 @@ public class EntriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.entriesListener = entriesListener;
     }
 
-    public void addListener(EntriesListener listener) {
-        this.entriesListener = listener;
-    }
-
     private List<Entry> getEntries() {
         return entries;
     }

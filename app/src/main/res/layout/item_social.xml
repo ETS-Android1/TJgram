@@ -8,46 +8,29 @@
     android:layout_marginBottom="6dp"
     app:cardCornerRadius="5dp"
     app:cardElevation="0dp"
-    tools:cardBackgroundColor="@color/social_fb_color">
+    tools:cardBackgroundColor="@color/social_vk">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="1.5dp"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="0dp">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/social_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginStart="8dp"
+        tools:src="@drawable/ic_social_vk"/>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/social_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                tools:src="@drawable/ic_social_vk"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/social_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center_vertical"
-                android:textSize="16sp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:fontFamily="sans-serif-medium"
-                tools:text="Ded Pihto"
-                tools:textColor="@color/social_vk"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-    </androidx.cardview.widget.CardView>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/social_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?android:attr/colorForeground"
+        tools:text="Neurotoxin Neurotoxin"/>
 
 </androidx.cardview.widget.CardView>

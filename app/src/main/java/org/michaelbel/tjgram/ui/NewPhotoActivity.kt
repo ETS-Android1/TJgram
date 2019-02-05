@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.synthetic.main.appbar.*
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.ui.newphoto.GalleryFragment
@@ -24,19 +25,25 @@ class NewPhotoActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         if (savedInstanceState == null) {
-            startFragment(GalleryFragment.newInstance())
+            replaceFragment(GalleryFragment.newInstance(), "")
         }
     }
 
-    private fun startFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_view, fragment).commit()
-    }
-
     fun startFragment(fragment: Fragment, tag: String) {
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_view, fragment).addToBackStack(tag).commit()
+        replaceFragment(fragment, tag)
     }
 
     fun finishFragment() {
         supportFragmentManager.popBackStack()
+    }
+
+    private fun replaceFragment(fragment: Fragment, tag: String) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        if (tag.isNotEmpty()) {
+            transaction.addToBackStack(tag)
+        }
+        transaction.replace(R.id.fragment_view, fragment)
+        transaction.commit()
     }
 }

@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -71,7 +74,7 @@ class MainActivity : AppCompatActivity(),
         when {
             menuItem.itemId == R.id.navigation_main -> {
                 setActionBar(R.string.app_name, SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS)
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_view, MainFragment.newInstance(NEW)).commit()
+                replaceFragment(MainFragment.newInstance(NEW))
             }
             menuItem.itemId == R.id.navigation_add -> {
                 // FIXME 2 item не должен перехватывать фокус.
@@ -85,7 +88,7 @@ class MainActivity : AppCompatActivity(),
             }
             menuItem.itemId == R.id.navigation_user -> {
                 setActionBar(R.string.profile, 0)
-                supportFragmentManager.beginTransaction().replace(R.id.fragment_view, ProfileFragment.newInstance()).commit()
+                replaceFragment(ProfileFragment.newInstance())
             }
         }
 
@@ -107,5 +110,12 @@ class MainActivity : AppCompatActivity(),
     private fun setActionBar(textRes: Int, flags: Int) {
         supportActionBar!!.setTitle(textRes)
         ViewUtil.setScrollFlags(toolbar, flags)
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        transaction.replace(R.id.fragment_view, fragment)
+        transaction.commit()
     }
 }

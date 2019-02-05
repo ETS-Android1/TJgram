@@ -8,6 +8,8 @@ import io.reactivex.schedulers.Schedulers
 import org.michaelbel.tjgram.data.entity.BooleanResult
 import org.michaelbel.tjgram.data.entity.EntriesResult
 import org.michaelbel.tjgram.data.entity.LikesResult
+import org.michaelbel.tjgram.data.enums.MAINPAGE
+import org.michaelbel.tjgram.data.enums.RECENT
 import org.michaelbel.tjgram.data.remote.TjService
 import org.michaelbel.tjgram.data.wss.TjWebSocket
 
@@ -16,9 +18,9 @@ class MainRepository internal constructor(
 ): MainContract.Repository {
 
     override fun entries(subsiteId: Long, sorting: String, count: Int, offset: Int): Observable<EntriesResult> {
-        return service.subsiteTimeline(subsiteId, sorting, count, offset).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-        // Test.
-        //return service.timeline(MAINPAGE, RECENT, count, offset).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        //return service.subsiteTimeline(subsiteId, sorting, count, offset).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        //Test.
+        return service.timeline(MAINPAGE, RECENT, count, offset).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         //return service.userMeFavoritesEntries(count, offset).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 

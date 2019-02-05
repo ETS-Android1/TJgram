@@ -1,7 +1,6 @@
 package org.michaelbel.tjgram.ui;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -12,15 +11,12 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.zxing.Result;
 
 import org.michaelbel.tjgram.R;
 import org.michaelbel.tjgram.ui.profile.view.QrFinderView;
-import org.michaelbel.tjgram.utils.DeviceUtil;
 import org.michaelbel.tjgram.utils.ViewUtil;
 import org.michaelbel.tjgram.utils.qrscanner.camera.CameraManager;
 import org.michaelbel.tjgram.utils.qrscanner.decode.CaptureActivityHandler;
@@ -32,9 +28,6 @@ import java.util.Objects;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import timber.log.Timber;
 
 public class QrCodeActivity extends AppCompatActivity implements Callback {
@@ -61,7 +54,7 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
 
     @Override
     public void setTheme(int resId) {
-        super.setTheme(R.style.AppTheme_Transparent);
+        super.setTheme(R.style.AppTheme_StatusBar_Transparent);
     }
 
     @Override
