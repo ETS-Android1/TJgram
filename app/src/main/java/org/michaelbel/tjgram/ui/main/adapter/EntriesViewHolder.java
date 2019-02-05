@@ -23,7 +23,7 @@ import org.michaelbel.tjgram.data.entity.Cover;
 import org.michaelbel.tjgram.data.entity.Entry;
 import org.michaelbel.tjgram.data.entity.Likes;
 import org.michaelbel.tjgram.data.enums.LikesKt;
-import org.michaelbel.tjgram.utils.DateUtil;
+import org.michaelbel.tjgram.utils.date.TimeFormatter;
 import org.michaelbel.tjgram.utils.DeviceUtil;
 import org.michaelbel.tjgram.utils.FileUtil;
 import org.michaelbel.tjgram.utils.ViewUtil;
@@ -182,7 +182,7 @@ public class EntriesViewHolder extends RecyclerView.ViewHolder {
     }
 
     void updateDate(String dateRFC) {
-        String date = DateUtil.convertDateToEasy(getContext(), dateRFC);
+        CharSequence date = TimeFormatter.getTimeAgo(getContext(), dateRFC);
         dateText.setText(date);
     }
 

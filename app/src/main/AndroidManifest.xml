@@ -25,20 +25,30 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme"
-        android:name="org.michaelbel.tjgram.MainApplication"
+        android:theme="@style/AppTheme.Launcher"
+        android:name=".App"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="org.michaelbel.tjgram.ui.MainActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".ui.MainActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name="org.michaelbel.tjgram.ui.QrCodeActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.QrCodeActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name="org.michaelbel.tjgram.ui.NewPhotoActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.NewPhotoActivity"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
 
     </application>
 

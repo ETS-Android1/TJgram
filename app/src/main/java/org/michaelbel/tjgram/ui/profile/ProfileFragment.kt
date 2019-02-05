@@ -25,7 +25,7 @@ import org.michaelbel.tjgram.data.entity.SocialAccount
 import org.michaelbel.tjgram.data.entity.User
 import org.michaelbel.tjgram.ui.QrCodeActivity
 import org.michaelbel.tjgram.ui.profile.view.SocialView
-import org.michaelbel.tjgram.utils.DateUtil
+import org.michaelbel.tjgram.utils.date.TimeFormatter
 import org.michaelbel.tjgram.utils.DeviceUtil
 import org.michaelbel.tjgram.utils.ViewUtil
 import org.michaelbel.tjgram.utils.consts.*
@@ -188,7 +188,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         }
 
         val date = preferences.getString(KEY_CREATED_DATE, "")
-        signup_date.text = getString(R.string.sign_up_date, DateUtil.convertSignDate(context, date))
+        signup_date.text = getString(R.string.sign_up_date, TimeFormatter.convertSignDate(context, date))
     }
 
     private fun setKarma(karma: Long) {

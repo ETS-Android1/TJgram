@@ -9,11 +9,11 @@ import org.michaelbel.tjgram.data.injection.networkModule
 import timber.log.Timber
 
 @Suppress("unused")
-class MainApplication : Application() {
+class App : Application() {
 
     companion object {
-        operator fun get(context: Context): MainApplication {
-            return context as MainApplication
+        operator fun get(context: Context): App {
+            return context as App
         }
     }
 

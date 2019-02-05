@@ -22,7 +22,6 @@ import org.michaelbel.tjgram.data.entity.Cover;
 import org.michaelbel.tjgram.data.entity.Entry;
 import org.michaelbel.tjgram.data.entity.Likes;
 import org.michaelbel.tjgram.data.enums.LikesKt;
-import org.michaelbel.tjgram.utils.DateUtil;
 import org.michaelbel.tjgram.utils.FileUtil;
 import org.michaelbel.tjgram.utils.ViewUtil;
 import org.michaelbel.tjgram.utils.picasso.CircleTransform;
@@ -155,8 +154,8 @@ public class EntryView extends LinearLayoutCompat {
     }
 
     public void setDate(String dateRFC) {
-        String date = DateUtil.convertDateToEasy(getContext(), dateRFC);
-        dateText.setText(date);
+        //String date = DateUtil.getTimeAgo(getContext(), dateRFC);
+        //dateText.setText(date);
     }
 
     private void setGif(String gifUrl) {

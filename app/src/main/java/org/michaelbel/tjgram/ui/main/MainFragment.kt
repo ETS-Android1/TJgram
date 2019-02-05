@@ -90,8 +90,6 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
         swipe_refresh_layout.setOnRefreshListener(this)
         swipe_refresh_layout.isRefreshing = true
 
-        adapter.addListener(this)
-
         val linearLayoutManager = object : LinearLayoutManager(requireContext()) {
             override fun supportsPredictiveItemAnimations(): Boolean {
                 return false

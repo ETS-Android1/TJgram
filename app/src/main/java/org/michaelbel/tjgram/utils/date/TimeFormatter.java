@@ -1,25 +1,32 @@
-package org.michaelbel.tjgram.utils;
+package org.michaelbel.tjgram.utils.date;
 
 import android.content.Context;
 import android.text.TextUtils;
 
 import org.michaelbel.tjgram.R;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import timber.log.Timber;
 
-public class DateUtil {
+public class TimeFormatter {
+
+    private static final long MILLISECONDS_IN_SECOND = 1000;
+    private static final long MILLISECONDS_IN_MINUTE = 1000 * 60;
+    private static final long MILLISECONDS_IN_HOUR = 1000 * 60 * 60;
+    private static final long MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
 
     //private String[] russianMonths = {"Янв", "Фев", "Мар", "Апр", "Мая", "Июня", "Июля", "Авг", "Сен", "Окт", "Ноя", "Дек"};
 
-    public static String convertDateToEasy(Context context, String startTime) {
-        //SimpleDateFormat startFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", LocaleUtil.INSTANCE.getLocale(context));
-        SimpleDateFormat startFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.US);
+    public static CharSequence getTimeAgo(Context context, String startTime) {
+        SimpleDateFormat startFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
         String currentTime = startFormat.format(new Date());
 
         try {
@@ -31,11 +38,12 @@ public class DateUtil {
             Calendar nowCalendar = Calendar.getInstance();
             nowCalendar.setTime(nowDate);
 
-            long milliseconds = nowDate.getTime() - startDate.getTime();
-            int seconds = (int) (milliseconds / (1000));
-            int minutes = (int) (milliseconds / (60 * 1000));
-            int hours = (int) (milliseconds / (60 * 60 * 1000));
-            //int days = (int) (milliseconds / (24 * 60 * 60 * 1000));
+            long milliseconds = System.currentTimeMillis()/*nowDate.getTime()*/ - startDate.getTime();
+
+            long seconds = milliseconds / MILLISECONDS_IN_SECOND;
+            long minutes = milliseconds / MILLISECONDS_IN_MINUTE;
+            long hours = milliseconds / MILLISECONDS_IN_HOUR;
+            //long days = milliseconds / MILLISECONDS_IN_DAY;
 
             boolean isDayToday = nowCalendar.get(Calendar.DATE) == startCalendar.get(Calendar.DATE);
             boolean isDayYesterday = nowCalendar.get(Calendar.DATE) - startCalendar.get(Calendar.DATE) == 1;
@@ -53,11 +61,11 @@ public class DateUtil {
             } else if (minutes > 0 && minutes < 2) {
                 return context.getString(R.string.minute_ago);
             } else if ( minutes >= 2 && minutes < 60) {
-                return context.getResources().getQuantityString(R.plurals.minutes, minutes, minutes);
+                return context.getResources().getQuantityString(R.plurals.minutes, (int) minutes, (int) minutes);
             } else if (hours > 0 && hours < 2) {
                 return context.getString(R.string.hour_ago);
             } else if (hours >= 2 && hours < 13) {
-                return context.getResources().getQuantityString(R.plurals.hours, hours, hours);
+                return context.getResources().getQuantityString(R.plurals.hours, (int) hours, (int) hours);
             } else if (hours > 12 && isDayToday && isMonthNow) {
                 return context.getString(R.string.today_at, formatTime);
             } else if (hours > 12 && isDayYesterday && isMonthNow) {
@@ -84,7 +92,6 @@ public class DateUtil {
 
     // bugs.openjdk.java.net/browse/JDK-8075548
     // Русские месяцы не конвертируются, временно заюзан US
-    // TODO использовать Joda-Time
     public static String convertSignDate(Context context, String startDate) {
         if (startDate == null || TextUtils.isEmpty(startDate)) {
             return context.getString(R.string.unknown_date);
