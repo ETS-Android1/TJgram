@@ -2,7 +2,9 @@ package org.michaelbel.tjgram.utils.date;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 
+import org.michaelbel.tjgram.Logg;
 import org.michaelbel.tjgram.R;
 
 import java.text.DateFormat;
@@ -18,62 +20,57 @@ import timber.log.Timber;
 
 public class TimeFormatter {
 
-    private static final long MILLISECONDS_IN_SECOND = 1000;
-    private static final long MILLISECONDS_IN_MINUTE = 1000 * 60;
-    private static final long MILLISECONDS_IN_HOUR = 1000 * 60 * 60;
-    private static final long MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
-
     //private String[] russianMonths = {"Янв", "Фев", "Мар", "Апр", "Мая", "Июня", "Июля", "Авг", "Сен", "Окт", "Ноя", "Дек"};
+
+    //private static final long MILLISECONDS_IN_SECOND = 1000;
+    //private static final long MILLISECONDS_IN_MINUTE = 1000 * 60;
+    //private static final long MILLISECONDS_IN_HOUR = 1000 * 60 * 60;
+    //private static final long MILLISECONDS_IN_DAY = 1000 * 60 * 60 * 24;
 
     public static CharSequence getTimeAgo(Context context, String startTime) {
         SimpleDateFormat startFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
-        String currentTime = startFormat.format(new Date());
+        startFormat.setTimeZone(TimeZone.getDefault());
 
         try {
             Date startDate = startFormat.parse(startTime);
-            Calendar startCalendar = Calendar.getInstance();
-            startCalendar.setTime(startDate);
 
-            Date nowDate = startFormat.parse(currentTime);
-            Calendar nowCalendar = Calendar.getInstance();
-            nowCalendar.setTime(nowDate);
+            long when = startDate.getTime();
+            long now = System.currentTimeMillis();
+            long diff = now - when;
 
-            long milliseconds = System.currentTimeMillis()/*nowDate.getTime()*/ - startDate.getTime();
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+            long hours = TimeUnit.MILLISECONDS.toHours(diff);
+            long days = TimeUnit.MILLISECONDS.toDays(diff);
 
-            long seconds = milliseconds / MILLISECONDS_IN_SECOND;
-            long minutes = milliseconds / MILLISECONDS_IN_MINUTE;
-            long hours = milliseconds / MILLISECONDS_IN_HOUR;
-            //long days = milliseconds / MILLISECONDS_IN_DAY;
+            boolean isToday = DateUtils.isToday(when);
+            boolean isYesterday = DateUtils.isToday(when + DateUtils.DAY_IN_MILLIS);
+            boolean isYearNow = DateUtil.isYearNow(when);
 
-            boolean isDayToday = nowCalendar.get(Calendar.DATE) == startCalendar.get(Calendar.DATE);
-            boolean isDayYesterday = nowCalendar.get(Calendar.DATE) - startCalendar.get(Calendar.DATE) == 1;
-            boolean isDayBeforeYesterday = nowCalendar.get(Calendar.DATE) - startCalendar.get(Calendar.DATE) > 1;
-            boolean isMonthNow = nowCalendar.get(Calendar.MONTH) == startCalendar.get(Calendar.MONTH);
-            boolean isYearNow = nowCalendar.get(Calendar.YEAR) == startCalendar.get(Calendar.YEAR);
-            boolean isYearLast = nowCalendar.get(Calendar.YEAR) > startCalendar.get(Calendar.YEAR);
+            String formatDate = formatDate("d MMM", startDate);
+            String formatDateWithYear = formatDate("d MMM yyyy", startDate);
+            String formatTime = formatDate("HH:mm", startDate);
 
-            String formatDate = formatDate(context, /*"d MMM"*/"dd.MM", startDate);
-            String formatDateWithYear = formatDate(context, /*"d MMM yyyy"*/"dd.MM.yyyy", startDate);
-            String formatTime = formatDate(context, "HH:mm", startDate);
-
-            if (seconds >= 0 && seconds < 60) {
+            if (seconds < 60) {
                 return context.getString(R.string.just_now);
-            } else if (minutes > 0 && minutes < 2) {
+            } else if (minutes < 2) {
                 return context.getString(R.string.minute_ago);
-            } else if ( minutes >= 2 && minutes < 60) {
+            } else if (minutes < 60) {
                 return context.getResources().getQuantityString(R.plurals.minutes, (int) minutes, (int) minutes);
-            } else if (hours > 0 && hours < 2) {
+            } else if (hours < 2) {
                 return context.getString(R.string.hour_ago);
-            } else if (hours >= 2 && hours < 13) {
+            } else if (hours < 13) {
                 return context.getResources().getQuantityString(R.plurals.hours, (int) hours, (int) hours);
-            } else if (hours > 12 && isDayToday && isMonthNow) {
+            } else if (isToday) {
                 return context.getString(R.string.today_at, formatTime);
-            } else if (hours > 12 && isDayYesterday && isMonthNow) {
+            } else if (isYesterday) {
                 return context.getString(R.string.yesterday_at, formatTime);
-            } else if (isDayBeforeYesterday && isYearNow) {
-                return context.getString(R.string.default_date, formatDate, formatTime);
-            } else if (isDayBeforeYesterday && isYearLast) {
-                return context.getString(R.string.default_date, formatDateWithYear, formatTime);
+            } else if (days > 2) {
+                if (isYearNow) {
+                    return context.getString(R.string.default_date, formatDate, formatTime);
+                } else {
+                    return context.getString(R.string.default_date, formatDateWithYear, formatTime);
+                }
             } else {
                 return context.getString(R.string.default_date, formatDateWithYear, formatTime);
             }
@@ -84,21 +81,18 @@ public class TimeFormatter {
         return context.getString(R.string.unknown_date);
     }
 
-    private static String formatDate(Context context, String format, Date date) {
-        //SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, LocaleUtil.INSTANCE.getLocale(context));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
+    private static String formatDate(String format, Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.getDefault());
         return simpleDateFormat.format(date != null ? date : new Date());
     }
 
-    // bugs.openjdk.java.net/browse/JDK-8075548
-    // Русские месяцы не конвертируются, временно заюзан US
     public static String convertSignDate(Context context, String startDate) {
         if (startDate == null || TextUtils.isEmpty(startDate)) {
             return context.getString(R.string.unknown_date);
         }
 
-        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ssZZZZZ", Locale.US);
-        SimpleDateFormat newFormat = new SimpleDateFormat(/*"d MMM yyyy"*/"dd.MM.yyyy", Locale.US);
+        SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
+        SimpleDateFormat newFormat = new SimpleDateFormat(/*"d MMM yyyy"*/"d MMM yyyy", Locale.getDefault());
 
         try {
             Date date = format.parse(startDate);
