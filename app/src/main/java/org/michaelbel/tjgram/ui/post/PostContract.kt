@@ -1,16 +1,16 @@
-package org.michaelbel.tjgram.ui.newphoto
+package org.michaelbel.tjgram.ui.post
 
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import org.michaelbel.tjgram.BasePresenter
 import org.michaelbel.tjgram.data.entity.AttachResponse
+import org.michaelbel.tjgram.data.entity.BaseResult
 import org.michaelbel.tjgram.data.entity.Entry
 import org.michaelbel.tjgram.data.entity.EntryResult
-import org.michaelbel.tjgram.data.entity.BaseResult
 import java.io.File
 import java.util.*
 
-interface NewEntryContract {
+interface PostContract {
 
     interface View {
         fun photoUploaded(attach: AttachResponse)
@@ -20,7 +20,7 @@ interface NewEntryContract {
     }
 
     interface Presenter: BasePresenter<View> {
-        fun uploadFile(file: File)
+        fun uploadFile(file: File?)
         fun createEntry(title: String, text: String, subsiteId: Long, attaches: Map<String, String>)
     }
 

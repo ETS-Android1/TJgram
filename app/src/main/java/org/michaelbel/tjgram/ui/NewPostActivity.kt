@@ -8,10 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.synthetic.main.appbar.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.ui.newphoto.GalleryFragment
+import org.michaelbel.tjgram.ui.post.PostFragment
 import org.michaelbel.tjgram.utils.DeviceUtil
+import org.michaelbel.tjgram.utils.ViewUtil
 
-class NewPhotoActivity : AppCompatActivity() {
+class NewPostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,24 +23,20 @@ class NewPhotoActivity : AppCompatActivity() {
         }
         ViewCompat.setElevation(appbar, DeviceUtil.dp(this, 1.5F).toFloat())
 
+        toolbar.navigationIcon = ViewUtil.getIcon(this, R.drawable.ic_arrow_back, R.color.icon_active)
+        toolbar.setNavigationOnClickListener{finish()}
         setSupportActionBar(toolbar)
 
+        supportActionBar!!.setTitle(R.string.post_entry)
+
         if (savedInstanceState == null) {
-            replaceFragment(GalleryFragment.newInstance(), "")
+            replaceFragment(PostFragment(), "")
         }
-    }
-
-    fun startFragment(fragment: Fragment, tag: String) {
-        replaceFragment(fragment, tag)
-    }
-
-    fun finishFragment() {
-        supportFragmentManager.popBackStack()
     }
 
     private fun replaceFragment(fragment: Fragment, tag: String) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         if (tag.isNotEmpty()) {
             transaction.addToBackStack(tag)
         }

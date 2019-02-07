@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.ui.newphoto.decoration
+package org.michaelbel.tjgram.ui.post.decoration
 
 import android.graphics.Rect
 import android.view.View

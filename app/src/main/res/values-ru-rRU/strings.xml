@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">TJgram</string>
     <string name="language_code">ru</string>
+    <!--timeline-->
+    <!--create post-->
+    <string name="item_camera">Камера</string>
+    <string name="item_gallery">Галерея</string>
+    <!--profile-->
 
     <string name="msg_pre_auth">Авторизуйтесь, чтобы иметь возможность голосовать и добавлять в избранное</string>
     <string name="msg_complaint_sent">Жалоба успешно отправлена</string>
