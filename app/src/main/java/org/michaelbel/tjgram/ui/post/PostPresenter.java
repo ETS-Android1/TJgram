@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.ui.newphoto;
+package org.michaelbel.tjgram.ui.post;
 
 import org.jetbrains.annotations.NotNull;
 import org.michaelbel.tjgram.data.entity.AttachResponse;
@@ -12,34 +12,34 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class NewEntryPresenter implements NewEntryContract.Presenter {
+public class PostPresenter implements PostContract.Presenter {
 
-    private NewEntryContract.View view;
-    private NewEntryContract.Repository repository;
+    private PostContract.View view;
+    private PostContract.Repository repository;
     private CompositeDisposable disposables = new CompositeDisposable();
 
-    public NewEntryPresenter(NewEntryRepository repository) {
+    public PostPresenter(PostRepository repository) {
         this.repository = repository;
     }
 
     @NotNull
     @Override
-    public NewEntryContract.View getView() {
+    public PostContract.View getView() {
         return view;
     }
 
     @Override
-    public void setView(@NotNull NewEntryContract.View view) {
+    public void setView(@NotNull PostContract.View view) {
         this.view = view;
     }
 
     @Override
-    public void uploadFile(@NotNull File file) {
+    public void uploadFile(File file) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
 
-        disposables.add(repository.uploadFile(body).subscribe(arrayListOsnovaResult -> {
-            ArrayList<AttachResponse> attaches = arrayListOsnovaResult.result;
+        disposables.add(repository.uploadFile(body).subscribe(baseResult -> {
+            ArrayList<AttachResponse> attaches = baseResult.result;
             AttachResponse attach = attaches.get(0);
             getView().photoUploaded(attach);
         }, throwable -> getView().uploadError(throwable)));

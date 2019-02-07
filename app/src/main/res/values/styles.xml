@@ -19,6 +19,7 @@
         <item name="bottomNavigationStyle">@style/Widget.TJ.BottomNavigationView</item>
         <item name="tabStyle">@style/Widget.TJ.TabLayout</item>
         <item name="popupMenuStyle">@style/Widget.TJ.PopupMenu</item>
+        <item name="actionButtonStyle">@style/Widget.TJ.ActionButton</item>
 
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
@@ -92,5 +93,9 @@
     <!--TextInputLayout-->
     <style name="TextInputCounterOverflow" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/error_text</item>
+    </style>
+
+    <style name="Widget.TJ.ActionButton" parent="Widget.AppCompat.ActionButton">
+        <!--<item name="android:drawablePadding">16dp</item>-->
     </style>
 </resources>

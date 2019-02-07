@@ -18,13 +18,13 @@
     <color name="icon_inactive">#61000000</color>         <!--Inactive, 38%-->
     <color name="divider">#1F000000</color>               <!--12%-->
 
-    <color name="background">#F4F4F4</color>
-    <color name="foreground">#FFFFFF</color>
-    <color name="navigation_bar">#000000</color>
-    <color name="primary_text">#000000</color>
-    <color name="secondary_text">#757575</color><!--fixme-->
-    <color name="error_text">#B00020</color>
-    <color name="action_bar">#757575</color>
+    <color name="background">#FFF4F4F4</color>
+    <color name="foreground">#FFFFFFFF</color>
+    <color name="navigation_bar">#FF000000</color>
+    <color name="primary_text">#FF000000</color>
+    <color name="secondary_text">#FF757575</color><!--fixme-->
+    <color name="error_text">#FFB00020</color>
+    <color name="action_bar">#FF757575</color>
 
     <color name="like_color">#388E3C</color>
     <color name="dislike_color">#D32F2F</color>

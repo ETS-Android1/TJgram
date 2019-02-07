@@ -1,11 +1,10 @@
-package org.michaelbel.tjgram.ui.newphoto.view
+package org.michaelbel.tjgram.ui.post.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
+import androidx.appcompat.widget.AppCompatImageView
 
-@Suppress("unused")
-class SquaredLayout : FrameLayout {
+class SquaredImageView : AppCompatImageView {
 
     constructor(context: Context) : super(context)
 

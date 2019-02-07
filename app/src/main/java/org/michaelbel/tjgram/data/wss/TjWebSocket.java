@@ -25,8 +25,8 @@ public class TjWebSocket {
     private List<WebSocketInterceptor> receiveInterceptors = new ArrayList<>();
     private List<WebSocketConverter.Factory> converterFactories = new ArrayList<>();
 
-    @Nullable
-    private WebSocket webSocket;
+    @Nullable private WebSocket webSocket;
+
     private Request request;
     private OkHttpClient okHttpClient;
 

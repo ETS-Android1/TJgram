@@ -56,7 +56,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
         }
     }
 
-    var adapter = EntriesAdapter(this)
+    private var adapter = EntriesAdapter(this)
 
     private var offset: Int = 0
     private var sorting: String? = null
@@ -113,10 +113,10 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
         //recycler_view.setHasFixedSize(true)
         //recycler_view.setItemViewCacheSize(20)
         //recycler_view.adapter = EntriesAdapter(this)
-        recycler_view.adapter = adapter
-        recycler_view.layoutManager = linearLayoutManager
-        recycler_view.addItemDecoration(EntrySpacingDecoration(1, DeviceUtil.dp(requireContext(), 6F)))
-        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.addItemDecoration(EntrySpacingDecoration(1, DeviceUtil.dp(requireContext(), 6F)))
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && adapter.itemCount != 0 && loading) {
@@ -173,8 +173,8 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
             presenter.complaintEntry(entryId)
         } else if (itemId == R.id.item_open_entry) {
             val entryLink = String.format(Locale.getDefault(), TJ_ENTRY, entryId)
-            val tjApp = DeviceUtil.isAppInstalled(requireContext(), TJ_PACKAGE_NAME)
-            if (tjApp) {
+
+            if (DeviceUtil.isAppInstalled(requireContext(), TJ_PACKAGE_NAME)) {
                 val entryIntent = Intent(Intent.ACTION_VIEW, Uri.parse(entryLink))
                 startActivity(entryIntent)
             } else {

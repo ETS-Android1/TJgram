@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">TJgram</string>
     <string name="language_code">en</string>
+    <!--timeline-->
+    <!--create post-->
+    <string name="item_camera">Camera</string>
+    <string name="item_gallery">Gallery</string>
+    <!--profile-->
 
     <string name="msg_pre_auth">Please sign in to start voting and bookmarking</string>
     <string name="msg_complaint_sent">Complaint was sent</string>
@@ -95,5 +100,7 @@
 
     <string name="gif" translatable="false">GIF</string>
 
-    <string name="hint_search">hs</string>
+    <string name="hint_search" translatable="false">hs</string>
+    <string name="activity_gallery_image_transition" translatable="false">%s[image]</string>
+    <string name="activity_gallery_checkbox_transition" translatable="false">%s[checkbox]</string>
 </resources>

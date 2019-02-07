@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.ui.newphoto
+package org.michaelbel.tjgram.ui.post
 
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -10,8 +10,8 @@ import org.michaelbel.tjgram.data.entity.EntryResult
 import org.michaelbel.tjgram.data.remote.TjService
 import java.util.*
 
-class NewEntryRepository internal constructor(
-    private val service: TjService) : NewEntryContract.Repository {
+class PostRepository internal constructor(
+    private val service: TjService) : PostContract.Repository {
 
     override fun uploadFile(body: MultipartBody.Part): Observable<BaseResult<ArrayList<AttachResponse>>> {
         return service.uploaderUpload(body).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())

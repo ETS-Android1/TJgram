@@ -1,0 +1,42 @@
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportHeight="200"
+    android:viewportWidth="200">
+
+    <group
+        android:pivotX="100"
+        android:pivotY="100"
+        android:scaleX="0.91"
+        android:scaleY="0.91">
+
+        <group
+            android:name="progress_spinner"
+            android:translateX="100"
+            android:translateY="100">
+
+            <path
+                android:name="progress_bar"
+                android:pathData="M 0,-100 a 100,100 0 1,1 0,200 a 100,100 0 1,1 0,-200"
+                android:strokeColor="@color/accent"
+                android:strokeLineCap="square"
+                android:strokeLineJoin="miter"
+                android:strokeWidth="20"
+                android:trimPathEnd="0"
+                android:trimPathStart="0"/>
+
+                <group android:translateX="-100" android:translateY="-100">
+                    <path
+                        android:name="progress_bar_check"
+                        android:pathData="M 100,0 a 100,100 0 1,1 0,200 a 100,100 0 1,1 0,-200 C 224,30 162,83 162,83 L 106.5,138.5 L 80.45,112.45"
+                        android:strokeColor="@color/accent"
+                        android:strokeLineCap="square"
+                        android:strokeLineJoin="miter"
+                        android:strokeWidth="20"
+                        android:trimPathEnd="0"
+                        android:trimPathStart="0"/>
+                </group>
+        </group>
+    </group>
+</vector>

@@ -49,6 +49,10 @@ class MainActivity : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    override fun setTheme(resid: Int) {
+        super.setTheme(R.style.AppTheme)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
@@ -82,7 +86,7 @@ class MainActivity : AppCompatActivity(),
                 if (!UserConfig.isAuthorized(this)) {
                     showLoginSnack()
                 } else {
-                    startActivityForResult(Intent(this@MainActivity, NewPhotoActivity::class.java), REQUEST_CODE_NEW_ENTRY)
+                    startActivityForResult(Intent(this@MainActivity, NewPostActivity::class.java), REQUEST_CODE_NEW_ENTRY)
                 }
                 return false
             }
