@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.data.constants
+package org.michaelbel.tjgram.data.consts
 
 object Liked {
     const val LIKED = 1

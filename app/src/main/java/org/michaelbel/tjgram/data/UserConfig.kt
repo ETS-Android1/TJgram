@@ -6,8 +6,7 @@ import android.os.Build
 import org.michaelbel.tjgram.BuildConfig
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.utils.DeviceUtil
-import org.michaelbel.tjgram.utils.consts.KEY_X_DEVICE_TOKEN
-import org.michaelbel.tjgram.utils.consts.SP_NAME
+import org.michaelbel.tjgram.utils.consts.SharedPrefs
 import java.util.*
 
 object UserConfig {
@@ -17,8 +16,8 @@ object UserConfig {
     }
 
     fun getToken(context: Context): String? {
-        val preferences = context.getSharedPreferences(SP_NAME, MODE_PRIVATE)
-        return preferences.getString(KEY_X_DEVICE_TOKEN, "")
+        val preferences = context.getSharedPreferences(SharedPrefs.SP_NAME, MODE_PRIVATE)
+        return preferences.getString(SharedPrefs.KEY_X_DEVICE_TOKEN, "")
     }
 
     fun formatKarma(value: Long): String {
