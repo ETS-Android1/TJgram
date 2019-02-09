@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.TjConfig
-import org.michaelbel.tjgram.data.constants.Subsites
+import org.michaelbel.tjgram.data.consts.Subsites
 import org.michaelbel.tjgram.data.entity.Entry
 import org.michaelbel.tjgram.data.entity.Likes
 import org.michaelbel.tjgram.data.entity.LikesResult
@@ -112,7 +112,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
         //recycler_view.adapter = EntriesAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.addItemDecoration(EntrySpacingDecoration(1, DeviceUtil.dp(requireContext(), 6F)))
+        recyclerView.addItemDecoration(EntrySpacingDecoration(1, DeviceUtil.dp(requireContext(), 8F)))
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)

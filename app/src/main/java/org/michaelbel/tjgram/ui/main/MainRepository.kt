@@ -5,11 +5,11 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.michaelbel.tjgram.data.constants.Category
+import org.michaelbel.tjgram.data.consts.Category
 import org.michaelbel.tjgram.data.entity.BooleanResult
 import org.michaelbel.tjgram.data.entity.EntriesResult
 import org.michaelbel.tjgram.data.entity.LikesResult
-import org.michaelbel.tjgram.data.constants.Sorting
+import org.michaelbel.tjgram.data.consts.Sorting
 import org.michaelbel.tjgram.data.remote.TjService
 import org.michaelbel.tjgram.data.wss.TjWebSocket
 

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
+apply plugin: 'kotlin-kapt'
 
 /*def getProperty(String filename, String propName) {
     def propsFile = rootProject.file(filename)
@@ -71,6 +72,7 @@ android {
     }
 
     androidExtensions {
+        // Add Kotlin @Parcelize method
         experimental = true
     }
 
@@ -153,7 +155,8 @@ dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.20'
 
-    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+    //annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+    kapt 'android.arch.persistence.room:compiler:1.1.1'
 
     implementation 'com.alexvasilkov:events:1.0.0'
     implementation 'com.alexvasilkov:gesture-views:2.4.0'

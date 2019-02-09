@@ -6,5 +6,4 @@ class CrossEvents {
     static final String POSITION_CHANGED = "position_changed";
 
     private CrossEvents() {}
-
 }

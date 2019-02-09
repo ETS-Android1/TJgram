@@ -22,7 +22,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_auth.*
 import kotlinx.android.synthetic.main.layout_profile.*
 import org.koin.android.ext.android.inject
-import org.michaelbel.tjgram.Logg
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.UserConfig
 import org.michaelbel.tjgram.data.entity.SocialAccount
@@ -31,11 +30,10 @@ import org.michaelbel.tjgram.data.room.AppDatabase
 import org.michaelbel.tjgram.data.room.UserDao
 import org.michaelbel.tjgram.ui.QrCodeActivity
 import org.michaelbel.tjgram.ui.profile.view.SocialView
-import org.michaelbel.tjgram.utils.date.TimeFormatter
 import org.michaelbel.tjgram.utils.DeviceUtil
 import org.michaelbel.tjgram.utils.ViewUtil
-import org.michaelbel.tjgram.utils.consts.*
-import java.lang.Exception
+import org.michaelbel.tjgram.utils.consts.SharedPrefs
+import org.michaelbel.tjgram.utils.date.TimeFormatter
 
 class ProfileFragment : Fragment(), ProfileContract.View {
 
@@ -114,7 +112,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item!!.itemId == R.id.item_logout) {
-            preferences.edit().putString(KEY_X_DEVICE_TOKEN, "").apply()
+            preferences.edit().putString(SharedPrefs.KEY_X_DEVICE_TOKEN, "").apply()
             contactsLayout.clearChildren()
             setFragmentUI()
             return true
@@ -179,19 +177,18 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         Logg.e("user from db: " + u.name)*/
 
         if (xToken != "x") {
-            preferences.edit {
-                putString(KEY_X_DEVICE_TOKEN, xToken)
-            }
-
             setHasOptionsMenu(true)
+            preferences.edit {
+                putString(SharedPrefs.KEY_X_DEVICE_TOKEN, xToken)
+            }
         }
         preferences.edit {
-            putString(KEY_AVATAR_URL, user.avatarUrl)
-            putString(KEY_CREATED_DATE, user.createdRFC)
-            putLong(KEY_KARMA, user.karma)
-            putString(KEY_NAME, user.name)
-            putBoolean(KEY_PAID, user.advancedAccess.tjSubscription.isActive)
-            putLong(KEY_UNTIL, user.advancedAccess.tjSubscription.activeUntil)
+            putString(SharedPrefs.KEY_AVATAR_URL, user.avatarUrl)
+            putString(SharedPrefs.KEY_CREATED_DATE, user.createdRFC)
+            putLong(SharedPrefs.KEY_KARMA, user.karma)
+            putString(SharedPrefs.KEY_NAME, user.name)
+            putBoolean(SharedPrefs.KEY_PAID, user.advancedAccess.tjSubscription.isActive)
+            putLong(SharedPrefs.KEY_UNTIL, user.advancedAccess.tjSubscription.activeUntil)
         }
 
         val accounts = user.socialAccounts
@@ -209,31 +206,25 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     }
 
     private fun setProfile() {
-        val avatarUrl = preferences.getString(KEY_AVATAR_URL, "")
-        Logg.e(avatarUrl)
+        Picasso.get().load(preferences.getString(SharedPrefs.KEY_AVATAR_URL, "")).placeholder(R.drawable.placeholder_circle)
+           .error(R.drawable.error_circle)
+           .into(object : com.squareup.picasso.Target {
+               override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+               override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+               override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                   avatar_image.setImageBitmap(bitmap)
+               }
+           })
 
-        Picasso.get().load(avatarUrl).placeholder(R.drawable.placeholder_circle).error(R.drawable.error_circle)
-               .into(object : com.squareup.picasso.Target {
-                   override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
-                   override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
-                   override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                       avatar_image.setImageBitmap(bitmap)
-                   }
-               })
+        setKarma(preferences.getLong(SharedPrefs.KEY_KARMA, 0L))
+        userName.text = preferences.getString(SharedPrefs.KEY_NAME, "")
 
-        val karma = preferences.getLong(KEY_KARMA, 0L)
-        setKarma(karma)
-
-        val name = preferences.getString(KEY_NAME, "")
-        user_name.text = name
-
-        val checkPaid = preferences.getBoolean(KEY_PAID, false)
-        if (checkPaid) {
-            paid_icon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_check_decagram, R.color.accent))
+        if (preferences.getBoolean(SharedPrefs.KEY_PAID, false)) {
+            paidIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_check_decagram, R.color.accent))
         }
 
-        val date = preferences.getString(KEY_CREATED_DATE, "")
-        signUpDate.text = getString(R.string.sign_up_date, TimeFormatter.convertSignDate(context, date))
+        val date = preferences.getString(SharedPrefs.KEY_CREATED_DATE, "")
+        signUpDate.text = getString(R.string.sign_up_date, TimeFormatter.convertRegDate(context, date))
     }
 
     private fun setKarma(karma: Long) {

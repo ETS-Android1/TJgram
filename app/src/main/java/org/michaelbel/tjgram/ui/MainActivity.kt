@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar.*
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.UserConfig
-import org.michaelbel.tjgram.data.constants.Sorting
+import org.michaelbel.tjgram.data.consts.Sorting
 import org.michaelbel.tjgram.ui.common.bottombar.BottomNavigationBar
 import org.michaelbel.tjgram.ui.common.bottombar.BottomNavigationItem
 import org.michaelbel.tjgram.ui.main.MainFragment
