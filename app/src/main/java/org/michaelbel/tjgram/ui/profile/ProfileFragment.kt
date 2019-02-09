@@ -15,6 +15,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
@@ -178,15 +179,20 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         Logg.e("user from db: " + u.name)*/
 
         if (xToken != "x") {
-            preferences.edit().putString(KEY_X_DEVICE_TOKEN, xToken).apply()
+            preferences.edit {
+                putString(KEY_X_DEVICE_TOKEN, xToken)
+            }
+
             setHasOptionsMenu(true)
         }
-        preferences.edit().putString(KEY_AVATAR_URL, user.avatarUrl).apply()
-        preferences.edit().putString(KEY_CREATED_DATE, user.createdRFC).apply()
-        preferences.edit().putLong(KEY_KARMA, user.karma).apply()
-        preferences.edit().putString(KEY_NAME, user.name).apply()
-        preferences.edit().putBoolean(KEY_PAID, user.advancedAccess.tjSubscription.isActive).apply()
-        preferences.edit().putLong(KEY_UNTIL, user.advancedAccess.tjSubscription.activeUntil).apply()
+        preferences.edit {
+            putString(KEY_AVATAR_URL, user.avatarUrl)
+            putString(KEY_CREATED_DATE, user.createdRFC)
+            putLong(KEY_KARMA, user.karma)
+            putString(KEY_NAME, user.name)
+            putBoolean(KEY_PAID, user.advancedAccess.tjSubscription.isActive)
+            putLong(KEY_UNTIL, user.advancedAccess.tjSubscription.activeUntil)
+        }
 
         val accounts = user.socialAccounts
         for (acc in accounts) {
