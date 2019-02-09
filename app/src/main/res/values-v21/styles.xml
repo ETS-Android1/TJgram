@@ -4,7 +4,7 @@
         <item name="colorPrimaryDark">#EAA247</item>
         <item name="colorAccent">#2196F3</item>
 
-        <item name="android:statusBarColor">?colorPrimaryDark</item>
+        <item name="android:statusBarColor">#EAA247</item>
         <item name="android:navigationBarColor">@color/navigation_bar</item>
         <item name="android:windowBackground">@color/background</item>
         <item name="android:colorBackground">@color/background</item>

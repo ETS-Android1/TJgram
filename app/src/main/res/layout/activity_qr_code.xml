@@ -7,7 +7,7 @@
     tools:context=".ui.QrCodeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         app:elevation="0dp">
@@ -20,13 +20,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <SurfaceView
-        android:id="@+id/qr_code_preview_view"
+        android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"/>
 
     <org.michaelbel.tjgram.ui.profile.view.QrFinderView
-        android:id="@+id/qr_code_view_finder"
+        android:id="@+id/qrFinderView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -34,7 +34,7 @@
 
     <!--Flashlight-->
     <FrameLayout
-        android:id="@+id/flash_layout"
+        android:id="@+id/flashLayout"
         android:layout_width="match_parent"
         android:layout_height="110dp"
         android:layout_gravity="bottom"
@@ -47,14 +47,14 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/flash_icon"
+                android:id="@+id/flashIcon"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
                 tools:srcCompat="@drawable/ic_flash"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/flash_text"
+                android:id="@+id/flashText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -70,7 +70,7 @@
     </FrameLayout>
 
     <View
-        android:id="@+id/view_background"
+        android:id="@+id/viewBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black"

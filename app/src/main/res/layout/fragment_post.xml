@@ -92,7 +92,7 @@
                     app:srcCompat="@drawable/ic_clear"/>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/retry_btn"
+                    android:id="@+id/retryButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -111,16 +111,28 @@
     <FrameLayout
         android:id="@+id/imagesLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="104dp"
         android:layout_gravity="bottom"
-        android:background="?android:attr/colorForeground">
+        android:background="?android:attr/colorForeground"
+        android:visibility="invisible">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/placeholderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:text="@string/gallery_grant_permission"
+            android:visibility="invisible"/>
 
     </FrameLayout>
 

@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.data.injection
+package org.michaelbel.tjgram.data.di
 
 import android.content.Context
 import com.facebook.stetho.okhttp3.StethoInterceptor
@@ -11,9 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
 import org.michaelbel.tjgram.BuildConfig
-import org.michaelbel.tjgram.data.GSON_DATE_FORMAT
-import org.michaelbel.tjgram.data.TJ_API_ENDPOINT
-import org.michaelbel.tjgram.data.TJ_WEB_SOCKET
+import org.michaelbel.tjgram.data.TjConfig
 import org.michaelbel.tjgram.data.interceptors.UserInterceptor
 import org.michaelbel.tjgram.data.remote.TjService
 import org.michaelbel.tjgram.data.wss.TjWebSocket
@@ -27,7 +25,7 @@ val networkModule = module {
     single { okHttpClient(androidContext()) }
     single { (baseUrl: String) -> retrofit(androidContext(), baseUrl) }
     single { createService<TjService>(androidContext()) }
-    single { webSocket(androidContext(), TJ_WEB_SOCKET)}
+    single { webSocket(androidContext(), TjConfig.TJ_WEB_SOCKET)}
 }
 
 fun okHttpClient(context: Context): OkHttpClient {
@@ -62,7 +60,7 @@ fun stethoInterceptor(): StethoInterceptor {
 fun gson(): Gson {
     val gsonBuilder = GsonBuilder()
     gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-    gsonBuilder.setDateFormat(GSON_DATE_FORMAT)
+    gsonBuilder.setDateFormat(TjConfig.GSON_DATE_FORMAT)
     return gsonBuilder.create()
 }
 
@@ -76,7 +74,7 @@ fun retrofit(context: Context, baseUrl: String): Retrofit {
 }
 
 inline fun <reified T> createService(context: Context): T {
-    return retrofit(context, TJ_API_ENDPOINT).create(T::class.java)
+    return retrofit(context, TjConfig.TJ_API_ENDPOINT).create(T::class.java)
 }
 
 fun webSocket(context: Context, url: String): TjWebSocket {

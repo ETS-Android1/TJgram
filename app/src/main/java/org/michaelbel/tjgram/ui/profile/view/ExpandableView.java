@@ -110,7 +110,7 @@ public class ExpandableView extends LinearLayout {
 
         if(!TextUtils.isEmpty(title)) textViewTitle.setText(title);
 
-        card = findViewById(R.id.expand_layout);
+        card = findViewById(R.id.expandLayout);
 
         setInnerView(innerViewRes);
 

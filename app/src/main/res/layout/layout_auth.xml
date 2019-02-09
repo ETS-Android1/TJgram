@@ -41,7 +41,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/login_btn"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
@@ -52,7 +52,7 @@
         app:cardBackgroundColor="@color/md_amber_50">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/qr_icon"
+            android:id="@+id/qrIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"

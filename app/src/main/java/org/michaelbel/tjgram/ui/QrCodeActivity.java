@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 
 import com.google.zxing.Result;
 
+import org.michaelbel.tjgram.Logg;
 import org.michaelbel.tjgram.R;
 import org.michaelbel.tjgram.ui.profile.view.QrFinderView;
 import org.michaelbel.tjgram.utils.ViewUtil;
@@ -73,7 +74,7 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_code);
 
-        FrameLayout flashLayout = findViewById(R.id.flash_layout);
+        FrameLayout flashLayout = findViewById(R.id.flashLayout);
         flashLayout.setOnClickListener(v -> {
             if (mNeedFlashLightOpen) {
                 turnFlashlightOn();
@@ -81,9 +82,9 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
                 turnFlashLightOff();
             }
         });
-        flashIcon = findViewById(R.id.flash_icon);
+        flashIcon = findViewById(R.id.flashIcon);
         flashIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_flash, R.color.md_white));
-        flashText = findViewById(R.id.flash_text);
+        flashText = findViewById(R.id.flashText);
         flashText.setText(R.string.enable_flash);
 
         initView();
@@ -91,8 +92,8 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
     }
 
     private void initView() {
-        mQrCodeFinderView = findViewById(R.id.qr_code_view_finder);
-        mSurfaceView = findViewById(R.id.qr_code_preview_view);
+        mQrCodeFinderView = findViewById(R.id.qrFinderView);
+        mSurfaceView = findViewById(R.id.surfaceView);
         mHasSurface = false;
     }
 
@@ -166,7 +167,7 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
 
         mQrCodeFinderView.setVisibility(View.VISIBLE);
         mSurfaceView.setVisibility(View.VISIBLE);
-        findViewById(R.id.view_background).setVisibility(View.GONE);
+        findViewById(R.id.viewBackground).setVisibility(View.GONE);
 
         if (mCaptureActivityHandler == null) {
             mCaptureActivityHandler = new CaptureActivityHandler(this);

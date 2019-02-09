@@ -1,0 +1,46 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fixed_bottom_navigation_container"
+    android:focusable="true"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="?selectableItemBackgroundBorderless">
+
+    <FrameLayout
+        android:id="@+id/fixed_bottom_navigation_icon_container"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/fixed_bottom_navigation_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:scaleType="fitXY"/>
+
+        <org.michaelbel.tjgram.ui.common.bottombar.BadgeTextView
+            android:id="@+id/fixed_bottom_navigation_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:gravity="center"
+            style="@style/BadgeText"/>
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fixed_bottom_navigation_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:lines="1"
+        android:scaleX="@dimen/fixed_label_active_to_inactive_ratio"
+        android:scaleY="@dimen/fixed_label_active_to_inactive_ratio"
+        android:textSize="@dimen/fixed_label_active"
+        android:visibility="gone"/>
+
+</FrameLayout>

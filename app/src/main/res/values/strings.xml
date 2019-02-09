@@ -1,11 +1,29 @@
 <resources>
     <string name="app_name">TJgram</string>
     <string name="language_code">en</string>
+    <!--Menu-->
+    <string name="menu_report">Report</string>
+    <string name="menu_open_entry">Open Entry</string>
+    <string name="menu_copy_link">Copy Link</string>
+    <string name="menu_share_link">Share Link</string>
+    <string name="menu_publish">Publish</string>
+    <string name="menu_log_out">Log out</string>
+    <string name="menu_camera">Take Photo</string>
+    <string name="menu_gallery">Choose from Gallery</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_share">Share</string>
+
     <!--timeline-->
+
     <!--create post-->
     <string name="item_camera">Camera</string>
     <string name="item_gallery">Gallery</string>
+    <string name="gallery_grant_permission">Grant permission</string>
+
     <!--profile-->
+
+    <!--photo view-->
+    <string name="photo_of">%1$d of %2$d</string>
 
     <string name="msg_pre_auth">Please sign in to start voting and bookmarking</string>
     <string name="msg_complaint_sent">Complaint was sent</string>
@@ -29,15 +47,6 @@
     <string name="err_auth">Error while authorization</string>
     <string name="err_loading_image">Error loading image</string>
     <string name="err_while_posting">Error while posting</string>
-
-    <string name="menu_report">Report</string>
-    <string name="menu_open_entry">Open Entry</string>
-    <string name="menu_copy_link">Copy Link</string>
-    <string name="menu_share_link">Share Link</string>
-    <string name="menu_publish">Publish</string>
-    <string name="menu_log_out">Log out</string>
-    <string name="menu_camera">Take Photo</string>
-    <string name="menu_gallery">Choose from Gallery</string>
 
     <string name="action_ok">OK</string>
     <string name="action_go">Go it</string>

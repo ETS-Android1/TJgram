@@ -29,8 +29,8 @@ class SocialView : CardView {
 
     fun setAccount(account: SocialAccount) {
         val type = account.type - 1
-        social_icon.setImageDrawable(ViewUtil.getIcon(context, icons[type], R.color.foreground))
-        social_text.text = account.username
-        social_layout.setCardBackgroundColor(ContextCompat.getColor(context, colors[type]))
+        socialIcon.setImageDrawable(ViewUtil.getIcon(context, icons[type], R.color.foreground))
+        socialText.text = account.username
+        socialLayout.setCardBackgroundColor(ContextCompat.getColor(context, colors[type]))
     }
 }
