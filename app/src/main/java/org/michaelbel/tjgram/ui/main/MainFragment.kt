@@ -19,25 +19,22 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.android.ext.android.inject
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.data.TJ_ENTRY
-import org.michaelbel.tjgram.data.TJ_PACKAGE_NAME
-import org.michaelbel.tjgram.data.TJ_USER
+import org.michaelbel.tjgram.data.TjConfig
+import org.michaelbel.tjgram.data.constants.Subsites
 import org.michaelbel.tjgram.data.entity.Entry
 import org.michaelbel.tjgram.data.entity.Likes
 import org.michaelbel.tjgram.data.entity.LikesResult
-import org.michaelbel.tjgram.data.enums.TJGRAM
 import org.michaelbel.tjgram.data.wss.model.SocketResponse
 import org.michaelbel.tjgram.ui.main.adapter.EntriesAdapter
 import org.michaelbel.tjgram.ui.main.adapter.EntriesListener
-import org.michaelbel.tjgram.utils.getListenerOrThrowException
 import org.michaelbel.tjgram.ui.main.decoration.EntrySpacingDecoration
 import org.michaelbel.tjgram.utils.DeviceUtil
+import org.michaelbel.tjgram.utils.FragmentUtils.getListenerOrThrowException
 import org.michaelbel.tjgram.utils.NetworkUtil
 import org.michaelbel.tjgram.utils.customtabs.Browser
 import org.michaelbel.tjgram.utils.recycler.LinearSmoothScrollerMiddle
 import java.util.*
 
-// FIXME неявная привязка к activity
 class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefreshLayout.OnRefreshListener {
 
     interface Listener {
@@ -85,10 +82,10 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipe_refresh_layout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.accent))
-        swipe_refresh_layout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.primary))
-        swipe_refresh_layout.setOnRefreshListener(this)
-        swipe_refresh_layout.isRefreshing = true
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.accent))
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.primary))
+        swipeRefreshLayout.setOnRefreshListener(this)
+        swipeRefreshLayout.isRefreshing = true
 
         val linearLayoutManager = object : LinearLayoutManager(requireContext()) {
             override fun supportsPredictiveItemAnimations(): Boolean {
@@ -121,20 +118,20 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && adapter.itemCount != 0 && loading) {
                     loading = false
-                    presenter.entries(TJGRAM.toLong(), sorting!!, offset, false)
+                    presenter.entries(Subsites.TJGRAM.toLong(), sorting!!, offset, false)
                 }
             }
         })
 
-        retry_btn.setOnClickListener {
-            swipe_refresh_layout.isRefreshing = true
-            presenter.entries(TJGRAM.toLong(), sorting!!, offset, false)
+        retryButton.setOnClickListener {
+            swipeRefreshLayout.isRefreshing = true
+            presenter.entries(Subsites.TJGRAM.toLong(), sorting!!, offset, false)
         }
 
         offset = 0
         sorting = if (arguments != null) arguments!!.getString(ARG_SORTING) else ""
         if (sorting != null) {
-            presenter.entries(TJGRAM.toLong(), sorting!!, offset, false)
+            presenter.entries(Subsites.TJGRAM.toLong(), sorting!!, offset, false)
         }
 
         presenter.wwsEventStream()
@@ -143,9 +140,9 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     override fun onRefresh() {
         if (NetworkUtil.isNetworkConnected(requireContext())) {
             offset = 0
-            presenter.entries(TJGRAM.toLong(), sorting!!, offset, adapter.itemCount != 0)
+            presenter.entries(Subsites.TJGRAM.toLong(), sorting!!, offset, adapter.itemCount != 0)
         } else {
-            swipe_refresh_layout.isRefreshing = false
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -154,8 +151,8 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     }
 
     override fun onAuthorClick(authorId: Int) {
-        val userLink = String.format(Locale.getDefault(), TJ_USER, authorId)
-        if (DeviceUtil.isAppInstalled(requireContext(), TJ_PACKAGE_NAME)) {
+        val userLink = String.format(Locale.getDefault(), TjConfig.TJ_USER, authorId)
+        if (DeviceUtil.isAppInstalled(requireContext(), TjConfig.TJ_PACKAGE_NAME)) {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(userLink)))
         } else {
             Browser.openUrl(requireContext(), userLink)
@@ -163,7 +160,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     }
 
     override fun onAuthorLongClick(authorId: Int): Boolean {
-        DeviceUtil.copyToClipboard(requireContext(), String.format(Locale.getDefault(), TJ_USER, authorId))
+        DeviceUtil.copyToClipboard(requireContext(), String.format(Locale.getDefault(), TjConfig.TJ_USER, authorId))
         Toast.makeText(requireContext(), R.string.msg_author_url_copied, Toast.LENGTH_SHORT).show()
         return true
     }
@@ -172,20 +169,20 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
         if (itemId == R.id.item_report) {
             presenter.complaintEntry(entryId)
         } else if (itemId == R.id.item_open_entry) {
-            val entryLink = String.format(Locale.getDefault(), TJ_ENTRY, entryId)
+            val entryLink = String.format(Locale.getDefault(), TjConfig.TJ_ENTRY, entryId)
 
-            if (DeviceUtil.isAppInstalled(requireContext(), TJ_PACKAGE_NAME)) {
+            if (DeviceUtil.isAppInstalled(requireContext(), TjConfig.TJ_PACKAGE_NAME)) {
                 val entryIntent = Intent(Intent.ACTION_VIEW, Uri.parse(entryLink))
                 startActivity(entryIntent)
             } else {
                 Browser.openUrl(requireContext(), entryLink)
             }
         } else if (itemId == R.id.item_copy_link) {
-            DeviceUtil.copyToClipboard(requireContext(), String.format(Locale.getDefault(), TJ_ENTRY, entryId))
+            DeviceUtil.copyToClipboard(requireContext(), String.format(Locale.getDefault(), TjConfig.TJ_ENTRY, entryId))
             Toast.makeText(requireContext(), R.string.msg_link_copied, Toast.LENGTH_SHORT).show()
         } else if (itemId == R.id.item_share_link) {
             val intent = Intent(Intent.ACTION_SEND).setType("text/plain")
-            intent.putExtra(Intent.EXTRA_TEXT, String.format(Locale.getDefault(), TJ_ENTRY, entryId))
+            intent.putExtra(Intent.EXTRA_TEXT, String.format(Locale.getDefault(), TjConfig.TJ_ENTRY, entryId))
             startActivity(Intent.createChooser(intent, getString(R.string.menu_share_link)))
         } else {
             return false
@@ -204,16 +201,16 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
 
         adapter.setEntries(entries)
 
-        error_view.visibility = GONE
-        swipe_refresh_layout.isRefreshing = false
+        errorView.visibility = GONE
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun updateEntries(entries: ArrayList<Entry>) {
         offset += entries.size
 
         adapter.swapEntries(entries)
-        error_view.visibility = GONE
-        swipe_refresh_layout.isRefreshing = false
+        errorView.visibility = GONE
+        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun errorEntries(throwable: Throwable, upd: Boolean) {
@@ -222,10 +219,10 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
             return
         }
 
-        swipe_refresh_layout.isRefreshing = false
+        swipeRefreshLayout.isRefreshing = false
 
         if (adapter.itemCount == 0) {
-            error_view.visibility = VISIBLE
+            errorView.visibility = VISIBLE
         }
     }
 

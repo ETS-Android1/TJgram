@@ -5,7 +5,7 @@
     android:layout_centerHorizontal="true">
 
     <FrameLayout
-        android:id="@+id/qr_code_scanner"
+        android:id="@+id/qrCodeScanner"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_centerHorizontal="true"
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:layout_below="@+id/qr_code_scanner"
+        android:layout_below="@+id/qrCodeScanner"
         android:gravity="center_horizontal"
         android:textColor="@color/md_white"
         android:textSize="16sp"

@@ -25,6 +25,7 @@ import android.view.View.VISIBLE
 import android.view.animation.LinearInterpolator
 import android.widget.Toast
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,10 +34,11 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_post.*
 import org.koin.android.ext.android.inject
+import org.michaelbel.tjgram.Logg
 import org.michaelbel.tjgram.R
+import org.michaelbel.tjgram.data.constants.Subsites
 import org.michaelbel.tjgram.data.entity.AttachResponse
 import org.michaelbel.tjgram.data.entity.Entry
-import org.michaelbel.tjgram.data.enums.TJGRAM
 import org.michaelbel.tjgram.ui.MainActivity.Companion.NEW_ENTRY_RESULT
 import org.michaelbel.tjgram.ui.post.adapter.GalleryAdapter
 import org.michaelbel.tjgram.ui.post.decoration.PhotoSpacingDecoration
@@ -57,13 +59,17 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
         const val MENU_ITEM_PROGRESS = 12
 
         const val EXTENSION_JPG = ".jpg"
-        const val EXTENSION_JPEG = ".jpeg"
+        //const val EXTENSION_JPEG = ".jpeg"
         const val EXTENSION_PNG = ".png"
         const val EXTENSION_BMP = ".bmp"
 
         const val REQUEST_PERMISSION = 101
         const val REQUEST_IMAGE_CAPTURE = 201
         const val REQUEST_SELECT_IMAGE = 301
+
+        fun newInstance(): PostFragment {
+            return PostFragment()
+        }
     }
 
     private var menuItem: MenuItem? = null
@@ -109,28 +115,34 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_PERMISSION && grantResults.isNotEmpty()) {
-            if (permissions[0] == Manifest.permission.READ_EXTERNAL_STORAGE) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    loadPhotos()
-                }
-            } else if (permissions[0] == Manifest.permission.CAMERA && permissions[1] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-                val cameraPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                val writeExternalPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED
+        if (requestCode == REQUEST_PERMISSION) {
+            if (grantResults.isNotEmpty()) {
+                if (permissions[0] == Manifest.permission.READ_EXTERNAL_STORAGE) {
+                    val readStorageGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    if (readStorageGranted) {
+                        loadPhotos()
+                    } else {
+                        Logg.e("permission decline")
+                        showPlaceholder()
+                    }
+                } /*else if (permissions[0] == Manifest.permission.CAMERA && permissions[1] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+                    val cameraPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    val writeExternalPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED
 
-                if (cameraPermission && writeExternalPermission) {
-                    takePhoto()
-                }
-            } else if (permissions[0] == Manifest.permission.CAMERA) {
-                val cameraPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                if (cameraPermission) {
-                    takePhoto()
-                }
-            } else if (permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
-                val writeExternalPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                if (writeExternalPermission) {
-                    takePhoto()
-                }
+                    if (cameraPermission && writeExternalPermission) {
+                        takePhoto()
+                    }
+                }*/ else if (permissions[0] == Manifest.permission.CAMERA) {
+                    val cameraPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    if (cameraPermission) {
+                        takePhoto()
+                    }
+                } /*else if (permissions[0] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+                    val writeExternalPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    if (writeExternalPermission) {
+                        takePhoto()
+                    }
+                }*/
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -195,10 +207,14 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
 
         ViewCompat.setElevation(imagesLayout, DeviceUtil.dp(requireContext(), 1.5F).toFloat())
 
+        imagesLayout.setOnClickListener {loadPhotos()}
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.hasFixedSize()
         recyclerView.addItemDecoration(PhotoSpacingDecoration(1, DeviceUtil.dp(requireContext(), 3F)))
+
+        placeholderText.visibility = VISIBLE
 
         titleEditText.background = null
         ViewUtil.clearCursorDrawable(titleEditText)
@@ -318,6 +334,11 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
         parseDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS))
         //parseDir(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS))
         adapter.swapData(photoFiles)
+
+        recyclerView.visibility = VISIBLE
+        placeholderText.visibility = GONE
+
+        animateImagesLayout(false)
     }
 
     private fun parseDir(dir: File) {
@@ -334,10 +355,8 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
                     parseDir(file)
                 }
             } else {
-                if (file.name.toLowerCase().endsWith(EXTENSION_JPG)
-                        || file.name.toLowerCase().endsWith(EXTENSION_JPEG)
-                        || file.name.toLowerCase().endsWith(EXTENSION_PNG)
-                        || file.name.toLowerCase().endsWith(EXTENSION_BMP)) {
+                if (file.name.toLowerCase().endsWith(EXTENSION_JPG) /*|| file.name.toLowerCase().endsWith(EXTENSION_JPEG)*/
+                        || file.name.toLowerCase().endsWith(EXTENSION_PNG) || file.name.toLowerCase().endsWith(EXTENSION_BMP)) {
                     photoFiles.add(file)
                 }
             }
@@ -346,23 +365,27 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
 
     private fun takePhoto() {
         if (Build.VERSION.SDK_INT >= 23) {
-            val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            //val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             val permissionCamera = arrayOf(Manifest.permission.CAMERA)
-            val permissionStorage = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            //val permissionStorage = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
             val cameraGranted = requireContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
-            val writeStorageGranted = requireContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            //val writeStorageGranted = requireContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
             //val cameraDenied = !shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)
             //val writeStorageDenied = !shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
-            if (!cameraGranted && !writeStorageGranted) {
+            if (cameraGranted.not()) {
+                requestPermissions(permissionCamera, REQUEST_PERMISSION)
+            }
+
+            /*if (!cameraGranted && !writeStorageGranted) {
                 requestPermissions(permissions, REQUEST_PERMISSION)
             } else if (!cameraGranted) {
                 requestPermissions(permissionCamera, REQUEST_PERMISSION)
             } else if (!writeStorageGranted) {
                 requestPermissions(permissionStorage, REQUEST_PERMISSION)
-            }
+            }*/
 
             /*if (!cameraGranted && !writeStorageGranted) {
                 if (cameraDenied || writeStorageDenied) {
@@ -417,7 +440,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
             map["attaches[$i][data][data][url]"] = ""
         }
 
-        presenter.createEntry(titleText!!, introText!!, TJGRAM.toLong(), map)
+        presenter.createEntry(titleText!!, introText!!, Subsites.TJGRAM.toLong(), map)
     }
 
     private fun animateImagesLayout(hide: Boolean) {
@@ -441,6 +464,13 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
         anim.start()
     }
 
+    private fun showPlaceholder() {
+        recyclerView.visibility = GONE
+        placeholderText.visibility = VISIBLE
+
+        animateImagesLayout(false)
+    }
+
     private fun showRemoveIcon() {
         val set = AnimatorSet()
         set.playTogether(
@@ -456,7 +486,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
             }
         })
 
-        if (removeIcon.visibility == GONE) {
+        if (!removeIcon.isVisible) {
             set.start()
         }
     }

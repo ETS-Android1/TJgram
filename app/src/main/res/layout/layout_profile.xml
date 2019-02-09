@@ -16,17 +16,24 @@
         android:layout_height="wrap_content">
 
         <!--Avatar-->
-        <androidx.appcompat.widget.AppCompatImageView
+        <!--<androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/avatar_image"
             android:layout_width="112dp"
             android:layout_height="112dp"
             android:layout_marginTop="24dp"
             android:layout_gravity="center_horizontal"
-            tools:background="@mipmap/ic_launcher"/>
+            tools:background="@mipmap/ic_launcher"/>-->
+
+        <com.alexvasilkov.gestures.commons.circle.CircleImageView
+            android:id="@+id/avatar_image"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal"/>
 
         <!--Karma-->
         <androidx.cardview.widget.CardView
-            android:id="@+id/karma_card"
+            android:id="@+id/karmaCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
@@ -36,7 +43,7 @@
             app:cardElevation="0dp">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/karma_value"
+                android:id="@+id/karmaValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -87,7 +94,7 @@
 
     <!--Sign up date-->
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/signup_date"
+        android:id="@+id/signUpDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -102,7 +109,7 @@
         tools:text="Зарегистрировался 25 июля 2015"/>
 
     <org.michaelbel.tjgram.ui.profile.view.ExpandableView
-        android:id="@+id/contacts_layout"
+        android:id="@+id/contactsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:inner_view="@layout/view_collapsed"/>

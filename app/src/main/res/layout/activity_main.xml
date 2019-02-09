@@ -1,27 +1,56 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <include layout="@layout/appbar"/>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/fragment_view"
+        <include layout="@layout/appbar"/>
+
+        <FrameLayout
+            android:id="@+id/fragmentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="48dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <org.michaelbel.tjgram.ui.common.bottombar.BottomNavigationBar
+            android:id="@+id/bottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--Full Background-->
+    <View
+        android:id="@+id/fullBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="48dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:background="#FF000000"
+        android:visibility="gone"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <!--Full Avatar-->
+    <org.michaelbel.tjgram.ui.common.gestures.CircleGestureImageView
+        android:id="@+id/fullImage"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom"
-        app:menu="@menu/bottom_navigation"
-        app:itemIconTint="@drawable/bottom_view_selector"/>
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:gest_doubleTapZoom="3"
+        app:gest_maxZoom="10"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!--Full Toolbar-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/fullToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/transparent20"
+        android:visibility="gone"/>
+
+</merge>

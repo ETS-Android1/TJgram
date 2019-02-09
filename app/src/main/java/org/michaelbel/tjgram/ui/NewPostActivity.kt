@@ -16,21 +16,21 @@ class NewPostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_photo)
+        setContentView(R.layout.activity_post)
 
         if (Build.VERSION.SDK_INT >= 21) {
-            appbar.stateListAnimator = null
+            appBarLayout.stateListAnimator = null
         }
-        ViewCompat.setElevation(appbar, DeviceUtil.dp(this, 1.5F).toFloat())
+        ViewCompat.setElevation(appBarLayout, DeviceUtil.dp(this, 1.5F).toFloat())
 
+        setSupportActionBar(toolbar)
         toolbar.navigationIcon = ViewUtil.getIcon(this, R.drawable.ic_arrow_back, R.color.icon_active)
         toolbar.setNavigationOnClickListener{finish()}
-        setSupportActionBar(toolbar)
 
         supportActionBar!!.setTitle(R.string.post_entry)
 
         if (savedInstanceState == null) {
-            replaceFragment(PostFragment(), "")
+            replaceFragment(PostFragment.newInstance(), "")
         }
     }
 
@@ -40,7 +40,7 @@ class NewPostActivity : AppCompatActivity() {
         if (tag.isNotEmpty()) {
             transaction.addToBackStack(tag)
         }
-        transaction.replace(R.id.fragment_view, fragment)
+        transaction.replace(R.id.fragmentView, fragment)
         transaction.commit()
     }
 }

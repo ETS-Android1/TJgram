@@ -50,7 +50,7 @@ public class QrFinderView extends RelativeLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
 
         RelativeLayout parentLayout = (RelativeLayout) inflater.inflate(R.layout.layout_qr_scanner, this);
-        FrameLayout frameLayout = parentLayout.findViewById(R.id.qr_code_scanner);
+        FrameLayout frameLayout = parentLayout.findViewById(R.id.qrCodeScanner);
 
         mFrameRect = new Rect();
         LayoutParams layoutParams = (LayoutParams) frameLayout.getLayoutParams();

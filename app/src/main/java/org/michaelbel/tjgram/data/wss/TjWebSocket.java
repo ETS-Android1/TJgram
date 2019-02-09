@@ -230,7 +230,7 @@ public class TjWebSocket {
     }
 
     private void doDisconnect(int code, String reason) {
-        requireNotNull(webSocket, "Expected an open websocket");
+        requireNotNull(webSocket, "Expected an show websocket");
         userRequestedClose = true;
         if (webSocket != null) {
             webSocket.close(code, reason);
@@ -238,7 +238,7 @@ public class TjWebSocket {
     }
 
     private void doQueueMessage(byte[] message) {
-        requireNotNull(webSocket, "Expected an open websocket");
+        requireNotNull(webSocket, "Expected an show websocket");
         requireNotNull(message, "Expected a non null message");
         if (webSocket.send(ByteString.of(message))) {
             if (eventStream.hasSubscribers()) {
@@ -248,7 +248,7 @@ public class TjWebSocket {
     }
 
     private <T> void doQueueMessage(T message) {
-        requireNotNull(webSocket, "Expected an open websocket");
+        requireNotNull(webSocket, "Expected an show websocket");
         requireNotNull(message, "Expected a non null message");
 
         WebSocketConverter<T, String> converter = requestConverter(message.getClass());

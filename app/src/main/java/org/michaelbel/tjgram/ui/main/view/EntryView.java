@@ -17,11 +17,11 @@ import android.widget.VideoView;
 import com.squareup.picasso.Picasso;
 
 import org.michaelbel.tjgram.R;
+import org.michaelbel.tjgram.data.constants.Liked;
 import org.michaelbel.tjgram.data.entity.Author;
 import org.michaelbel.tjgram.data.entity.Cover;
 import org.michaelbel.tjgram.data.entity.Entry;
 import org.michaelbel.tjgram.data.entity.Likes;
-import org.michaelbel.tjgram.data.enums.LikesKt;
 import org.michaelbel.tjgram.utils.FileUtil;
 import org.michaelbel.tjgram.utils.ViewUtil;
 import org.michaelbel.tjgram.utils.picasso.CircleTransform;
@@ -89,29 +89,29 @@ public class EntryView extends LinearLayoutCompat {
     private void initialize(Context context) {
         LayoutInflater.from(context).inflate(R.layout.item_entry, this);
 
-        pinIcon = findViewById(R.id.pin_icon);
+        pinIcon = findViewById(R.id.pinIcon);
         pinIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(getContext(), R.drawable.ic_pin, R.color.icon_active_unfocused));
 
-        menuIcon = findViewById(R.id.menu_icon);
+        menuIcon = findViewById(R.id.menuIcon);
         menuIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(getContext(), R.drawable.ic_dots_vertical, R.color.icon_active_unfocused));
 
-        authorLayout = findViewById(R.id.author_layout);
-        authorIcon = findViewById(R.id.author_icon);
-        authorName = findViewById(R.id.author_name);
-        dateText = findViewById(R.id.date_text);
+        authorLayout = findViewById(R.id.authorLayout);
+        authorIcon = findViewById(R.id.authorIcon);
+        authorName = findViewById(R.id.authorName);
+        dateText = findViewById(R.id.dateText);
 
-        mediaLayout = findViewById(R.id.media_layout);
-        coverImage = findViewById(R.id.entry_cover);
-        gifLayout = findViewById(R.id.gif_layout);
-        videoView = findViewById(R.id.video_view);
+        mediaLayout = findViewById(R.id.mediaLayout);
+        coverImage = findViewById(R.id.entryCover);
+        gifLayout = findViewById(R.id.gifLayout);
+        videoView = findViewById(R.id.videoView);
 
-        titleText = findViewById(R.id.title_text);
-        introText = findViewById(R.id.intro_text);
+        titleText = findViewById(R.id.titleText);
+        introText = findViewById(R.id.introText);
 
-        heartIcon = findViewById(R.id.like_icon);
-        likesValue = findViewById(R.id.likes_text);
-        likesSwitcher1 = findViewById(R.id.text_like1);
-        likesSwitcher2 = findViewById(R.id.text_like2);
+        heartIcon = findViewById(R.id.likeIcon);
+        likesValue = findViewById(R.id.likesText);
+        likesSwitcher1 = findViewById(R.id.textLike1);
+        likesSwitcher2 = findViewById(R.id.textLike2);
     }
 
     public void bind(@NonNull Entry entry) {
@@ -211,15 +211,15 @@ public class EntryView extends LinearLayoutCompat {
 
     // For authorized users.
     private void updateLikesAuth(Likes likes) {
-        if (likes.isLiked == LikesKt.LIKED) {
+        if (likes.isLiked == Liked.LIKED) {
             likesSwitcher1.setTextColor(ContextCompat.getColor(getContext(), likes.summ <= 0 ? R.color.icon_active_unfocused : R.color.instagram_like));
             likesSwitcher2.setTextColor(ContextCompat.getColor(getContext(), likes.summ <= 0 ? R.color.icon_active_unfocused : R.color.instagram_like));
             heartIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(getContext(), R.drawable.ic_heart, R.color.instagram_like));
-        } else if (likes.isLiked == LikesKt.NEUTRAL) {
+        } else if (likes.isLiked == Liked.NEUTRAL) {
             likesSwitcher1.setTextColor(ContextCompat.getColor(getContext(), R.color.icon_active_unfocused));
             likesSwitcher2.setTextColor(ContextCompat.getColor(getContext(), R.color.icon_active_unfocused));
             heartIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(getContext(), R.drawable.ic_heart_outline, R.color.icon_active_unfocused));
-        } else if (likes.isLiked == LikesKt.DISLIKED) {
+        } else if (likes.isLiked == Liked.DISLIKED) {
             likesSwitcher1.setTextColor(ContextCompat.getColor(getContext(), R.color.icon_active_unfocused));
             likesSwitcher2.setTextColor(ContextCompat.getColor(getContext(), R.color.icon_active_unfocused));
             heartIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(getContext(), R.drawable.ic_heart_outline, R.color.icon_active_unfocused));

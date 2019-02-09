@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -19,17 +21,20 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_auth.*
 import kotlinx.android.synthetic.main.layout_profile.*
 import org.koin.android.ext.android.inject
+import org.michaelbel.tjgram.Logg
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.UserConfig
 import org.michaelbel.tjgram.data.entity.SocialAccount
 import org.michaelbel.tjgram.data.entity.User
+import org.michaelbel.tjgram.data.room.AppDatabase
+import org.michaelbel.tjgram.data.room.UserDao
 import org.michaelbel.tjgram.ui.QrCodeActivity
 import org.michaelbel.tjgram.ui.profile.view.SocialView
 import org.michaelbel.tjgram.utils.date.TimeFormatter
 import org.michaelbel.tjgram.utils.DeviceUtil
 import org.michaelbel.tjgram.utils.ViewUtil
 import org.michaelbel.tjgram.utils.consts.*
-import org.michaelbel.tjgram.utils.picasso.CircleTransform
+import java.lang.Exception
 
 class ProfileFragment : Fragment(), ProfileContract.View {
 
@@ -47,6 +52,9 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     val preferences: SharedPreferences by inject()
     val presenter: ProfileContract.Presenter by inject()
+
+    val database: AppDatabase by inject()
+    val userDao: UserDao by inject()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK) {
@@ -106,8 +114,8 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item!!.itemId == R.id.item_logout) {
             preferences.edit().putString(KEY_X_DEVICE_TOKEN, "").apply()
-            contacts_layout.clearChildren()
-            setFragmentUi()
+            contactsLayout.clearChildren()
+            setFragmentUI()
             return true
         }
 
@@ -120,18 +128,24 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        login_btn.setOnClickListener { startScan() }
-        qr_icon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_qrcode, R.color.icon_active))
+        loginButton.setOnClickListener { startScan() }
+        qrIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_qrcode, R.color.icon_active))
 
         if (Build.VERSION.SDK_INT >= 21) {
             ViewCompat.setElevation(profile_layout, DeviceUtil.dp(requireContext(), 1F).toFloat())
         }
-        contacts_layout.setTitle(R.string.contacts_info)
+        contactsLayout.setTitle(R.string.contacts_info)
 
-        setFragmentUi()
+        setFragmentUI()
+
+        // FIXME open full image
+        /*avatar_image.setOnClickListener {
+            val position = ViewPosition.from(avatar_image)
+            PhotoActivity.show(requireActivity(), position, preferences.getString(KEY_AVATAR_URL, ""))
+        }*/
     }
 
-    private fun setFragmentUi() {
+    private fun setFragmentUI() {
         val isAuth = UserConfig.isAuthorized(requireContext())
         setHasOptionsMenu(isAuth)
 
@@ -147,6 +161,22 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     }
 
     override fun setUser(user: User, xToken: String) {
+        /*val userDb = org.michaelbel.tjgram.data.room.User(
+                user.id,
+                user.name,
+                user.karma,
+                user.createdRFC,
+                user.created,
+                user.avatarUrl,
+                user.pushTopic,
+                user.url,
+                user.userHash
+        )
+        userDao.insert(userDb)
+
+        val u = userDao.getById(54438)
+        Logg.e("user from db: " + u.name)*/
+
         if (xToken != "x") {
             preferences.edit().putString(KEY_X_DEVICE_TOKEN, xToken).apply()
             setHasOptionsMenu(true)
@@ -174,7 +204,16 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     private fun setProfile() {
         val avatarUrl = preferences.getString(KEY_AVATAR_URL, "")
-        Picasso.get().load(avatarUrl).placeholder(R.drawable.placeholder_circle).error(R.drawable.error_circle).transform(CircleTransform()).into(avatar_image)
+        Logg.e(avatarUrl)
+
+        Picasso.get().load(avatarUrl).placeholder(R.drawable.placeholder_circle).error(R.drawable.error_circle)
+               .into(object : com.squareup.picasso.Target {
+                   override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+                   override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+                   override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                       avatar_image.setImageBitmap(bitmap)
+                   }
+               })
 
         val karma = preferences.getLong(KEY_KARMA, 0L)
         setKarma(karma)
@@ -188,24 +227,24 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         }
 
         val date = preferences.getString(KEY_CREATED_DATE, "")
-        signup_date.text = getString(R.string.sign_up_date, TimeFormatter.convertSignDate(context, date))
+        signUpDate.text = getString(R.string.sign_up_date, TimeFormatter.convertSignDate(context, date))
     }
 
     private fun setKarma(karma: Long) {
-        karma_value.text = UserConfig.formatKarma(karma)
+        karmaValue.text = UserConfig.formatKarma(karma)
 
         when {
             karma == 0L -> {
-                karma_value.setTextColor(ContextCompat.getColor(requireContext(), karmaTextColor[0]))
-                karma_card.setCardBackgroundColor(ContextCompat.getColor(requireContext(), karmaBackground[0]))
+                karmaValue.setTextColor(ContextCompat.getColor(requireContext(), karmaTextColor[0]))
+                karmaCard.setCardBackgroundColor(ContextCompat.getColor(requireContext(), karmaBackground[0]))
             }
             karma > 0L -> {
-                karma_value.setTextColor(ContextCompat.getColor(requireContext(), karmaTextColor[1]))
-                karma_card.setCardBackgroundColor(ContextCompat.getColor(requireContext(), karmaBackground[1]))
+                karmaValue.setTextColor(ContextCompat.getColor(requireContext(), karmaTextColor[1]))
+                karmaCard.setCardBackgroundColor(ContextCompat.getColor(requireContext(), karmaBackground[1]))
             }
             else -> {
-                karma_value.setTextColor(ContextCompat.getColor(requireContext(), karmaTextColor[2]))
-                karma_card.setCardBackgroundColor(ContextCompat.getColor(requireContext(), karmaBackground[2]))
+                karmaValue.setTextColor(ContextCompat.getColor(requireContext(), karmaTextColor[2]))
+                karmaCard.setCardBackgroundColor(ContextCompat.getColor(requireContext(), karmaBackground[2]))
             }
         }
     }
@@ -213,7 +252,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     private fun addSocialAccount(account: SocialAccount) {
         val socialView = SocialView(requireContext())
         socialView.setAccount(account)
-        contacts_layout.addChildView(socialView)
+        contactsLayout.addChildView(socialView)
     }
 
     private fun startScan() {
