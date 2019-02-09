@@ -17,7 +17,7 @@ import android.widget.VideoView;
 import com.squareup.picasso.Picasso;
 
 import org.michaelbel.tjgram.R;
-import org.michaelbel.tjgram.data.constants.Liked;
+import org.michaelbel.tjgram.data.consts.Liked;
 import org.michaelbel.tjgram.data.entity.Author;
 import org.michaelbel.tjgram.data.entity.Cover;
 import org.michaelbel.tjgram.data.entity.Entry;
@@ -89,27 +89,27 @@ public class EntryView extends LinearLayoutCompat {
     private void initialize(Context context) {
         LayoutInflater.from(context).inflate(R.layout.item_entry, this);
 
-        pinIcon = findViewById(R.id.pinIcon);
+        pinIcon = findViewById(R.id.pinImage);
         pinIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(getContext(), R.drawable.ic_pin, R.color.icon_active_unfocused));
 
-        menuIcon = findViewById(R.id.menuIcon);
+        menuIcon = findViewById(R.id.menuImage);
         menuIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(getContext(), R.drawable.ic_dots_vertical, R.color.icon_active_unfocused));
 
-        authorLayout = findViewById(R.id.authorLayout);
+        authorLayout = findViewById(R.id.authorCard);
         authorIcon = findViewById(R.id.authorIcon);
         authorName = findViewById(R.id.authorName);
         dateText = findViewById(R.id.dateText);
 
         mediaLayout = findViewById(R.id.mediaLayout);
-        coverImage = findViewById(R.id.entryCover);
+        coverImage = findViewById(R.id.coverImage);
         gifLayout = findViewById(R.id.gifLayout);
         videoView = findViewById(R.id.videoView);
 
-        titleText = findViewById(R.id.titleText);
+        titleText = findViewById(R.id.entryTitle);
         introText = findViewById(R.id.introText);
 
-        heartIcon = findViewById(R.id.likeIcon);
-        likesValue = findViewById(R.id.likesText);
+        heartIcon = findViewById(R.id.heartImage);
+        likesValue = findViewById(R.id.likesCount);
         likesSwitcher1 = findViewById(R.id.textLike1);
         likesSwitcher2 = findViewById(R.id.textLike2);
     }

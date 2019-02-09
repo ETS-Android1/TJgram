@@ -20,7 +20,7 @@
 
             <!--Author Card-->
             <androidx.cardview.widget.CardView
-                android:id="@+id/authorLayout"
+                android:id="@+id/authorCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -82,7 +82,7 @@
 
             <!--Pin Icon-->
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/pinIcon"
+                android:id="@+id/pinImage"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="top"
@@ -95,7 +95,7 @@
 
         <!--Menu Icon-->
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/menuIcon"
+            android:id="@+id/menuImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
@@ -114,7 +114,7 @@
 
         <!--Image-->
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/entryCover"
+            android:id="@+id/coverImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -167,7 +167,7 @@
 
         <!--Double Tap Like-->
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/likeImage"
+            android:id="@+id/doubleTapHeart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -177,7 +177,7 @@
 
     <!--Title-->
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/titleText"
+        android:id="@+id/entryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start|top"
@@ -230,7 +230,7 @@
 
             <!--Heart Icon-->
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/likeIcon"
+                android:id="@+id/heartImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -238,7 +238,7 @@
 
             <!--Rating Value-->
             <TextSwitcher
-                android:id="@+id/likesText"
+                android:id="@+id/likesCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

@@ -5,8 +5,8 @@
     android:background="?android:attr/colorBackground"
     android:foreground="?attr/selectableItemBackground">
 
-    <org.michaelbel.tjgram.ui.newphoto.view.SquaredImage
-        android:id="@+id/photo_view"
+    <org.michaelbel.tjgram.ui.post.view.SquaredImageView
+        android:id="@+id/photoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
