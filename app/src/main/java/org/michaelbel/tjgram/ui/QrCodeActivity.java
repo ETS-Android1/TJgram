@@ -15,7 +15,6 @@ import android.widget.FrameLayout;
 
 import com.google.zxing.Result;
 
-import org.michaelbel.tjgram.Logg;
 import org.michaelbel.tjgram.R;
 import org.michaelbel.tjgram.ui.profile.view.QrFinderView;
 import org.michaelbel.tjgram.utils.ViewUtil;

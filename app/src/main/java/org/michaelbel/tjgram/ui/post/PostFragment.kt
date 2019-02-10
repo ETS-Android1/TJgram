@@ -34,7 +34,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_post.*
 import org.koin.android.ext.android.inject
-import org.michaelbel.tjgram.Logg
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.consts.Subsites
 import org.michaelbel.tjgram.data.entity.AttachResponse
@@ -54,18 +53,22 @@ import kotlin.collections.ArrayList
 class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickListener {
 
     companion object {
-        const val MENU_ITEM_SENT = 10
-        const val MENU_ITEM_SENT_ACTIVE = 11
-        const val MENU_ITEM_PROGRESS = 12
+        private const val MENU_ITEM_SENT = 10
+        private const val MENU_ITEM_SENT_ACTIVE = 11
+        private const val MENU_ITEM_PROGRESS = 12
 
-        const val EXTENSION_JPG = ".jpg"
-        //const val EXTENSION_JPEG = ".jpeg"
-        const val EXTENSION_PNG = ".png"
-        const val EXTENSION_BMP = ".bmp"
+        private const val EXTENSION_JPG = ".jpg"
+        //private const val EXTENSION_JPEG = ".jpeg"
+        private const val EXTENSION_PNG = ".png"
+        private const val EXTENSION_BMP = ".bmp"
 
-        const val REQUEST_PERMISSION = 101
-        const val REQUEST_IMAGE_CAPTURE = 201
-        const val REQUEST_SELECT_IMAGE = 301
+        private const val REQUEST_PERMISSION = 101
+        private const val REQUEST_IMAGE_CAPTURE = 201
+        private const val REQUEST_SELECT_IMAGE = 301
+
+        private const val ANIM_DURATION = 300L
+
+        private var INTERPOLATOR = LinearInterpolator()
 
         fun newInstance(): PostFragment {
             return PostFragment()
@@ -122,7 +125,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
                     if (readStorageGranted) {
                         loadPhotos()
                     } else {
-                        Logg.e("permission decline")
+                        Timber.e("permission decline")
                         showPlaceholder()
                     }
                 } /*else if (permissions[0] == Manifest.permission.CAMERA && permissions[1] == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
@@ -444,7 +447,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
 
     private fun animateImagesLayout(hide: Boolean) {
         val anim = imagesLayout.animate().translationY(if (hide) imagesLayout.height.toFloat() else 0F)
-        anim.duration = 300
+        anim.duration = ANIM_DURATION
         anim.setListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
                 super.onAnimationEnd(animation)
@@ -476,8 +479,8 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
             ObjectAnimator.ofFloat(removeIcon, "scaleX", 0F, 1F),
             ObjectAnimator.ofFloat(removeIcon, "scaleY", 0F, 1F)
         )
-        set.duration = 300
-        set.interpolator = LinearInterpolator()
+        set.duration = ANIM_DURATION
+        set.interpolator = INTERPOLATOR
         set.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator?, isReverse: Boolean) {
                 super.onAnimationStart(animation, isReverse)

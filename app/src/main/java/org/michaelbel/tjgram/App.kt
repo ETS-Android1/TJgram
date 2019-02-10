@@ -8,10 +8,11 @@ import org.michaelbel.tjgram.data.di.appModule
 import org.michaelbel.tjgram.data.di.networkModule
 import timber.log.Timber
 
-@Suppress("unused")
 class App : Application() {
 
     companion object {
+        const val TAG = "2580"
+
         operator fun get(context: Context): App {
             return context as App
         }
@@ -22,10 +23,12 @@ class App : Application() {
         startKoin(this, listOf(appModule, networkModule))
 
         if (BuildConfig.DEBUG) {
-            //Traceur.enableLogging()
-            Sherlock.init(this)
-            //LeakCanary.install(this)
             Timber.plant(Timber.DebugTree())
+            Timber.tag(TAG)
+
+            Sherlock.init(this)
+            //Traceur.enableLogging()
+            //LeakCanary.install(this)
             //Stetho.initializeWithDefaults(this)
         }
     }

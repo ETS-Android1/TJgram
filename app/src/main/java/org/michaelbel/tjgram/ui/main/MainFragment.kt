@@ -42,7 +42,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     }
 
     companion object {
-        const val ARG_SORTING = "sorting"
+        private const val ARG_SORTING = "sorting"
 
         fun newInstance(sorting: String): MainFragment {
             val args = Bundle()
@@ -231,7 +231,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     }
 
     override fun updateLikes(entry: Entry, likesResult: LikesResult) {
-        val likes = Likes(likesResult.result.count, likesResult.result.isHidden, likesResult.result.isLiked, likesResult.result.summ)
+        val likes = Likes(count = likesResult.result!!.count, isHidden = likesResult.result!!.isHidden, isLiked = likesResult.result!!.isLiked, summ = likesResult.result!!.summ)
         entry.likes = likes
         adapter.changeLikes(entry)
     }
@@ -246,7 +246,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
 
     override fun sentWssResponse(socket: SocketResponse) {
         val likes = Likes(socket.count.toInt())
-        val entry = Entry(socket.id.toInt(), likes)
+        val entry = Entry(id = socket.id.toInt(), likes = likes)
 
         /*val list = ArrayList<Entry>()
         list.add(entry)

@@ -97,19 +97,22 @@ android {
     }
 
     lintOptions {
-        textOutput "stdout"
-        textReport true
-        checkAllWarnings true
-        warningsAsErrors true
-        showAll true
-        explainIssues true
-        abortOnError true
-        ignoreWarnings false
-        checkReleaseBuilds true
-        htmlReport true
-        xmlReport true
-        lintConfig file("$projectDir/lint.xml")
-        fatal 'StopShip'
+        //textOutput "stdout"
+        //textReport true
+        //checkAllWarnings true
+        //warningsAsErrors true
+        //showAll true
+        //explainIssues true
+        //abortOnError true
+        //ignoreWarnings false
+        //checkReleaseBuilds true
+        //htmlReport true
+        //xmlReport true
+        //lintConfig file("$projectDir/lint.xml")
+        //fatal 'StopShip'
+
+        disable 'MissingTranslation'
+        disable 'ExtraTranslation'
     }
 
     dexOptions {

@@ -38,7 +38,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void complaintEntry(int contentId) {
         disposables.add(repository.complaintEntry(contentId).subscribe((Consumer<BaseResult<Boolean>>) baseResult -> {
-            Boolean status = baseResult.result;
+            Boolean status = baseResult.getResult();
             getView().complaintSent(status);
         }, throwable -> getView().complaintSent(false)));
     }
@@ -61,7 +61,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void likeEntry(@NotNull Entry entry, int sign) {
-        disposables.add(repository.likeEntry(entry.id, sign).subscribe(
+        disposables.add(repository.likeEntry(entry.getId(), sign).subscribe(
             likesResult -> getView().updateLikes(entry, likesResult),
             throwable -> getView().updateLikesError(entry, throwable)
         ));

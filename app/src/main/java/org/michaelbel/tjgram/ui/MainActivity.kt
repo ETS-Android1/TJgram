@@ -30,12 +30,13 @@ import org.michaelbel.tjgram.utils.ViewUtil
 class MainActivity : AppCompatActivity(), MainFragment.Listener {
 
     companion object {
-        const val REQUEST_CODE_NEW_ENTRY = 201
         const val NEW_ENTRY_RESULT = "new_entry_created"
 
-        const val MAIN_FRAGMENT = 0
-        const val POST_FRAGMENT = 1
-        const val USER_FRAGMENT = 2
+        private const val REQUEST_CODE_NEW_ENTRY = 201
+
+        private const val MAIN_FRAGMENT = 0
+        private const val POST_FRAGMENT = 1
+        private const val USER_FRAGMENT = 2
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -79,16 +80,16 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
         bottomBar.setMode(BottomNavigationBar.MODE_FIXED)
         bottomBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_DEFAULT)
 
-        val itemMain = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_view_dashboard, R.color.accent), "")
+        val itemMain = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_view_dashboard, R.color.accent)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_view_dashboard_outline, R.color.icon_active_unfocused))
 
-        val itemPost = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_add_circle, R.color.icon_active_unfocused), "")
+        val itemPost = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_add_circle, R.color.icon_active_unfocused)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_add_circle, R.color.icon_active_unfocused))
 
-        val itemNotify = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_bell, R.color.accent), "")
+        val itemNotify = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_bell, R.color.accent)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_bell_outline, R.color.icon_active_unfocused))
 
-        val itemProfile = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_account, R.color.accent), "")
+        val itemProfile = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_account, R.color.accent)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_account_outline, R.color.icon_active_unfocused))
 
         var prevPosition = MAIN_FRAGMENT
