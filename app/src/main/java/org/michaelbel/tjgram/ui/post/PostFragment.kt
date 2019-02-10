@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.fragment_post.*
 import org.koin.android.ext.android.inject
 import org.michaelbel.tjgram.Logg
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.data.constants.Subsites
+import org.michaelbel.tjgram.data.consts.Subsites
 import org.michaelbel.tjgram.data.entity.AttachResponse
 import org.michaelbel.tjgram.data.entity.Entry
 import org.michaelbel.tjgram.ui.MainActivity.Companion.NEW_ENTRY_RESULT
@@ -250,19 +250,18 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
         super.onDestroy()
     }
 
-    override fun onPhotoClick(photo: File?) {
+    override fun onPhotoClick(photo: File) {
         photoFile = photo
 
         Picasso.get().load(Uri.fromFile(photo)).placeholder(R.drawable.placeholder_rectangle).error(R.drawable.error_rectangle)
             .into(imageView, object : Callback {
-                override fun onSuccess() {
-                    showRemoveIcon()
-                }
-
-                override fun onError(e: Exception) {
-                    showRemoveIcon()
-                }
-            })
+                    override fun onSuccess() {
+                        showRemoveIcon()
+                    }
+                    override fun onError(e: Exception) {
+                        showRemoveIcon()
+                    }
+                })
 
         cardImage.visibility = VISIBLE
         animateImagesLayout(true)

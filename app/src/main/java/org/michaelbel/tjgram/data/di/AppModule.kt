@@ -18,10 +18,10 @@ import org.michaelbel.tjgram.ui.post.PostRepository
 import org.michaelbel.tjgram.ui.profile.ProfileContract
 import org.michaelbel.tjgram.ui.profile.ProfilePresenter
 import org.michaelbel.tjgram.ui.profile.ProfileRepository
-import org.michaelbel.tjgram.utils.consts.SP_NAME
+import org.michaelbel.tjgram.utils.consts.SharedPrefs
 
 val appModule = module {
-    single<SharedPreferences> { androidContext().getSharedPreferences(SP_NAME, MODE_PRIVATE) }
+    single<SharedPreferences> { androidContext().getSharedPreferences(SharedPrefs.SP_NAME, MODE_PRIVATE) }
     factory<MainContract.Presenter> { MainPresenter(MainRepository(createService(androidContext()), webSocket(androidContext(), TjConfig.TJ_WEB_SOCKET))) }
     factory<ProfileContract.Presenter> { ProfilePresenter(ProfileRepository(createService(androidContext()))) }
     factory<PostContract.Presenter> { PostPresenter(PostRepository(createService(androidContext()))) }

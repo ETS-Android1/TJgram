@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.data.constants
+package org.michaelbel.tjgram.data.consts
 
 object Subsites {
     const val TECH = 214344

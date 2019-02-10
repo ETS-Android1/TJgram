@@ -9,16 +9,13 @@ import android.os.Build
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.WindowManager
-import timber.log.Timber
 
 object DeviceUtil {
 
-    @Suppress("unused")
-    fun isLandscape(context: Context): Boolean {
-        return context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    fun Context.isLandscape(): Boolean {
+        return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 
-    @Suppress("unused")
     fun statusBarHeight(context: Context): Int {
         var result = 0
         val resId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
@@ -55,16 +52,8 @@ object DeviceUtil {
     }
 
     fun isAppInstalled(context: Context, uri: String): Boolean {
-        val packageManager = context.packageManager
-
-        try {
-            packageManager.getPackageInfo(uri, PackageManager.GET_ACTIVITIES)
-            return true
-        } catch (e: PackageManager.NameNotFoundException) {
-            Timber.e(e)
-        }
-
-        return false
+        context.packageManager.getPackageInfo(uri, PackageManager.GET_ACTIVITIES)
+        return true
     }
 
     fun getDeviceName(): String? {

@@ -8,10 +8,10 @@ import java.io.ByteArrayOutputStream
 
 object FileUtil {
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+    fun getImageUri(inContext: Context, image: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, image, "Title", null)
         return Uri.parse(path)
     }
 

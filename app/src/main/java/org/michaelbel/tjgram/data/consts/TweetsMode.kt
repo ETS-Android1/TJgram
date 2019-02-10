@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.data.constants
+package org.michaelbel.tjgram.data.consts
 
 object TweetsMode {
     const val TWEETS_FRESH = "fresh"
