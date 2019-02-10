@@ -12,7 +12,6 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.DrawableRes
-import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.AppBarLayout
@@ -21,25 +20,17 @@ import timber.log.Timber
 @Suppress("unused")
 object ViewUtil {
 
-    fun clearCursorDrawable(editText: EditText?) {
-        if (editText == null) {
-            return
-        }
-
-        try {
-            val mCursorDrawableRes = TextView::class.java.getDeclaredField("mCursorDrawableRes")
-            mCursorDrawableRes.isAccessible = true
-            mCursorDrawableRes.setInt(editText, 0)
-        } catch (e: Exception) {
-            Timber.e(e)
-        }
+    fun clearCursorDrawable(editText: EditText) {
+        val cursorDrawableRes = TextView::class.java.getDeclaredField("mCursorDrawableRes")
+        cursorDrawableRes.isAccessible = true
+        cursorDrawableRes.setInt(editText, 0)
     }
 
     fun getIcon(context: Context, @DrawableRes resource: Int, colorFilter: Int): Drawable? {
         return getIcon(context, resource, colorFilter, PorterDuff.Mode.MULTIPLY)
     }
 
-    private fun getIcon(context: Context, @DrawableRes resource: Int, colorFilter: Int, mode: PorterDuff.Mode): Drawable? {
+    fun getIcon(context: Context, @DrawableRes resource: Int, colorFilter: Int, mode: PorterDuff.Mode): Drawable? {
         val iconDrawable = ContextCompat.getDrawable(context, resource)
         val color = ContextCompat.getColor(context, colorFilter)
 
@@ -51,7 +42,7 @@ object ViewUtil {
         return iconDrawable
     }
 
-    fun getAttrColor(@NonNull context: Context, @AttrRes colorAttr: Int): Int {
+    fun getAttrColor(context: Context, @AttrRes colorAttr: Int): Int {
         var color = 0
         val attrs = intArrayOf(colorAttr)
 
@@ -66,34 +57,34 @@ object ViewUtil {
         return color
     }
 
-    fun selectableItemBackground(context: Context): Int {
+    fun Context.selectableItemBackground(): Int {
         val attrs = intArrayOf(org.michaelbel.tjgram.R.attr.selectableItemBackground)
-        val typedArray = context.obtainStyledAttributes(attrs)
+        val typedArray = obtainStyledAttributes(attrs)
         val backgroundResource = typedArray.getResourceId(0, 0)
         typedArray.recycle()
         return backgroundResource
     }
 
-    fun selectableItemBackgroundBorderless(context: Context): Int {
+    fun Context.selectableItemBackgroundBorderless(): Int {
         val attrs = intArrayOf(org.michaelbel.tjgram.R.attr.selectableItemBackgroundBorderless)
-        val typedArray = context.obtainStyledAttributes(attrs)
+        val typedArray = obtainStyledAttributes(attrs)
         val backgroundResource = typedArray.getResourceId(0, 0)
         typedArray.recycle()
         return backgroundResource
     }
 
-    fun selectableItemBackgroundDrawable(context: Context): Drawable? {
+    fun Context.selectableItemBackgroundDrawable(): Drawable? {
         val attrs = intArrayOf(android.R.attr.selectableItemBackground)
-        val typedArray = context.obtainStyledAttributes(attrs)
+        val typedArray = obtainStyledAttributes(attrs)
         val drawableFromTheme = typedArray.getDrawable(0)
         typedArray.recycle()
         return drawableFromTheme
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    fun selectableItemBackgroundBorderlessDrawable(context: Context): Drawable? {
+    fun Context.selectableItemBackgroundBorderlessDrawable(): Drawable? {
         val attrs = intArrayOf(android.R.attr.selectableItemBackgroundBorderless)
-        val typedArray = context.obtainStyledAttributes(attrs)
+        val typedArray = obtainStyledAttributes(attrs)
         val drawableFromTheme = typedArray.getDrawable(0)
         typedArray.recycle()
         return drawableFromTheme

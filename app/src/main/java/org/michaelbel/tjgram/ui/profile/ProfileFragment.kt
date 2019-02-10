@@ -128,10 +128,10 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loginButton.setOnClickListener { startScan() }
-        qrIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_qrcode, R.color.icon_active))
+        qrIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_qr, R.color.icon_active))
 
         if (Build.VERSION.SDK_INT >= 21) {
-            ViewCompat.setElevation(profile_layout, DeviceUtil.dp(requireContext(), 1F).toFloat())
+            ViewCompat.setElevation(profileLayout, DeviceUtil.dp(requireContext(), 1F).toFloat())
         }
         contactsLayout.setTitle(R.string.contacts_info)
 
@@ -149,13 +149,13 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         setHasOptionsMenu(isAuth)
 
         if (isAuth) {
-            auth_layout.visibility = GONE
-            profile_layout.visibility = VISIBLE
+            authLayout.visibility = GONE
+            profileLayout.visibility = VISIBLE
             setProfile()
             presenter.userMe()
         } else {
-            profile_layout.visibility = GONE
-            auth_layout.visibility = VISIBLE
+            profileLayout.visibility = GONE
+            authLayout.visibility = VISIBLE
         }
     }
 
@@ -197,8 +197,8 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         }
 
         setProfile()
-        auth_layout.visibility = GONE
-        profile_layout.visibility = VISIBLE
+        authLayout.visibility = GONE
+        profileLayout.visibility = VISIBLE
     }
 
     override fun setError(throwable: Throwable) {
@@ -212,19 +212,19 @@ class ProfileFragment : Fragment(), ProfileContract.View {
                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                   avatar_image.setImageBitmap(bitmap)
+                   avatarImage.setImageBitmap(bitmap)
                }
            })
 
         setKarma(preferences.getLong(SharedPrefs.KEY_KARMA, 0L))
-        userName.text = preferences.getString(SharedPrefs.KEY_NAME, "")
+        nameText.text = preferences.getString(SharedPrefs.KEY_NAME, "")
 
         if (preferences.getBoolean(SharedPrefs.KEY_PAID, false)) {
             paidIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_check_decagram, R.color.accent))
         }
 
         val date = preferences.getString(SharedPrefs.KEY_CREATED_DATE, "")
-        signUpDate.text = getString(R.string.sign_up_date, TimeFormatter.convertRegDate(context, date))
+        regDate.text = getString(R.string.sign_up_date, TimeFormatter.convertRegDate(context, date))
     }
 
     private fun setKarma(karma: Long) {

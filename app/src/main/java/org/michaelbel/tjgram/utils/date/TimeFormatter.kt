@@ -64,9 +64,9 @@ object TimeFormatter {
         return simpleDateFormat.format(date)
     }
 
-    fun convertRegDate(context: Context, startDate: String?): String {
+    fun convertRegDate(context: Context?, startDate: String?): String {
         if (startDate == null || TextUtils.isEmpty(startDate)) {
-            return context.getString(R.string.unknown_date)
+            return context!!.getString(R.string.unknown_date)
         }
 
         val format = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH)
