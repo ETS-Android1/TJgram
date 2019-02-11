@@ -9,9 +9,6 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
-
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.utils.DeviceUtil
 
@@ -19,13 +16,12 @@ class ShiftingBottomNavigationTab : BottomNavigationTab {
 
     constructor(context: Context) : super(context) {}
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
-    }
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     internal override fun init() {
         paddingTopActive = DeviceUtil.dp(context, 0f)
@@ -34,8 +30,8 @@ class ShiftingBottomNavigationTab : BottomNavigationTab {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.bnb_shifting_item, this, true)
         containerView = view.findViewById(R.id.shifting_bottom_navigation_container)
-        labelView = view.findViewById<TextView>(R.id.shifting_bottom_navigation_title)
-        iconView = view.findViewById<ImageView>(R.id.shifting_bottom_navigation_icon)
+        labelView = view.findViewById(R.id.shifting_bottom_navigation_title)
+        iconView = view.findViewById(R.id.shifting_bottom_navigation_icon)
         iconContainerView = view.findViewById(R.id.shifting_bottom_navigation_icon_container)
         badgeView = view.findViewById(R.id.shifting_bottom_navigation_badge)
 
@@ -73,11 +69,7 @@ class ShiftingBottomNavigationTab : BottomNavigationTab {
     }
 
     private inner class ResizeWidthAnimation internal constructor(private val mView: View, private val mWidth: Int) : Animation() {
-        private val mStartWidth: Int
-
-        init {
-            mStartWidth = mView.width
-        }
+        private val mStartWidth: Int = mView.width
 
         override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
             mView.layoutParams.width = mStartWidth + ((mWidth - mStartWidth) * interpolatedTime).toInt()

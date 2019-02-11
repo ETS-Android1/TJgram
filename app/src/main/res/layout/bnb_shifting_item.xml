@@ -6,10 +6,10 @@
     android:layout_height="48dp"
     android:background="?selectableItemBackgroundBorderless"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/shifting_height_bottom_padding_active"
-    android:paddingLeft="@dimen/shifting_width_custom_padding"
-    android:paddingRight="@dimen/shifting_width_custom_padding"
-    android:paddingTop="@dimen/shifting_height_top_padding_inactive">
+    android:paddingBottom="10dp"
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp"
+    android:paddingTop="10dp">
 
     <FrameLayout
         android:id="@+id/shifting_bottom_navigation_icon_container"

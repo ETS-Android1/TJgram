@@ -12,6 +12,13 @@ import java.util.*
 
 class EntriesAdapter(private val entriesListener: EntriesListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), SwapListener {
 
+    companion object {
+        internal const val PAYLOAD_LIKE = "like"
+        internal const val PAYLOAD_DATE = "date"
+        internal const val PAYLOAD_INTRO = "intro"
+        internal const val PAYLOAD_TITLE = "title"
+    }
+
     private val entries = ArrayList<Entry>()
 
     override fun setEntries(results: List<Entry>) {
@@ -41,7 +48,7 @@ class EntriesAdapter(private val entriesListener: EntriesListener) : RecyclerVie
                     viewHolder.updateLikes(bundle.getSerializable(PAYLOAD_LIKE) as Likes)
                 }
 
-                // Работают ли методы ниже, я хз, не тестировал пока.
+                // FIXME Работают ли методы ниже, я хз, не тестировал пока.
                 if (key == PAYLOAD_DATE) {
                     viewHolder.updateDate(bundle.getString(PAYLOAD_DATE)!!)
                 }
@@ -74,12 +81,5 @@ class EntriesAdapter(private val entriesListener: EntriesListener) : RecyclerVie
         val payload = Bundle()
         payload.putSerializable(PAYLOAD_LIKE, entry.likes)
         notifyItemChanged(pos, payload)
-    }
-
-    companion object {
-        internal const val PAYLOAD_LIKE = "like"
-        internal const val PAYLOAD_DATE = "date"
-        internal const val PAYLOAD_INTRO = "intro"
-        internal const val PAYLOAD_TITLE = "title"
     }
 }

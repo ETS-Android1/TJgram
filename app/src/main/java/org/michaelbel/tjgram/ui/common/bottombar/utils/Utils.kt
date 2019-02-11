@@ -15,7 +15,7 @@ import android.view.WindowManager
  */
 object Utils {
 
-    val NO_COLOR = Color.TRANSPARENT
+    const val NO_COLOR = Color.TRANSPARENT
 
     /**
      * @param context used to get system services

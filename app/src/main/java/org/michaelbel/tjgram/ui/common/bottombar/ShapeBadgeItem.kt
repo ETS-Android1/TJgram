@@ -26,8 +26,8 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
     private var mEdgeMarginInPx: Int = 0
 
     private val mCanvasRect = RectF()
-    private val mCanvasPaint: Paint
-    private val mPath = Path()// used for pathDrawables
+    private val mCanvasPaint: Paint = Paint()
+    private val mPath = Path()
 
     /**
      * {@inheritDoc}
@@ -40,7 +40,6 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
     internal annotation class Shape
 
     init {
-        mCanvasPaint = Paint()
         mCanvasPaint.color = mShapeColor
         // If stroke needed
         //            paint.setStrokeWidth(widthInPx);
@@ -165,7 +164,7 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
     /**
      * {@inheritDoc}
      */
-    internal override fun bindToBottomTabInternal(bottomNavigationTab: BottomNavigationTab) {
+    override fun bindToBottomTabInternal(bottomNavigationTab: BottomNavigationTab) {
         if (mHeightInPixels == 0)
             mHeightInPixels = Utils.dp2px(bottomNavigationTab.context, 12f)
         if (mWidthInPixels == 0)
@@ -228,12 +227,12 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
      */
     private fun refreshMargin() {
         if (isWeakReferenceValid) {
-            val layoutParams = textView!!.get()?.getLayoutParams() as ViewGroup.MarginLayoutParams
+            val layoutParams = textView!!.get()?.layoutParams as ViewGroup.MarginLayoutParams
             layoutParams.bottomMargin = mEdgeMarginInPx
             layoutParams.topMargin = mEdgeMarginInPx
             layoutParams.rightMargin = mEdgeMarginInPx
             layoutParams.leftMargin = mEdgeMarginInPx
-            textView!!.get()?.setLayoutParams(layoutParams)
+            textView!!.get()?.layoutParams = layoutParams
         }
     }
 
@@ -310,7 +309,6 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
     }
 
     companion object {
-
         const val SHAPE_OVAL = 0
         const val SHAPE_RECTANGLE = 1
         const val SHAPE_HEART = 2

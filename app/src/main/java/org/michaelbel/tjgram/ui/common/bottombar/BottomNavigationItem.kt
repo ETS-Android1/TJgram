@@ -45,9 +45,6 @@ class BottomNavigationItem {
      * @return badge item that needs to set to respective view
      */
     internal var badgeItem: BadgeItem<*>? = null
-        private set
-
-    constructor() {}
 
     /**
      * @param mIconResource resource for the Tab icon.

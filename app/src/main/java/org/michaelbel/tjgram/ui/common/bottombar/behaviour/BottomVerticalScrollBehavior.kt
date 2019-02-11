@@ -22,7 +22,6 @@ class BottomVerticalScrollBehavior<V : View> : VerticalScrollingBehavior<V>() {
 
         child.post { mBottomNavHeight = child.height }
         updateSnackBarPosition(parent, child, getSnackBarInstance(parent, child))
-
         return super.onLayoutChild(parent, child, layoutDirection)
     }
 

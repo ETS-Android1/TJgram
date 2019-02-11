@@ -82,8 +82,7 @@ class BottomNavBarFabBehaviour : CoordinatorLayout.Behavior<FloatingActionButton
             val view = dependencies[i]
             if (view is BottomNavigationBar) {
                 viewHeight = view.getHeight().toFloat()
-                minOffset = Math.min(minOffset,
-                        view.getTranslationY() - viewHeight)
+                minOffset = Math.min(minOffset, view.getTranslationY() - viewHeight)
             }
             i++
         }
@@ -99,8 +98,7 @@ class BottomNavBarFabBehaviour : CoordinatorLayout.Behavior<FloatingActionButton
         while (i < z) {
             val view = dependencies[i]
             if (view is Snackbar.SnackbarLayout && parent.doViewsOverlap(fab, view)) {
-                minOffset = Math.min(minOffset,
-                        view.getTranslationY() - view.getHeight())
+                minOffset = Math.min(minOffset, view.getTranslationY() - view.getHeight())
             }
             i++
         }

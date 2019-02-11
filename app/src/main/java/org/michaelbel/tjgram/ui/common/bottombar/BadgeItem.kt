@@ -29,8 +29,7 @@ abstract class BadgeItem<T : BadgeItem<T>> {
     /**
      * @return if the badge is hidden
      */
-    var isHidden = false
-        private set
+    private var isHidden = false
 
     private var mAnimationDuration = 200
 
@@ -68,9 +67,9 @@ abstract class BadgeItem<T : BadgeItem<T>> {
         this.mGravity = gravity
         if (isWeakReferenceValid) {
             val textView = this.textView!!.get()
-            val layoutParams = textView?.getLayoutParams() as FrameLayout.LayoutParams
+            val layoutParams = textView?.layoutParams as FrameLayout.LayoutParams
             layoutParams.gravity = gravity
-            textView.setLayoutParams(layoutParams)
+            textView.layoutParams = layoutParams
         }
         return subInstance
     }
@@ -146,7 +145,7 @@ abstract class BadgeItem<T : BadgeItem<T>> {
     /**
      * @return gravity of badge
      */
-    fun getGravity(): Int {
+    private fun getGravity(): Int {
         return mGravity
     }
 
@@ -200,21 +199,21 @@ abstract class BadgeItem<T : BadgeItem<T>> {
     fun show(animate: Boolean = true): T {
         isHidden = false
         if (isWeakReferenceValid) {
-            val textView = this.textView!!.get()
+            val textView = this.textView?.get()!!
             if (animate) {
-                textView?.setScaleX(0f)
-                textView?.setScaleY(0f)
-                textView?.setVisibility(View.VISIBLE)
-                val animatorCompat = ViewCompat.animate(textView!!)
+                textView.scaleX = 0f
+                textView.scaleY = 0f
+                textView.visibility = View.VISIBLE
+                val animatorCompat = ViewCompat.animate(textView)
                 animatorCompat.cancel()
                 animatorCompat.duration = mAnimationDuration.toLong()
                 animatorCompat.scaleX(1f).scaleY(1f)
                 animatorCompat.setListener(null)
                 animatorCompat.start()
             } else {
-                textView?.setScaleX(1f)
-                textView?.setScaleY(1f)
-                textView?.setVisibility(View.VISIBLE)
+                textView.scaleX = 1f
+                textView.scaleY = 1f
+                textView.visibility = View.VISIBLE
             }
         }
         return subInstance
@@ -249,20 +248,9 @@ abstract class BadgeItem<T : BadgeItem<T>> {
                 })
                 animatorCompat.start()
             } else {
-                textView?.setVisibility(View.GONE)
+                textView?.visibility = View.GONE
             }
         }
         return subInstance
     }
-}///////////////////////////////////////////////////////////////////////////
-// Public functionality methods
-///////////////////////////////////////////////////////////////////////////
-/**
- * @return this, to allow builder pattern
- */
-/**
- * @return this, to allow builder pattern
- */
-/**
- * @return this, to allow builder pattern
- */
+}

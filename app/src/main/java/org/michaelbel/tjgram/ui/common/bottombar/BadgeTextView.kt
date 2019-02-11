@@ -17,17 +17,6 @@ class BadgeTextView @JvmOverloads constructor(context: Context, attrs: Attribute
     private var mDesiredWidth = 100
     private var mDesiredHeight = 100
 
-    init {
-        init()
-    }
-
-    private fun init() {
-        // method stub
-    }
-
-    /**
-     * clear's all previous set values
-     */
     fun clearPrevious() {
         mAreDimensOverridden = false
         mShapeBadgeItem = null
@@ -84,31 +73,31 @@ class BadgeTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             val height: Int
 
             //Measure Width
-            when (widthMode) {
+            width = when (widthMode) {
                 View.MeasureSpec.EXACTLY ->
                     //Must be this size
-                    width = widthSize
+                    widthSize
                 View.MeasureSpec.AT_MOST ->
                     //Can't be bigger than...
-                    width = Math.min(mDesiredWidth, widthSize)
+                    Math.min(mDesiredWidth, widthSize)
                 View.MeasureSpec.UNSPECIFIED ->
                     //Be whatever you want
-                    width = mDesiredWidth
-                else -> width = mDesiredWidth
+                    mDesiredWidth
+                else -> mDesiredWidth
             }
 
             //Measure Height
-            when (heightMode) {
+            height = when (heightMode) {
                 View.MeasureSpec.EXACTLY ->
                     //Must be this size
-                    height = heightSize
+                    heightSize
                 View.MeasureSpec.AT_MOST ->
                     //Can't be bigger than...
-                    height = Math.min(mDesiredHeight, heightSize)
+                    Math.min(mDesiredHeight, heightSize)
                 View.MeasureSpec.UNSPECIFIED ->
                     //Be whatever you want
-                    height = mDesiredHeight
-                else -> height = mDesiredHeight
+                    mDesiredHeight
+                else -> mDesiredHeight
             }
 
             //MUST CALL THIS

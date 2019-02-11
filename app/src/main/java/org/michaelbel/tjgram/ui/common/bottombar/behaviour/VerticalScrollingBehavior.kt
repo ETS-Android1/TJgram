@@ -18,14 +18,14 @@ abstract class VerticalScrollingBehavior<V : View> : CoordinatorLayout.Behavior<
     @ScrollDirection
     @get:ScrollDirection
     var scrollDirection = ScrollDirection.SCROLL_NONE
-        private set
+
     /**
      * @return PreScroll direction: SCROLL_DIRECTION_UP, SCROLL_DIRECTION_DOWN, SCROLL_NONE
      */
     @ScrollDirection
     @get:ScrollDirection
     var preScrollDirection = ScrollDirection.SCROLL_NONE
-        private set
+
     /**
      * @return ConsumedScroll direction: SCROLL_DIRECTION_UP, SCROLL_DIRECTION_DOWN, SCROLL_NONE
      */
