@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.item_entry.*
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.UserConfig
 import org.michaelbel.tjgram.data.consts.Liked
-import org.michaelbel.tjgram.data.entity.Cover
+import org.michaelbel.tjgram.data.consts.MediaType
 import org.michaelbel.tjgram.data.entity.Entry
 import org.michaelbel.tjgram.data.entity.Likes
 import org.michaelbel.tjgram.utils.DeviceUtil
@@ -33,6 +33,11 @@ class EntriesViewHolder (override val containerView: View, listener: EntriesList
 
     companion object {
         private const val GIF_LOOPING_PLAY = true
+
+        private const val LIKE_ANIM_DURATION = 350L
+        private const val DOUBLE_TAP_LIKE_ANIM_DURATION = 450L
+
+        private val INTERPOLATOR = OvershootInterpolator()
     }
 
     private val context: Context get() = containerView.context
@@ -76,30 +81,28 @@ class EntriesViewHolder (override val containerView: View, listener: EntriesList
         mediaLayout.setOnTouchListener {_, event -> detector.onTouchEvent(event) }
 
         if (cover != null) {
-            if (cover.type == Cover.TYPE_IMAGE) {
-                if (cover.additionalData != null) {
-                    val imageType = cover.additionalData.type
+            if (cover.type == MediaType.IMAGE) {
+                val imageType = cover.additionalData.type
 
-                    if (FileUtil.isGif(imageType)) {
-                        gifLayout.visibility = VISIBLE
+                if (FileUtil.isGif(imageType)) {
+                    gifLayout.visibility = VISIBLE
 
-                        videoView.layoutParams.height = DeviceUtil.dp(context, cover.size.height.toFloat())
-                        videoView.setVideoPath(cover.url)
-                        videoView.seekTo(1)
-                        videoView.setOnPreparedListener { mp ->
-                            mp.isLooping = GIF_LOOPING_PLAY
-                            videoView.start()
-                        }
-                        videoView.setOnErrorListener {_,_,_ -> true }
-                    } else if (FileUtil.isImage(imageType)) {
-                        gifLayout.visibility = GONE
-
-                        // FIXME высота медиа не должна превышать width * 1.5
-                        Picasso.get().load(cover.thumbnailUrl)/*.resize(50, 50).centerCrop()*/
-                            .placeholder(R.drawable.placeholder_rectangle)
-                            .error(R.drawable.error_rectangle)
-                            .into(coverImage)
+                    videoView.layoutParams.height = DeviceUtil.dp(context, cover.size.height.toFloat())
+                    videoView.setVideoPath(cover.url)
+                    videoView.seekTo(1)
+                    videoView.setOnPreparedListener { mp ->
+                        mp.isLooping = GIF_LOOPING_PLAY
+                        videoView.start()
                     }
+                    videoView.setOnErrorListener {_,_,_ -> true }
+                } else if (FileUtil.isImage(imageType)) {
+                    gifLayout.visibility = GONE
+
+                    // FIXME высота медиа не должна превышать width * 1.5
+                    Picasso.get().load(cover.thumbnailUrl)/*.resize(50, 50).centerCrop()*/
+                        .placeholder(R.drawable.placeholder_rectangle)
+                        .error(R.drawable.error_rectangle)
+                        .into(coverImage)
                 }
             }
         }
@@ -117,7 +120,7 @@ class EntriesViewHolder (override val containerView: View, listener: EntriesList
         updateLikes(likes)
     }
 
-    fun updateDate(dateRFC: String) {
+    fun updateDate(dateRFC: String?) {
         val date = TimeFormatter.getTimeAgo(context, dateRFC)
         dateText.text = date
     }
@@ -132,8 +135,8 @@ class EntriesViewHolder (override val containerView: View, listener: EntriesList
     }
 
     // For unauthorized users.
-    fun updateLikes(likes: Likes) {
-        likesCount.setCurrentText(likes.summ.toString())
+    fun updateLikes(likes: Likes?) {
+        likesCount.setCurrentText(likes?.summ.toString())
         textLike1.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
         textLike2.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
         heartImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_heart_outline, R.color.icon_active_unfocused))
@@ -141,19 +144,19 @@ class EntriesViewHolder (override val containerView: View, listener: EntriesList
     }
 
     // For authorized users.
-    private fun updateLikesAuth(likes: Likes) {
+    private fun updateLikesAuth(likes: Likes?) {
         when {
-            likes.isLiked == Liked.LIKED -> {
+            likes?.isLiked == Liked.LIKED -> {
                 textLike1.setTextColor(ContextCompat.getColor(context, if (likes.summ <= 0) R.color.icon_active_unfocused else R.color.instagram_like))
                 textLike2.setTextColor(ContextCompat.getColor(context, if (likes.summ <= 0) R.color.icon_active_unfocused else R.color.instagram_like))
                 heartImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_heart, R.color.instagram_like))
             }
-            likes.isLiked == Liked.NEUTRAL -> {
+            likes?.isLiked == Liked.NEUTRAL -> {
                 textLike1.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
                 textLike2.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
                 heartImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_heart_outline, R.color.icon_active_unfocused))
             }
-            likes.isLiked == Liked.DISLIKED -> {
+            likes?.isLiked == Liked.DISLIKED -> {
                 textLike1.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
                 textLike2.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
                 heartImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_heart_outline, R.color.icon_active_unfocused))
@@ -199,8 +202,8 @@ class EntriesViewHolder (override val containerView: View, listener: EntriesList
             ObjectAnimator.ofFloat(heartImage, "scaleX", 0.2F, 1F),
             ObjectAnimator.ofFloat(heartImage, "scaleY", 0.2F, 1F)
         )
-        set.duration = 350
-        set.interpolator = OvershootInterpolator()
+        set.duration = LIKE_ANIM_DURATION
+        set.interpolator = INTERPOLATOR
         set.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {}
         })
@@ -214,8 +217,8 @@ class EntriesViewHolder (override val containerView: View, listener: EntriesList
             ObjectAnimator.ofFloat(doubleTapHeart, "scaleX", 0.25f, 3f),
             ObjectAnimator.ofFloat(doubleTapHeart, "scaleY", 0.25f, 3f)
         )
-        set.duration = 450
-        set.interpolator = OvershootInterpolator()
+        set.duration = DOUBLE_TAP_LIKE_ANIM_DURATION
+        set.interpolator = INTERPOLATOR
         set.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationStart(animation: Animator, isReverse: Boolean) {
                 doubleTapHeart.visibility = VISIBLE

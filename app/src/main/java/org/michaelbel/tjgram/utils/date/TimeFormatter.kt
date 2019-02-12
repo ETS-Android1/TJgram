@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 object TimeFormatter {
 
-    fun getTimeAgo(context: Context, startTime: String): CharSequence {
+    fun getTimeAgo(context: Context, startTime: String?): CharSequence {
         val startFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.ENGLISH)
         startFormat.timeZone = TimeZone.getDefault()
 

@@ -6,10 +6,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -18,7 +20,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.squareup.picasso.Picasso
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_auth.*
 import kotlinx.android.synthetic.main.layout_profile.*
 import org.koin.android.ext.android.inject
@@ -26,14 +32,16 @@ import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.UserConfig
 import org.michaelbel.tjgram.data.entity.SocialAccount
 import org.michaelbel.tjgram.data.entity.User
-import org.michaelbel.tjgram.data.room.AppDatabase
-import org.michaelbel.tjgram.data.room.UserDao
+import org.michaelbel.tjgram.data.viewmodel.Injection
+import org.michaelbel.tjgram.data.viewmodel.UserViewModel
+import org.michaelbel.tjgram.data.viewmodel.ViewModelFactory
 import org.michaelbel.tjgram.ui.QrCodeActivity
 import org.michaelbel.tjgram.ui.profile.view.SocialView
 import org.michaelbel.tjgram.utils.DeviceUtil
 import org.michaelbel.tjgram.utils.ViewUtil
 import org.michaelbel.tjgram.utils.consts.SharedPrefs
 import org.michaelbel.tjgram.utils.date.TimeFormatter
+import timber.log.Timber
 
 class ProfileFragment : Fragment(), ProfileContract.View {
 
@@ -46,51 +54,43 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         }
     }
 
-    private val karmaTextColor = intArrayOf(R.color.karma_value, R.color.karma_value_pos, R.color.karma_value_neg)
-    private val karmaBackground = intArrayOf(R.color.karma_background, R.color.karma_background_pos, R.color.karma_background_neg)
+    private val preferences: SharedPreferences by inject()
+    private val presenter: ProfileContract.Presenter by inject()
 
-    val preferences: SharedPreferences by inject()
-    val presenter: ProfileContract.Presenter by inject()
 
-    val database: AppDatabase by inject()
-    val userDao: UserDao by inject()
+
+    private lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var viewModel: UserViewModel
+    private val disposable = CompositeDisposable()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode != Activity.RESULT_OK) {
-            if (data == null) {
-                return
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_QR_SCAN) {
+                if (data == null) return
+
+                val tokenStr = data.getStringExtra(QrCodeActivity.QR_SCAN_RESULT)
+                if (TextUtils.isEmpty(tokenStr)) {
+                    Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                val separated = tokenStr.split("\\|".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                if (separated.size != 2) {
+                    Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                val token = separated[1]
+                presenter.authQr(token)
             }
-
-            Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (requestCode == REQUEST_CODE_QR_SCAN) {
-            if (data == null) {
-                return
-            }
-
-            val token = data.getStringExtra(QrCodeActivity.QR_SCAN_RESULT)
-            if (TextUtils.isEmpty(token)) {
-                Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            val separated = token.split("\\|".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            if (separated.size != 2) {
-                Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            val newToken = separated[1]
-            presenter.authQr(newToken)
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_PERMISSION_CAMERA && grantResults.isNotEmpty()) {
             if (permissions[0] == Manifest.permission.CAMERA) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                val cameraGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                if (cameraGranted) {
                     startScan()
                 }
             }
@@ -102,6 +102,11 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter.view = this
+
+
+
+        viewModelFactory = Injection.provideViewModelFactory(requireContext())
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -110,9 +115,9 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == R.id.item_logout) {
-            preferences.edit().putString(SharedPrefs.KEY_X_DEVICE_TOKEN, "").apply()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.item_logout) {
+            preferences.edit {putString(SharedPrefs.KEY_X_DEVICE_TOKEN, "")}
             contactsLayout.clearChildren()
             setFragmentUI()
             return true
@@ -134,7 +139,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
             ViewCompat.setElevation(profileLayout, DeviceUtil.dp(requireContext(), 1F).toFloat())
         }
         contactsLayout.setTitle(R.string.contacts_info)
-
+        paidIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_check_decagram, R.color.accent))
         setFragmentUI()
 
         // FIXME open full image
@@ -145,10 +150,10 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     }
 
     private fun setFragmentUI() {
-        val isAuth = UserConfig.isAuthorized(requireContext())
-        setHasOptionsMenu(isAuth)
+        val isUserAuth = UserConfig.isAuthorized(requireContext())
+        setHasOptionsMenu(isUserAuth)
 
-        if (isAuth) {
+        if (isUserAuth) {
             authLayout.visibility = GONE
             profileLayout.visibility = VISIBLE
             setProfile()
@@ -160,36 +165,12 @@ class ProfileFragment : Fragment(), ProfileContract.View {
     }
 
     override fun setUser(user: User, xToken: String) {
-        /*val userDb = org.michaelbel.tjgram.data.room.User(
-                user.id,
-                user.name,
-                user.karma,
-                user.createdRFC,
-                user.created,
-                user.avatarUrl,
-                user.pushTopic,
-                user.url,
-                user.userHash
-        )
-        userDao.insert(userDb)
-
-        val u = userDao.getById(54438)
-        Logg.e("user from db: " + u.name)*/
-
         if (xToken != "x") {
             setHasOptionsMenu(true)
-            preferences.edit {
-                putString(SharedPrefs.KEY_X_DEVICE_TOKEN, xToken)
-            }
+            UserConfig.setLocalUser(requireContext(), xToken, user.id)
         }
-        preferences.edit {
-            putString(SharedPrefs.KEY_AVATAR_URL, user.avatarUrl)
-            putString(SharedPrefs.KEY_CREATED_DATE, user.createdRFC)
-            putLong(SharedPrefs.KEY_KARMA, user.karma)
-            putString(SharedPrefs.KEY_NAME, user.name)
-            putBoolean(SharedPrefs.KEY_PAID, user.advancedAccess.tjSubscription.isActive)
-            putLong(SharedPrefs.KEY_UNTIL, user.advancedAccess.tjSubscription.activeUntil)
-        }
+
+        addUserToRoom(user)
 
         val accounts = user.socialAccounts
         for (acc in accounts) {
@@ -201,33 +182,46 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         profileLayout.visibility = VISIBLE
     }
 
-    override fun setError(throwable: Throwable) {
+    override fun setAuthError(throwable: Throwable) {
         Toast.makeText(requireContext(), R.string.err_auth, Toast.LENGTH_SHORT).show()
     }
 
     private fun setProfile() {
-        Picasso.get().load(preferences.getString(SharedPrefs.KEY_AVATAR_URL, "")).placeholder(R.drawable.placeholder_circle)
-           .error(R.drawable.error_circle)
-           .into(object : com.squareup.picasso.Target {
-               override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
-               override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
-               override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                   avatarImage.setImageBitmap(bitmap)
-               }
-           })
+        val userId = UserConfig.getUserId(requireContext())
+        disposable.add(viewModel.localUser(userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                nameText.text = it.name
+                setAvatar(it.avatarUrl)
+                setKarma(it.karma)
+                setDate(it.createdDateRFC)
+                setPaidIcon(it.tjSubscriptionActive)
+            }, { error -> Timber.e(error) }))
+    }
 
-        setKarma(preferences.getLong(SharedPrefs.KEY_KARMA, 0L))
-        nameText.text = preferences.getString(SharedPrefs.KEY_NAME, "")
-
-        if (preferences.getBoolean(SharedPrefs.KEY_PAID, false)) {
-            paidIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_check_decagram, R.color.accent))
-        }
-
-        val date = preferences.getString(SharedPrefs.KEY_CREATED_DATE, "")
-        regDate.text = getString(R.string.sign_up_date, TimeFormatter.convertRegDate(context, date))
+    private fun setAvatar(url: String) {
+        Timber.i("set avatar: $url")
+        Picasso.get().load(url).placeholder(R.drawable.placeholder_circle).error(R.drawable.error_circle)
+            .into(object : com.squareup.picasso.Target {
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                    Timber.i("avatar prepare load")
+                    avatarImage.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.placeholder_circle))
+                }
+                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                    Timber.i("avatar bitmap load failed")
+                    avatarImage.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.error_circle))
+                }
+                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                    Timber.i("avatar bitmap loaded")
+                    avatarImage.setImageBitmap(bitmap)
+                }
+            })
     }
 
     private fun setKarma(karma: Long) {
+        Timber.i("set karma: $karma")
+        val karmaTextColor = intArrayOf(R.color.karma_value, R.color.karma_value_pos, R.color.karma_value_neg)
+        val karmaBackground = intArrayOf(R.color.karma_background, R.color.karma_background_pos, R.color.karma_background_neg)
+
         karmaValue.text = UserConfig.formatKarma(karma)
 
         when {
@@ -245,6 +239,18 @@ class ProfileFragment : Fragment(), ProfileContract.View {
             }
         }
     }
+
+    private fun setDate(date: String) {
+        Timber.i("set date: $date")
+        regDate.text = getString(R.string.sign_up_date, TimeFormatter.convertRegDate(context, date))
+    }
+
+    private fun setPaidIcon(paid: Boolean) {
+        Timber.i("set paid icon: $paid")
+        paidIcon.visibility = if (paid) VISIBLE else GONE
+    }
+
+
 
     private fun addSocialAccount(account: SocialAccount) {
         val socialView = SocialView(requireContext())
@@ -290,6 +296,19 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         val days = TimeUnit.MILLISECONDS.toDays(milliseconds).toInt()
         Toast.makeText(requireContext(), resources.getQuantityString(R.plurals.paid_days_until, days, days), Toast.LENGTH_SHORT).show()
     }*/
+
+    private fun addUserToRoom(user: User) {
+        Timber.e("user added to room")
+        disposable.add(
+            viewModel.updateUser(user).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ Timber.e("user addedOrupdated successful") },
+                        { error -> Timber.e("user addedOrupdated failure") }))
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposable.clear()
+    }
 
     override fun onDestroy() {
         presenter.onDestroy()

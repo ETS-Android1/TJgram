@@ -147,7 +147,7 @@ public class BottomNavigationBar extends FrameLayout {
         if (attrs != null) {
             TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.BottomNavigationBar, 0, 0);
 
-            mActiveColor = typedArray.getColor(R.styleable.BottomNavigationBar_bnbActiveColor, Utils.fetchContextColor(context, R.attr.colorAccent));
+            mActiveColor = typedArray.getColor(R.styleable.BottomNavigationBar_bnbActiveColor, Utils.INSTANCE.fetchContextColor(context, R.attr.colorAccent));
             mInActiveColor = typedArray.getColor(R.styleable.BottomNavigationBar_bnbInactiveColor, Color.LTGRAY);
             mBackgroundColor = typedArray.getColor(R.styleable.BottomNavigationBar_bnbBackgroundColor, Color.WHITE);
             mAutoHideEnabled = typedArray.getBoolean(R.styleable.BottomNavigationBar_bnbAutoHideEnabled, true);
@@ -193,7 +193,7 @@ public class BottomNavigationBar extends FrameLayout {
 
             typedArray.recycle();
         } else {
-            mActiveColor = Utils.fetchContextColor(context, R.attr.colorAccent);
+            mActiveColor = Utils.INSTANCE.fetchContextColor(context, R.attr.colorAccent);
             mInActiveColor = Color.LTGRAY;
             mBackgroundColor = Color.WHITE;
             mElevation = getResources().getDimension(R.dimen.bottom_navigation_elevation);
@@ -375,11 +375,11 @@ public class BottomNavigationBar extends FrameLayout {
                 mContainer.setBackgroundColor(mBackgroundColor);
             }
 
-            int screenWidth = Utils.getScreenWidth(getContext());
+            int screenWidth = Utils.INSTANCE.getScreenWidth(getContext());
 
             if (mMode == MODE_FIXED || mMode == MODE_FIXED_NO_TITLE) {
 
-                int[] widths = BottomNavigationHelper.getMeasurementsForFixedMode(getContext(), screenWidth, mBottomNavigationItems.size(), mScrollable);
+                int[] widths = BottomNavigationHelper.INSTANCE.getMeasurementsForFixedMode(getContext(), screenWidth, mBottomNavigationItems.size(), mScrollable);
                 int itemWidth = widths[0];
 
                 for (BottomNavigationItem currentItem : mBottomNavigationItems) {
@@ -389,7 +389,7 @@ public class BottomNavigationBar extends FrameLayout {
 
             } else if (mMode == MODE_SHIFTING || mMode == MODE_SHIFTING_NO_TITLE) {
 
-                int[] widths = BottomNavigationHelper.getMeasurementsForShiftingMode(getContext(), screenWidth, mBottomNavigationItems.size(), mScrollable);
+                int[] widths = BottomNavigationHelper.INSTANCE.getMeasurementsForShiftingMode(getContext(), screenWidth, mBottomNavigationItems.size(), mScrollable);
 
                 int itemWidth = widths[0];
                 int itemActiveWidth = widths[1];
@@ -493,7 +493,7 @@ public class BottomNavigationBar extends FrameLayout {
         });
 
         mBottomNavigationTabs.add(bottomNavigationTab);
-        BottomNavigationHelper.bindTabWithData(currentItem, bottomNavigationTab, this);
+        BottomNavigationHelper.INSTANCE.bindTabWithData(currentItem, bottomNavigationTab, this);
         bottomNavigationTab.initialise(mBackgroundStyle == BACKGROUND_STYLE_STATIC);
         mTabContainer.addView(bottomNavigationTab);
     }
@@ -526,7 +526,7 @@ public class BottomNavigationBar extends FrameLayout {
                 } else {
                     mBackgroundOverlay.post(() -> {
                         //try {
-                            BottomNavigationHelper.setBackgroundWithRipple(clickedView, mContainer, mBackgroundOverlay, clickedView.getActiveColor(), mRippleAnimationDuration);
+                            BottomNavigationHelper.INSTANCE.setBackgroundWithRipple(clickedView, mContainer, mBackgroundOverlay, clickedView.getActiveColor(), mRippleAnimationDuration);
                         /*} catch (Exception e) {
                             mContainer.setBackgroundColor(clickedView.getActiveColor());
                             mBackgroundOverlay.setVisibility(View.GONE);

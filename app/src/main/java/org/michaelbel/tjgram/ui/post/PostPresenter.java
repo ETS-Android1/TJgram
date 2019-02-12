@@ -39,7 +39,7 @@ public class PostPresenter implements PostContract.Presenter {
         MultipartBody.Part body = MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
 
         disposables.add(repository.uploadFile(body).subscribe(baseResult -> {
-            ArrayList<AttachResponse> attaches = baseResult.result;
+            ArrayList<AttachResponse> attaches = baseResult.getResult();
             AttachResponse attach = attaches.get(0);
             getView().photoUploaded(attach);
         }, throwable -> getView().uploadError(throwable)));
@@ -48,7 +48,7 @@ public class PostPresenter implements PostContract.Presenter {
     @Override
     public void createEntry(@NotNull String title, @NotNull String text, long subsiteId, @NotNull Map<String, String> attaches) {
         disposables.add(repository.createEntry(title, text, subsiteId, attaches).subscribe(
-            entryResult -> getView().setEntryCreated(entryResult.result),
+            entryResult -> getView().setEntryCreated(entryResult.getResult()),
             throwable -> getView().setError(throwable))
         );
     }

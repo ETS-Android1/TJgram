@@ -7,7 +7,7 @@ import java.util.*
 
 data class Author (
     @Expose @SerializedName("avatar_url") val avatarUrl: String,
-    @Expose @SerializedName("created") val created: Int,
+    @Expose @SerializedName("createdDate") val created: Int,
     @Expose @SerializedName("first_name") val firstName: String,
     @Expose @SerializedName("gender") val gender: Int,
     @Expose @SerializedName("id") val id: Int,

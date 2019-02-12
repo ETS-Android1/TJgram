@@ -1,6 +1,13 @@
 package org.michaelbel.tjgram.data.consts
 
 object Subsites {
+
+    object Type {
+        const val USER = 1
+        const val SECTION = 2
+        const val COMPANY = 3
+    }
+
     const val TECH = 214344
     const val INTERNET = 214343
     const val SCIENCE = 214346
@@ -33,7 +40,6 @@ object Subsites {
     const val HANDMADE = 219309
     const val PODCASTS = 217979
     const val KZ = 216924
-
     const val ALASKA = 214367
     const val GIT = 215111
 }

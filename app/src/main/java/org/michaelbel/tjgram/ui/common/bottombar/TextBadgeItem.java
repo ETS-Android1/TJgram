@@ -12,15 +12,7 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-/**
- * Class description
- *
- * @author ashokvarma
- * @version 1.0
- * @see BadgeItem
- * @since 23 Jun 2017
- */
-public class TextBadgeItem extends BadgeItem<TextBadgeItem> {
+public abstract class TextBadgeItem extends BadgeItem<TextBadgeItem> {
 
     private int mBackgroundColorResource;
     private String mBackgroundColorCode;
@@ -160,28 +152,6 @@ public class TextBadgeItem extends BadgeItem<TextBadgeItem> {
     ///////////////////////////////////////////////////////////////////////////
     // Library only access method
     ///////////////////////////////////////////////////////////////////////////
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    TextBadgeItem getSubInstance() {
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void bindToBottomTabInternal(BottomNavigationTab bottomNavigationTab) {
-        Context context = bottomNavigationTab.getContext();
-
-        GradientDrawable shape = getBadgeDrawable(context);
-        bottomNavigationTab.badgeView.setBackgroundDrawable(shape);
-        bottomNavigationTab.badgeView.setTextColor(getTextColor(context));
-        bottomNavigationTab.badgeView.setText(getText());
-    }
 
     ///////////////////////////////////////////////////////////////////////////
     // Class only access methods

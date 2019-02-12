@@ -2,8 +2,12 @@ package org.michaelbel.tjgram
 
 import android.app.Application
 import android.content.Context
+import com.facebook.stetho.Stetho
 import com.singhajit.sherlock.core.Sherlock
-import org.koin.android.ext.android.startKoin
+import com.squareup.leakcanary.LeakCanary
+import com.tspoon.traceur.Traceur
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import org.michaelbel.tjgram.data.di.appModule
 import org.michaelbel.tjgram.data.di.networkModule
 import timber.log.Timber
@@ -12,6 +16,8 @@ import timber.log.Timber
 class App : Application() {
 
     companion object {
+        const val TAG = "2580"
+
         operator fun get(context: Context): App {
             return context as App
         }
@@ -19,14 +25,45 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        startKoin(this, listOf(appModule, networkModule))
+        initLogger()
+        initKoin()
+    }
 
+    private fun initLogger() {
         if (BuildConfig.DEBUG) {
-            //Traceur.enableLogging()
-            Sherlock.init(this)
-            //LeakCanary.install(this)
             Timber.plant(Timber.DebugTree())
-            //Stetho.initializeWithDefaults(this)
+            Timber.tag(TAG)
+        }
+    }
+
+    private fun initKoin() {
+        startKoin {
+            androidContext(this@App)
+            modules(appModule, networkModule)
+        }
+    }
+
+    private fun initTraceur() {
+        if (BuildConfig.DEBUG) {
+            Traceur.enableLogging()
+        }
+    }
+
+    private fun initSherlock() {
+        if (BuildConfig.DEBUG) {
+            Sherlock.init(this)
+        }
+    }
+
+    private fun initLeakCanary() {
+        if (BuildConfig.DEBUG) {
+            LeakCanary.install(this)
+        }
+    }
+
+    private fun initStetho() {
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this)
         }
     }
 }

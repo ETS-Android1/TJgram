@@ -2,7 +2,6 @@ package org.michaelbel.tjgram.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.Menu;
@@ -10,7 +9,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnPreDrawListener;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.alexvasilkov.events.Events;
@@ -20,7 +18,6 @@ import com.alexvasilkov.gestures.animation.ViewPosition;
 import com.google.android.material.appbar.AppBarLayout;
 import com.squareup.picasso.Picasso;
 
-import org.michaelbel.tjgram.Logg;
 import org.michaelbel.tjgram.R;
 import org.michaelbel.tjgram.ui.common.gestures.CircleGestureImageView;
 import org.michaelbel.tjgram.utils.DeviceUtil;
@@ -32,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
+import timber.log.Timber;
 
 public class PhotoActivity extends AppCompatActivity {
 
@@ -106,52 +104,52 @@ public class PhotoActivity extends AppCompatActivity {
         photoView.setOnDragListener(new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent event) {
-                Logg.e("onDrag");
+                Timber.e("onDrag");
                 return false;
             }
         });
         photoView.getController().addOnStateChangeListener(new GestureController.OnStateChangeListener() {
             @Override
             public void onStateChanged(State state) {
-                Logg.e("onStateChanged");
+                Timber.e("onStateChanged");
             }
 
             @Override
             public void onStateReset(State oldState, State newState) {
-                Logg.e("onStateReset");
+                Timber.e("onStateReset");
             }
         });
         photoView.getController().setOnGesturesListener(new GestureController.OnGestureListener() {
             @Override
             public void onDown(@NonNull MotionEvent event) {
-                Logg.e("onDown");
+                Timber.e("onDown");
             }
 
             @Override
             public void onUpOrCancel(@NonNull MotionEvent event) {
-                Logg.e("onUpOrCancel");
+                Timber.e("onUpOrCancel");
             }
 
             @Override
             public boolean onSingleTapUp(@NonNull MotionEvent event) {
-                Logg.e("onSingleTapUp");
+                Timber.e("onSingleTapUp");
                 return false;
             }
 
             @Override
             public boolean onSingleTapConfirmed(@NonNull MotionEvent event) {
-                Logg.e("onSingleTapConfirmed");
+                Timber.e("onSingleTapConfirmed");
                 return false;
             }
 
             @Override
             public void onLongPress(@NonNull MotionEvent event) {
-                Logg.e("onLongPress");
+                Timber.e("onLongPress");
             }
 
             @Override
             public boolean onDoubleTap(@NonNull MotionEvent event) {
-                Logg.e("onDoubleTap");
+                Timber.e("onDoubleTap");
                 return false;
             }
         });

@@ -172,7 +172,7 @@ public class GestureImageView extends AppCompatImageView implements GestureView,
         super.setImageDrawable(drawable);
 
         // Method setImageDrawable can be called from super constructor,
-        // so we have to ensure controller instance is created at this point.
+        // so we have to ensure controller instance is createdDate at this point.
         ensureControllerCreated();
 
         Settings settings = controller.getSettings();

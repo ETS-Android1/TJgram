@@ -2,6 +2,7 @@ package org.michaelbel.tjgram.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -17,6 +18,7 @@ import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar.*
+import org.koin.android.ext.android.inject
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.UserConfig
 import org.michaelbel.tjgram.data.consts.Sorting
@@ -26,16 +28,18 @@ import org.michaelbel.tjgram.ui.main.MainFragment
 import org.michaelbel.tjgram.ui.profile.ProfileFragment
 import org.michaelbel.tjgram.utils.DeviceUtil
 import org.michaelbel.tjgram.utils.ViewUtil
+import org.michaelbel.tjgram.utils.consts.SharedPrefs
 
 class MainActivity : AppCompatActivity(), MainFragment.Listener {
 
     companion object {
-        const val REQUEST_CODE_NEW_ENTRY = 201
         const val NEW_ENTRY_RESULT = "new_entry_created"
 
-        const val MAIN_FRAGMENT = 0
-        const val POST_FRAGMENT = 1
-        const val USER_FRAGMENT = 2
+        private const val REQUEST_CODE_NEW_ENTRY = 201
+
+        private const val MAIN_FRAGMENT = 0
+        private const val POST_FRAGMENT = 1
+        private const val USER_FRAGMENT = 2
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -79,16 +83,16 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
         bottomBar.setMode(BottomNavigationBar.MODE_FIXED)
         bottomBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_DEFAULT)
 
-        val itemMain = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_view_dashboard, R.color.accent), "")
+        val itemMain = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_view_dashboard, R.color.accent)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_view_dashboard_outline, R.color.icon_active_unfocused))
 
-        val itemPost = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_add_circle, R.color.icon_active_unfocused), "")
+        val itemPost = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_add_circle, R.color.icon_active_unfocused)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_add_circle, R.color.icon_active_unfocused))
 
-        val itemNotify = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_bell, R.color.accent), "")
+        val itemNotify = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_bell, R.color.accent)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_bell_outline, R.color.icon_active_unfocused))
 
-        val itemProfile = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_account, R.color.accent), "")
+        val itemProfile = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_account, R.color.accent)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_account_outline, R.color.icon_active_unfocused))
 
         var prevPosition = MAIN_FRAGMENT
@@ -106,10 +110,11 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
                     }
                     POST_FRAGMENT -> {
                         bottomBar.selectTab(prevPosition, false)
-                        if (!UserConfig.isAuthorized(this@MainActivity)) {
-                            showLoginSnack()
-                        } else {
+
+                        if (UserConfig.isAuthorized(this@MainActivity)) {
                             startActivityForResult(Intent(this@MainActivity, NewPostActivity::class.java), REQUEST_CODE_NEW_ENTRY)
+                        } else {
+                            showLoginSnack()
                         }
                     }
                     USER_FRAGMENT -> {
@@ -147,10 +152,10 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
         ViewUtil.setScrollFlags(toolbar, flags)
     }
 
-    fun showSystemStatusBar(state: Boolean) {
+    /*fun showSystemStatusBar(state: Boolean) {
         val flags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE
         window.decorView.systemUiVisibility = if (state) 0 else flags
-    }
+    }*/
 
     /*public static void setLightStatusBar(View view,Activity activity){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

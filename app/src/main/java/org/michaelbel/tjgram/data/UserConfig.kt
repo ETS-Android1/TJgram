@@ -3,6 +3,7 @@ package org.michaelbel.tjgram.data
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.os.Build
+import androidx.core.content.edit
 import org.michaelbel.tjgram.BuildConfig
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.utils.DeviceUtil
@@ -12,12 +13,25 @@ import java.util.*
 object UserConfig {
 
     fun isAuthorized(context: Context): Boolean {
-        return !getToken(context)?.isEmpty()!!
+        return getToken(context).isNotEmpty()
     }
 
-    fun getToken(context: Context): String? {
+    fun getToken(context: Context): String {
         val preferences = context.getSharedPreferences(SharedPrefs.SP_NAME, MODE_PRIVATE)
-        return preferences.getString(SharedPrefs.KEY_X_DEVICE_TOKEN, "")
+        return preferences.getString(SharedPrefs.KEY_X_DEVICE_TOKEN, "")!!
+    }
+
+    fun getUserId(context: Context): Int {
+        val preferences = context.getSharedPreferences(SharedPrefs.SP_NAME, MODE_PRIVATE)
+        return preferences.getInt(SharedPrefs.KEY_LOCAL_USER_ID, 0)
+    }
+
+    fun setLocalUser(context: Context, token: String, userId: Int) {
+        val preferences = context.getSharedPreferences(SharedPrefs.SP_NAME, MODE_PRIVATE)
+        preferences.edit {
+            putString(SharedPrefs.KEY_X_DEVICE_TOKEN, token)
+            putInt(SharedPrefs.KEY_LOCAL_USER_ID, userId)
+        }
     }
 
     fun formatKarma(value: Long): String {
@@ -33,13 +47,13 @@ object UserConfig {
 
     fun getConfiguration(context: Context): String {
         return String.format(Locale.getDefault(), "%s-app/%s (%s; %s/%s; %s; %sx%s)",
-                context.getString(R.string.app_name),
-                BuildConfig.VERSION_NAME,
-                DeviceUtil.getDeviceName(),
-                "Android",
-                Build.VERSION.RELEASE,
-                context.getString(R.string.language_code),
-                DeviceUtil.getScreenHeight(context),
-                DeviceUtil.getScreenWidth(context))
+            context.getString(R.string.app_name),
+            BuildConfig.VERSION_NAME,
+            DeviceUtil.getDeviceName(),
+            "Android",
+            Build.VERSION.RELEASE,
+            context.getString(R.string.language_code),
+            DeviceUtil.getScreenHeight(context),
+            DeviceUtil.getScreenWidth(context))
     }
 }

@@ -38,7 +38,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void complaintEntry(int contentId) {
         disposables.add(repository.complaintEntry(contentId).subscribe((Consumer<BaseResult<Boolean>>) baseResult -> {
-            Boolean status = baseResult.result;
+            Boolean status = baseResult.getResult();
             getView().complaintSent(status);
         }, throwable -> getView().complaintSent(false)));
     }
@@ -61,13 +61,13 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void likeEntry(@NotNull Entry entry, int sign) {
-        disposables.add(repository.likeEntry(entry.id, sign).subscribe(
+        disposables.add(repository.likeEntry(entry.getId(), sign).subscribe(
             likesResult -> getView().updateLikes(entry, likesResult),
             throwable -> getView().updateLikesError(entry, throwable)
         ));
     }
 
-    @Override
+    /*@Override
     public void wwsConnect() {
         disposables.add(repository.wwsConnect().subscribe(
             event -> Timber.e("WWS connected successful: " + event.toString()),
@@ -107,11 +107,11 @@ public class MainPresenter implements MainContract.Presenter {
                 event -> Timber.e("WWS event stream subscribed successful: " + event.toString()),
                 throwable -> Timber.e("WWS event stream subscribed failure: " + throwable.getMessage())
         ));
-    }
+    }*/
 
     @Override
     public void onDestroy() {
-        this.wwsDisconnect();
+        //this.wwsDisconnect();
         disposables.dispose();
     }
 }

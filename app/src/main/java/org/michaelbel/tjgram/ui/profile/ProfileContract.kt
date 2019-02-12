@@ -10,7 +10,7 @@ interface ProfileContract {
 
     interface View {
         fun setUser(user: User, xToken: String)
-        fun setError(throwable: Throwable)
+        fun setAuthError(throwable: Throwable)
     }
 
     interface Presenter: BasePresenter<View> {

@@ -38,17 +38,17 @@ public class ProfilePresenter implements ProfileContract.Presenter {
 
                 UserResult userResult = response.body();
                 if (userResult != null) {
-                    User user = userResult.result;
+                    User user = userResult.getResult();
                     getView().setUser(user, xDeviceToken);
                 }
             }
-        }, throwable -> getView().setError(throwable)));
+        }, throwable -> getView().setAuthError(throwable)));
     }
 
     @Override
     public void userMe() {
         disposables.add(repository.userMe().subscribe(userResult -> {
-            User user = userResult.result;
+            User user = userResult.getResult();
             getView().setUser(user, "x");
         }, Timber::e));
     }

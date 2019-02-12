@@ -13,9 +13,7 @@ import org.michaelbel.tjgram.data.consts.Sorting
 import org.michaelbel.tjgram.data.remote.TjService
 import org.michaelbel.tjgram.data.wss.TjWebSocket
 
-class MainRepository internal constructor(
-    private val service: TjService, private val webSocket: TjWebSocket
-): MainContract.Repository {
+class MainRepository internal constructor(private val service: TjService): MainContract.Repository {
 
     override fun entries(subsiteId: Long, sorting: String, count: Int, offset: Int): Observable<EntriesResult> {
         //return service.subsiteTimeline(subsiteId, sorting, count, offset).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -36,7 +34,7 @@ class MainRepository internal constructor(
         return service.entryComplaint(contentId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun wwsConnect(): Single<TjWebSocket.Open> {
+    /*override fun wwsConnect(): Single<TjWebSocket.Open> {
         return webSocket.connect().observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -46,5 +44,5 @@ class MainRepository internal constructor(
 
     override fun wwsEventStream(): Flowable<TjWebSocket.Event> {
         return webSocket.eventStream().observeOn(AndroidSchedulers.mainThread())
-    }
+    }*/
 }
