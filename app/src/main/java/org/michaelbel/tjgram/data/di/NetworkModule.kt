@@ -9,7 +9,7 @@ import com.readystatesoftware.chuck.ChuckInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.module.module
+import org.koin.dsl.module
 import org.michaelbel.tjgram.BuildConfig
 import org.michaelbel.tjgram.data.TjConfig
 import org.michaelbel.tjgram.data.interceptors.UserInterceptor
@@ -23,9 +23,8 @@ import timber.log.Timber
 
 val networkModule = module {
     single { okHttpClient(androidContext()) }
-    single { (baseUrl: String) -> retrofit(androidContext(), baseUrl) }
+    single { (baseUrl: String) -> retrofit(androidContext()) }
     single { createService<TjService>(androidContext()) }
-    single { webSocket(androidContext(), TjConfig.TJ_WEB_SOCKET)}
 }
 
 fun okHttpClient(context: Context): OkHttpClient {
@@ -64,9 +63,9 @@ fun gson(): Gson {
     return gsonBuilder.create()
 }
 
-fun retrofit(context: Context, baseUrl: String): Retrofit {
+fun retrofit(context: Context): Retrofit {
     return Retrofit.Builder()
-        .baseUrl(baseUrl)
+        .baseUrl(TjConfig.TJ_API_ENDPOINT)
         .addConverterFactory(GsonConverterFactory.create(gson()))
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .client(okHttpClient(context))
@@ -74,13 +73,14 @@ fun retrofit(context: Context, baseUrl: String): Retrofit {
 }
 
 inline fun <reified T> createService(context: Context): T {
-    return retrofit(context, TjConfig.TJ_API_ENDPOINT).create(T::class.java)
+    return retrofit(context).create(T::class.java)
 }
 
-fun webSocket(context: Context, url: String): TjWebSocket {
+/*
+fun webSocket(url: String): TjWebSocket {
     return TjWebSocket.Builder()
         .addConverterFactory(WebSocketConverterFactory.create())
         .addReceiveInterceptor{data -> data}
         .addOkHttpClient(OkHttpClient().newBuilder().build())
         .build(url)
-}
+}*/

@@ -42,7 +42,7 @@ public class ProfilePresenter implements ProfileContract.Presenter {
                     getView().setUser(user, xDeviceToken);
                 }
             }
-        }, throwable -> getView().setError(throwable)));
+        }, throwable -> getView().setAuthError(throwable)));
     }
 
     @Override

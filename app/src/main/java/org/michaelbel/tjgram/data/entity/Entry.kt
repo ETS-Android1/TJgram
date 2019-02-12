@@ -1,10 +1,14 @@
 package org.michaelbel.tjgram.data.entity
 
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.*
 
+//@Entity(tableName = "entries", indices = [Index(value = ["title"], unique = false)])
 data class Entry (
     @Expose @SerializedName("audioUrl") var audioUrl: String? = "",
     @Expose @SerializedName("author") var author: Author? = null,
@@ -18,6 +22,7 @@ data class Entry (
     @Expose @SerializedName("entryContent") var entryContent: EntryContent? = null,
     @Expose @SerializedName("favoritesCount") var favoritesCount: Int = 0,
     @Expose @SerializedName("hitsCount") var hitsCount: Int = 0,
+    //@PrimaryKey
     @Expose @SerializedName("id") var id: Int = 0,
     @Expose @SerializedName("intro") var intro: String = "",
     @Expose @SerializedName("introInFeed") var introInFeed: Any? = null,

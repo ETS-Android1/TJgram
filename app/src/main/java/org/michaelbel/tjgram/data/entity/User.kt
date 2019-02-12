@@ -9,8 +9,8 @@ data class User(
     @Expose @SerializedName("avatar_url") val avatarUrl: String,
     @Expose @SerializedName("counters") val counters: Counters,
     @Expose @SerializedName("cover") val cover: CoverUser,
-    @Expose @SerializedName("created") val created: Int,
-    @Expose @SerializedName("createdRFC") val createdRFC: String,
+    @Expose @SerializedName("created") val createdDate: Int,
+    @Expose @SerializedName("createdRFC") val createdDateRFC: String,
     @Expose @SerializedName("id") val id: Int,
     @Expose @SerializedName("karma") val karma: Long,
     @Expose @SerializedName("name") val name: String,
@@ -18,19 +18,4 @@ data class User(
     @Expose @SerializedName("social_accounts") val socialAccounts: List<SocialAccount>,
     @Expose @SerializedName("url") val url: String,
     @Expose @SerializedName("user_hash") val userHash: String
-) : Serializable {
-
-    override fun toString(): String {
-        return "User( " +
-                "avatarUrl=$avatarUrl," +
-                "created=$created," +
-                "createdRFC=$createdRFC," +
-                "id=$id," +
-                "karma=$karma," +
-                "name=$name," +
-                "pushTopic=$pushTopic," +
-                "url=$url," +
-                "userHash=$userHash," +
-                ")"
-    }
-}
+) : Serializable

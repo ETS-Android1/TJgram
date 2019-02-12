@@ -88,7 +88,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
     private var titleText: String? = null
     private var introText: String? = null
 
-    val presenter: PostContract.Presenter by inject()
+    private val presenter: PostContract.Presenter by inject()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK) {

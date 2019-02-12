@@ -67,7 +67,7 @@ public class MainPresenter implements MainContract.Presenter {
         ));
     }
 
-    @Override
+    /*@Override
     public void wwsConnect() {
         disposables.add(repository.wwsConnect().subscribe(
             event -> Timber.e("WWS connected successful: " + event.toString()),
@@ -107,11 +107,11 @@ public class MainPresenter implements MainContract.Presenter {
                 event -> Timber.e("WWS event stream subscribed successful: " + event.toString()),
                 throwable -> Timber.e("WWS event stream subscribed failure: " + throwable.getMessage())
         ));
-    }
+    }*/
 
     @Override
     public void onDestroy() {
-        this.wwsDisconnect();
+        //this.wwsDisconnect();
         disposables.dispose();
     }
 }

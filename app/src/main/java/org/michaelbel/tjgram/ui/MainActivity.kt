@@ -2,6 +2,7 @@ package org.michaelbel.tjgram.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -17,6 +18,7 @@ import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.appbar.*
+import org.koin.android.ext.android.inject
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.UserConfig
 import org.michaelbel.tjgram.data.consts.Sorting
@@ -26,6 +28,7 @@ import org.michaelbel.tjgram.ui.main.MainFragment
 import org.michaelbel.tjgram.ui.profile.ProfileFragment
 import org.michaelbel.tjgram.utils.DeviceUtil
 import org.michaelbel.tjgram.utils.ViewUtil
+import org.michaelbel.tjgram.utils.consts.SharedPrefs
 
 class MainActivity : AppCompatActivity(), MainFragment.Listener {
 
@@ -107,10 +110,11 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
                     }
                     POST_FRAGMENT -> {
                         bottomBar.selectTab(prevPosition, false)
-                        if (!UserConfig.isAuthorized(this@MainActivity)) {
-                            showLoginSnack()
-                        } else {
+
+                        if (UserConfig.isAuthorized(this@MainActivity)) {
                             startActivityForResult(Intent(this@MainActivity, NewPostActivity::class.java), REQUEST_CODE_NEW_ENTRY)
+                        } else {
+                            showLoginSnack()
                         }
                     }
                     USER_FRAGMENT -> {
@@ -148,10 +152,10 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
         ViewUtil.setScrollFlags(toolbar, flags)
     }
 
-    fun showSystemStatusBar(state: Boolean) {
+    /*fun showSystemStatusBar(state: Boolean) {
         val flags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE
         window.decorView.systemUiVisibility = if (state) 0 else flags
-    }
+    }*/
 
     /*public static void setLightStatusBar(View view,Activity activity){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

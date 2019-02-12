@@ -24,7 +24,6 @@ import org.michaelbel.tjgram.data.consts.Subsites
 import org.michaelbel.tjgram.data.entity.Entry
 import org.michaelbel.tjgram.data.entity.Likes
 import org.michaelbel.tjgram.data.entity.LikesResult
-import org.michaelbel.tjgram.data.wss.model.SocketResponse
 import org.michaelbel.tjgram.ui.main.adapter.EntriesAdapter
 import org.michaelbel.tjgram.ui.main.adapter.EntriesListener
 import org.michaelbel.tjgram.ui.main.decoration.EntrySpacingDecoration
@@ -62,7 +61,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     private lateinit var listener: Listener
     //var swapListener: SwapListener
 
-    val presenter: MainContract.Presenter by inject()
+    private val presenter: MainContract.Presenter by inject()
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -118,7 +117,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && adapter.itemCount != 0 && loading) {
                     loading = false
-                    presenter.entries(Subsites.TJGRAM.toLong(), sorting!!, offset, false)
+                    //presenter.entries(Subsites.TJGRAM.toLong(), sorting!!, offset, false)
                 }
             }
         })
@@ -134,7 +133,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
             presenter.entries(Subsites.TJGRAM.toLong(), sorting!!, offset, false)
         }
 
-        presenter.wwsEventStream()
+        //presenter.wwsEventStream()
     }
 
     override fun onRefresh() {
@@ -244,14 +243,14 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
         adapter.changeLikes(entry)
     }
 
-    override fun sentWssResponse(socket: SocketResponse) {
+    /*override fun sentWssResponse(socket: SocketResponse) {
         val likes = Likes(socket.count.toInt())
         val entry = Entry(id = socket.id.toInt(), likes = likes)
 
-        /*val list = ArrayList<Entry>()
+        *//*val list = ArrayList<Entry>()
         list.add(entry)
-        adapter.swapEntry(list)*/
-    }
+        adapter.swapEntry(list)*//*
+    }*/
 
     /*override fun onStop() {
         super.onStop()
