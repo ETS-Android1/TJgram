@@ -7,11 +7,11 @@ import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.ui.QrCodeActivity
+import org.michaelbel.tjgram.ui.ScanQrActivity
 import timber.log.Timber
 import java.util.*
 
-class DecodeHandler(private val mActivity: QrCodeActivity) : Handler() {
+class DecodeHandler(private val mActivity: ScanQrActivity) : Handler() {
 
     private val mQrCodeReader: QRCodeReader = QRCodeReader()
     private val mHints: MutableMap<DecodeHintType, Any>

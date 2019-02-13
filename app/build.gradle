@@ -116,6 +116,9 @@ dependencies {
     implementation deps.preference
     implementation deps.constraintlayout.runtime
 
+    implementation deps.vectordrawable
+    implementation deps.interpolator
+
     implementation deps.kotlin.stdlib
 
     implementation deps.ktx.core
