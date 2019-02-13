@@ -21,6 +21,13 @@ import org.michaelbel.tjgram.utils.ViewUtil
 
 class ExpandableView : LinearLayout {
 
+    companion object {
+        const val DEFAULT_ANIM_DURATION = 250
+
+        private const val COLLAPSING = 0
+        private const val EXPANDING = 1
+    }
+
     private var title: String? = null
 
     private var containerView: ViewGroup? = null
@@ -33,8 +40,7 @@ class ExpandableView : LinearLayout {
     private var card: FrameLayout? = null
     private var animDuration = DEFAULT_ANIM_DURATION.toLong()
 
-    var isExpanded = false
-        private set
+    private var isExpanded = false
 
     private var isExpanding = false
     private var isCollapsing = false
@@ -54,8 +60,7 @@ class ExpandableView : LinearLayout {
             expand()
     }
 
-    private val isMoving: Boolean
-        get() = isExpanding || isCollapsing
+    private val isMoving: Boolean get() = isExpanding || isCollapsing
 
     interface OnExpandedListener {
         fun onExpandChanged(v: View?, isExpanded: Boolean)
@@ -116,18 +121,18 @@ class ExpandableView : LinearLayout {
         }
 
         if (expandOnClick) {
-            card!!.setOnClickListener({
+            card!!.setOnClickListener {
                 if (isExpanded)
                     collapse()
                 else
                     expand()
-            })
+            }
 
             //arrowIcon.setOnClickListener(defaultClickListener);
         }
     }
 
-    fun expand() {
+    private fun expand() {
         val initialHeight = card!!.height
 
         if (!isMoving) {
@@ -142,7 +147,7 @@ class ExpandableView : LinearLayout {
         }
     }
 
-    fun collapse() {
+    private fun collapse() {
         val initialHeight = card!!.measuredHeight
 
         if (initialHeight - previousHeight != 0) {
@@ -213,7 +218,9 @@ class ExpandableView : LinearLayout {
     }
 
     fun setTitle(resId: Int) {
-        if (textViewTitle != null) textViewTitle!!.setText(resId)
+        if (textViewTitle != null) {
+            textViewTitle!!.setText(resId)
+        }
     }
 
     private fun setInnerView(resId: Int) {
@@ -226,7 +233,7 @@ class ExpandableView : LinearLayout {
         innerView!!.removeAllViews()
     }
 
-    fun addChildView(view: SocialView) {
+    fun addChildView(view: View?) {
         innerView!!.addView(view)
     }
 
@@ -237,15 +244,7 @@ class ExpandableView : LinearLayout {
         super.setOnClickListener(l)
     }
 
-    fun setAnimDuration(animDuration: Long) {
+    private fun setAnimDuration(animDuration: Long) {
         this.animDuration = animDuration
-    }
-
-    companion object {
-
-        val DEFAULT_ANIM_DURATION = 250
-
-        private val COLLAPSING = 0
-        private val EXPANDING = 1
     }
 }

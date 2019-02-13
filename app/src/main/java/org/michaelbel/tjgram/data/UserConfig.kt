@@ -34,6 +34,14 @@ object UserConfig {
         }
     }
 
+    fun userLogout(context: Context) {
+        val preferences = context.getSharedPreferences(SharedPrefs.SP_NAME, MODE_PRIVATE)
+        preferences.edit {
+            putString(SharedPrefs.KEY_X_DEVICE_TOKEN, "")
+            putInt(SharedPrefs.KEY_LOCAL_USER_ID, 0)
+        }
+    }
+
     fun formatKarma(value: Long): String {
         val builder = StringBuilder()
         if (value > 0L) {

@@ -11,22 +11,22 @@ import androidx.appcompat.widget.AppCompatTextView
 @SuppressLint("Instantiatable")
 class BadgeTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
 
-    private var mShapeBadgeItem: ShapeBadgeItem? = null
+    private var shapeBadgeItem: ShapeBadgeItem? = null
 
-    private var mAreDimensOverridden: Boolean = false
-    private var mDesiredWidth = 100
-    private var mDesiredHeight = 100
+    private var areDimensOverridden: Boolean = false
+    private var desiredWidth = 100
+    private var desiredHeight = 100
 
     fun clearPrevious() {
-        mAreDimensOverridden = false
-        mShapeBadgeItem = null
+        areDimensOverridden = false
+        shapeBadgeItem = null
     }
 
     /**
      * @param shapeBadgeItem that can draw on top of the this view
      */
     fun setShapeBadgeItem(shapeBadgeItem: ShapeBadgeItem) {
-        mShapeBadgeItem = shapeBadgeItem
+        this.shapeBadgeItem = shapeBadgeItem
     }
 
     /**
@@ -36,9 +36,9 @@ class BadgeTextView @JvmOverloads constructor(context: Context, attrs: Attribute
      * @param height new height that needs to be set
      */
     fun setDimens(width: Int, height: Int) {
-        mAreDimensOverridden = true
-        mDesiredWidth = width
-        mDesiredHeight = height
+        areDimensOverridden = true
+        desiredWidth = width
+        desiredHeight = height
         requestLayout()
     }
 
@@ -54,8 +54,8 @@ class BadgeTextView @JvmOverloads constructor(context: Context, attrs: Attribute
      */
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (mShapeBadgeItem != null) {
-            mShapeBadgeItem!!.draw(canvas)
+        if (shapeBadgeItem != null) {
+            shapeBadgeItem!!.draw(canvas)
         }
     }
 
@@ -63,7 +63,7 @@ class BadgeTextView @JvmOverloads constructor(context: Context, attrs: Attribute
      * {@inheritDoc}
      */
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        if (mAreDimensOverridden) {
+        if (areDimensOverridden) {
             val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
             val widthSize = View.MeasureSpec.getSize(widthMeasureSpec)
             val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
@@ -79,11 +79,11 @@ class BadgeTextView @JvmOverloads constructor(context: Context, attrs: Attribute
                     widthSize
                 View.MeasureSpec.AT_MOST ->
                     //Can't be bigger than...
-                    Math.min(mDesiredWidth, widthSize)
+                    Math.min(desiredWidth, widthSize)
                 View.MeasureSpec.UNSPECIFIED ->
                     //Be whatever you want
-                    mDesiredWidth
-                else -> mDesiredWidth
+                    desiredWidth
+                else -> desiredWidth
             }
 
             //Measure Height
@@ -93,11 +93,11 @@ class BadgeTextView @JvmOverloads constructor(context: Context, attrs: Attribute
                     heightSize
                 View.MeasureSpec.AT_MOST ->
                     //Can't be bigger than...
-                    Math.min(mDesiredHeight, heightSize)
+                    Math.min(desiredHeight, heightSize)
                 View.MeasureSpec.UNSPECIFIED ->
                     //Be whatever you want
-                    mDesiredHeight
-                else -> mDesiredHeight
+                    desiredHeight
+                else -> desiredHeight
             }
 
             //MUST CALL THIS

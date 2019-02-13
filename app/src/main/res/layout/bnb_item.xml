@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/fixed_bottom_navigation_icon_container"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -27,6 +27,15 @@
             android:layout_gravity="top|end"
             android:gravity="center"
             style="@style/BadgeText"/>
+
+        <!--Avatar-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:scaleType="fitXY"/>
 
     </FrameLayout>
 

@@ -15,17 +15,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.michaelbel.tjgram.utils.DeviceUtil;
+
 import androidx.annotation.CallSuper;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-/**
- * Class description
- *
- * @author ashokvarma
- * @version 1.0
- * @see FrameLayout
- * @since 19 Mar 2016
- */
 public abstract class BottomNavigationTab extends FrameLayout {
 
     protected boolean isNoTitleMode;
@@ -54,6 +49,8 @@ public abstract class BottomNavigationTab extends FrameLayout {
     ImageView iconView;
     FrameLayout iconContainerView;
     BadgeTextView badgeView;
+
+    AppCompatImageView userAvatar;
 
     public BottomNavigationTab(Context context) {
         this(context, null);
@@ -106,6 +103,14 @@ public abstract class BottomNavigationTab extends FrameLayout {
         isInActiveIconSet = true;
     }
 
+    /**
+     * Get AppCompatImageView
+     * @return instance of user avatar image.
+     */
+    public ImageView getUserAvatar() {
+        return userAvatar;
+    }
+
     public void setLabel(String label) {
         mLabel = label;
         labelView.setText(label);
@@ -144,15 +149,8 @@ public abstract class BottomNavigationTab extends FrameLayout {
         isActive = true;
 
         ValueAnimator animator = ValueAnimator.ofInt(containerView.getPaddingTop(), paddingTopActive);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                containerView.setPadding(containerView.getPaddingLeft(),
-                        (Integer) valueAnimator.getAnimatedValue(),
-                        containerView.getPaddingRight(),
-                        containerView.getPaddingBottom());
-            }
-        });
+        animator.addUpdateListener(valueAnimator -> containerView.setPadding(containerView.getPaddingLeft(),
+                (Integer) valueAnimator.getAnimatedValue(), containerView.getPaddingRight(), containerView.getPaddingBottom()));
         animator.setDuration(animationDuration);
         animator.start();
 
@@ -197,12 +195,9 @@ public abstract class BottomNavigationTab extends FrameLayout {
         iconView.setSelected(false);
         if (isInActiveIconSet) {
             StateListDrawable states = new StateListDrawable();
-            states.addState(new int[]{android.R.attr.state_selected},
-                    mCompactIcon);
-            states.addState(new int[]{-android.R.attr.state_selected},
-                    mCompactInActiveIcon);
-            states.addState(new int[]{},
-                    mCompactInActiveIcon);
+            states.addState(new int[]{android.R.attr.state_selected}, mCompactIcon);
+            states.addState(new int[]{-android.R.attr.state_selected}, mCompactInActiveIcon);
+            states.addState(new int[]{}, mCompactInActiveIcon);
             iconView.setImageDrawable(states);
         } else {
             if (setActiveColor) {

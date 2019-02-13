@@ -27,7 +27,7 @@ class NewPostActivity : AppCompatActivity() {
         toolbar.navigationIcon = ViewUtil.getIcon(this, R.drawable.ic_arrow_back, R.color.icon_active)
         toolbar.setNavigationOnClickListener{finish()}
 
-        supportActionBar!!.setTitle(R.string.post_entry)
+        supportActionBar?.setTitle(R.string.post_entry)
 
         if (savedInstanceState == null) {
             replaceFragment(PostFragment.newInstance(), "")

@@ -8,19 +8,19 @@ import com.google.android.material.snackbar.Snackbar
 import org.michaelbel.tjgram.ui.common.bottombar.BottomNavigationBar
 import java.lang.ref.WeakReference
 
-class BottomVerticalScrollBehavior<V : View> : VerticalScrollingBehavior<V>() {
+class BottomVerticalScrollBehavior<V: View> : VerticalScrollingBehavior<V>() {
 
-    private var mBottomNavHeight: Int = 0
-    private var mViewRef: WeakReference<BottomNavigationBar>? = null
+    private var bottomNavHeight: Int = 0
+    private var viewRef: WeakReference<BottomNavigationBar>? = null
 
     override fun onLayoutChild(parent: CoordinatorLayout, child: V, layoutDirection: Int): Boolean {
         // First let the parent lay it out
         parent.onLayoutChild(child, layoutDirection)
         if (child is BottomNavigationBar) {
-            mViewRef = WeakReference(child as BottomNavigationBar)
+            viewRef = WeakReference(child as BottomNavigationBar)
         }
 
-        child.post { mBottomNavHeight = child.height }
+        child.post { bottomNavHeight = child.height }
         updateSnackBarPosition(parent, child, getSnackBarInstance(parent, child))
         return super.onLayoutChild(parent, child, layoutDirection)
     }
@@ -80,10 +80,10 @@ class BottomVerticalScrollBehavior<V : View> : VerticalScrollingBehavior<V>() {
     }
 
     private fun handleDirection(parent: CoordinatorLayout, child: V, scrollDirection: Int) {
-        val bottomNavigationBar = mViewRef!!.get()
+        val bottomNavigationBar = viewRef!!.get()
         if (bottomNavigationBar != null && bottomNavigationBar.isAutoHideEnabled) {
             if (scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_DOWN && bottomNavigationBar.isHidden) {
-                updateSnackBarPosition(parent, child, getSnackBarInstance(parent, child), (-mBottomNavHeight).toFloat())
+                updateSnackBarPosition(parent, child, getSnackBarInstance(parent, child), (-bottomNavHeight).toFloat())
                 bottomNavigationBar.show()
             } else if (scrollDirection == VerticalScrollingBehavior.ScrollDirection.SCROLL_DIRECTION_UP && !bottomNavigationBar.isHidden) {
                 updateSnackBarPosition(parent, child, getSnackBarInstance(parent, child), 0f)

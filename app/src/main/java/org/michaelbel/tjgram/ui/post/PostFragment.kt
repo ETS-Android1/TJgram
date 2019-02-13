@@ -183,7 +183,6 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
                     requireActivity().invalidateOptionsMenu()
                 }
                 else -> return false
-                //Toast.makeText(requireContext(), "Подождите, запись публикуется...", Toast.LENGTH_SHORT).show()
             }
             return true
         }
@@ -193,7 +192,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        presenter.view = this
+        presenter.create(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -249,7 +248,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        presenter.destroy()
         super.onDestroy()
     }
 

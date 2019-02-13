@@ -1,6 +1,5 @@
 package org.michaelbel.tjgram.ui.main
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -26,7 +25,7 @@ import org.michaelbel.tjgram.data.entity.Likes
 import org.michaelbel.tjgram.data.entity.LikesResult
 import org.michaelbel.tjgram.ui.main.adapter.EntriesAdapter
 import org.michaelbel.tjgram.ui.main.adapter.EntriesListener
-import org.michaelbel.tjgram.ui.main.decoration.EntrySpacingDecoration
+import org.michaelbel.tjgram.ui.post.decoration.PhotoSpacingDecoration
 import org.michaelbel.tjgram.utils.DeviceUtil
 import org.michaelbel.tjgram.utils.FragmentUtils.getListenerOrThrowException
 import org.michaelbel.tjgram.utils.NetworkUtil
@@ -42,6 +41,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
 
     companion object {
         private const val ARG_SORTING = "sorting"
+        private const val SPAN_COUNT = 1
 
         fun newInstance(sorting: String): MainFragment {
             val args = Bundle()
@@ -59,28 +59,26 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     private var loading = true
 
     private lateinit var listener: Listener
-    //var swapListener: SwapListener
 
     private val presenter: MainContract.Presenter by inject()
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = getListenerOrThrowException(Listener::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter.view = this
-        //presenter.wwsConnect()
+        presenter.create(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.accent))
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.primary))
         swipeRefreshLayout.setOnRefreshListener(this)
@@ -106,18 +104,16 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
         }*/
 
         //recycler_view.itemAnimator = animator
-        //recycler_view.setHasFixedSize(true)
-        //recycler_view.setItemViewCacheSize(20)
         //recycler_view.adapter = EntriesAdapter(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = linearLayoutManager
-        recyclerView.addItemDecoration(EntrySpacingDecoration(1, DeviceUtil.dp(requireContext(), 8F)))
+        recyclerView.addItemDecoration(PhotoSpacingDecoration(SPAN_COUNT, DeviceUtil.dp(requireContext(), 6F)))
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && adapter.itemCount != 0 && loading) {
                     loading = false
-                    //presenter.entries(Subsites.TJGRAM.toLong(), sorting!!, offset, false)
+                    presenter.entries(Subsites.TJGRAM.toLong(), sorting!!, offset, false)
                 }
             }
         })
@@ -269,7 +265,7 @@ class MainFragment : Fragment(), MainContract.View, EntriesListener, SwipeRefres
     }*/
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        presenter.destroy()
         super.onDestroy()
     }
 }

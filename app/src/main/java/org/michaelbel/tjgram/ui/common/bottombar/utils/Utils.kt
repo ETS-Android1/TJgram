@@ -6,13 +6,6 @@ import android.graphics.Point
 import android.util.TypedValue
 import android.view.WindowManager
 
-/**
- * Class description : These are common utils and can be used for other projects as well
- *
- * @author ashokvarma
- * @version 1.0
- * @since 19 Mar 2016
- */
 object Utils {
 
     const val NO_COLOR = Color.TRANSPARENT

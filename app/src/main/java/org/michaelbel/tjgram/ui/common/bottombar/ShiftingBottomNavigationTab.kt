@@ -24,8 +24,8 @@ class ShiftingBottomNavigationTab : BottomNavigationTab {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     internal override fun init() {
-        paddingTopActive = DeviceUtil.dp(context, 0f)
-        paddingTopInActive = DeviceUtil.dp(context, 10f)
+        paddingTopActive = DeviceUtil.dp(context, 0F)
+        paddingTopInActive = DeviceUtil.dp(context, 10F)
 
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.bnb_shifting_item, this, true)

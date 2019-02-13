@@ -12,7 +12,7 @@ import org.michaelbel.tjgram.ui.common.bottombar.BottomNavigationBar
 
 class BottomNavBarFabBehaviour : CoordinatorLayout.Behavior<FloatingActionButton>() {
 
-    private var mFabTranslationYAnimator: ViewPropertyAnimatorCompat? = null
+    private var fabTranslationYAnimator: ViewPropertyAnimatorCompat? = null
 
     override fun layoutDependsOn(parent: CoordinatorLayout, child: FloatingActionButton, dependency: View): Boolean {
         return isDependent(dependency) || super.layoutDependsOn(parent, child, dependency)
@@ -65,7 +65,7 @@ class BottomNavBarFabBehaviour : CoordinatorLayout.Behavior<FloatingActionButton
 
         if (fab.isShown && Math.abs(currentTransY - targetTransY) > fab.height * 0.667f) {
             // If the FAB will be travelling by more than 2/3 of it's height, let's animate it instead
-            mFabTranslationYAnimator!!.translationY(targetTransY).start()
+            fabTranslationYAnimator!!.translationY(targetTransY).start()
         } else {
             // Now update the translation Y
             fab.translationY = targetTransY
@@ -107,12 +107,12 @@ class BottomNavBarFabBehaviour : CoordinatorLayout.Behavior<FloatingActionButton
     }
 
     private fun ensureOrCancelAnimator(fab: FloatingActionButton) {
-        if (mFabTranslationYAnimator == null) {
-            mFabTranslationYAnimator = ViewCompat.animate(fab)
-            mFabTranslationYAnimator!!.duration = 400
-            mFabTranslationYAnimator!!.interpolator = FAST_OUT_SLOW_IN_INTERPOLATOR
+        if (fabTranslationYAnimator == null) {
+            fabTranslationYAnimator = ViewCompat.animate(fab)
+            fabTranslationYAnimator!!.duration = 400
+            fabTranslationYAnimator!!.interpolator = FAST_OUT_SLOW_IN_INTERPOLATOR
         } else {
-            mFabTranslationYAnimator!!.cancel()
+            fabTranslationYAnimator!!.cancel()
         }
     }
 

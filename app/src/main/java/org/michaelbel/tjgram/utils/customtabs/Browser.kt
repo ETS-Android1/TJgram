@@ -8,16 +8,18 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.preference.PreferenceManager
 import androidx.core.content.ContextCompat
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.utils.ViewUtil
 
 object Browser {
 
-    const val IN_APP_BROWSER = true
-
     fun openUrl(context: Context, url: String) {
-        if (IN_APP_BROWSER) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val inApp = preferences.getBoolean("key_browser", true)
+
+        if (inApp) {
             openInAppUrl(context, url)
         } else {
             openBrowserUrl(context, url)

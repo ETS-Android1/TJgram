@@ -209,7 +209,6 @@ public class GestureImageView extends AppCompatImageView implements GestureView,
         setImageMatrix(imageMatrix);
     }
 
-
     @SuppressWarnings("deprecation")
     private static Drawable getDrawable(Context context, @DrawableRes int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -219,7 +218,6 @@ public class GestureImageView extends AppCompatImageView implements GestureView,
         }
     }
 
-
     /**
      * @deprecated Use {@link #crop()} method instead.
      */
@@ -228,5 +226,4 @@ public class GestureImageView extends AppCompatImageView implements GestureView,
     public interface OnSnapshotLoadedListener {
         void onSnapshotLoaded(Bitmap bitmap);
     }
-
 }

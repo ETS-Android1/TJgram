@@ -12,19 +12,27 @@ import androidx.core.content.ContextCompat
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.utils.DeviceUtil
 
-class QrFinderView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RelativeLayout(context, attrs, defStyleAttr) {
+class QrFinderView /*@JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)*/ : RelativeLayout/*(context, attrs, defStyleAttr)*/ {
 
-    private val mPaint: Paint
-    private val mMaskColor: Int
-    private val mFrameColor: Int
+    companion object {
+        private const val ANIMATION_DELAY = 100L
+    }
+
+    private val mPaint: Paint = Paint()
+    private val mMaskColor: Int = ContextCompat.getColor(context, R.color.transparent50)
+    private val mFrameColor: Int = ContextCompat.getColor(context, R.color.foreground)
     private var mFrameRect: Rect? = null
-    private val mFocusThick: Int
+    private val mFocusThick: Int = 2
 
-    init {
-        mPaint = Paint()
-        mMaskColor = ContextCompat.getColor(context, R.color.transparent50)
-        mFrameColor = ContextCompat.getColor(context, R.color.foreground)
-        mFocusThick = 2
+    /*init {
+        init(context)
+    }*/
+
+    constructor(context: Context) : super(context) {
+        init(context)
+    }
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         init(context)
     }
 
@@ -73,10 +81,5 @@ class QrFinderView @JvmOverloads constructor(context: Context, attrs: AttributeS
         canvas.drawRect(rect.left.toFloat(), rect.top.toFloat(), (rect.left + mFocusThick).toFloat(), rect.bottom.toFloat(), mPaint)
         canvas.drawRect((rect.right - mFocusThick).toFloat(), rect.top.toFloat(), rect.right.toFloat(), rect.bottom.toFloat(), mPaint)
         canvas.drawRect(rect.left.toFloat(), (rect.bottom - mFocusThick).toFloat(), rect.right.toFloat(), rect.bottom.toFloat(), mPaint)
-    }
-
-    companion object {
-
-        private val ANIMATION_DELAY = 100L
     }
 }

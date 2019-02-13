@@ -10,13 +10,6 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import org.michaelbel.tjgram.ui.common.bottombar.utils.Utils
 
-/**
- * Class description : Holds data for tabs (i.e data structure which holds all data to paint a tab)
- *
- * @author ashokvarma
- * @version 1.0
- * @since 19 Mar 2016
- */
 class BottomNavigationItem {
 
     private var mIconResource: Int = 0
@@ -182,10 +175,6 @@ class BottomNavigationItem {
         this.badgeItem = badgeItem
         return this
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Library only access method
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * @param context to fetch drawable
