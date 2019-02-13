@@ -1,6 +1,6 @@
 package org.michaelbel.tjgram.ui.post
 
-import org.michaelbel.tjgram.BaseContract
+import org.michaelbel.tjgram.ui.base.BaseContract
 import org.michaelbel.tjgram.data.entity.AttachResponse
 import org.michaelbel.tjgram.data.entity.Entry
 import java.io.File

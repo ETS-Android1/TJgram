@@ -1,6 +1,6 @@
 package org.michaelbel.tjgram.ui.profile
 
-import org.michaelbel.tjgram.BaseContract
+import org.michaelbel.tjgram.ui.base.BaseContract
 import org.michaelbel.tjgram.data.entity.User
 
 interface ProfileContract {

@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram
+package org.michaelbel.tjgram.ui.base
 
 interface BaseContract {
 

@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -18,10 +17,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -38,10 +33,9 @@ import org.michaelbel.tjgram.data.viewmodel.Injection
 import org.michaelbel.tjgram.data.viewmodel.UserViewModel
 import org.michaelbel.tjgram.data.viewmodel.ViewModelFactory
 import org.michaelbel.tjgram.ui.MainActivity
-import org.michaelbel.tjgram.ui.QrCodeActivity
+import org.michaelbel.tjgram.ui.ScanQrActivity
 import org.michaelbel.tjgram.ui.profile.view.SocialView
 import org.michaelbel.tjgram.ui.settings.SettingsActivity
-import org.michaelbel.tjgram.ui.settings.SettingsFragment
 import org.michaelbel.tjgram.utils.ViewUtil
 import org.michaelbel.tjgram.utils.date.TimeFormatter
 import timber.log.Timber
@@ -81,7 +75,7 @@ class ProfileFragment : Fragment(), /*LifecycleOwner, */ProfileContract.View {
             if (requestCode == REQUEST_CODE_QR_SCAN) {
                 if (data == null) return
 
-                val tokenStr = data.getStringExtra(QrCodeActivity.QR_SCAN_RESULT)
+                val tokenStr = data.getStringExtra(ScanQrActivity.QR_SCAN_RESULT)
                 if (TextUtils.isEmpty(tokenStr)) {
                     Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
                     return
@@ -344,7 +338,7 @@ class ProfileFragment : Fragment(), /*LifecycleOwner, */ProfileContract.View {
             }
         }*/
 
-        startActivityForResult(Intent(requireContext(), QrCodeActivity::class.java), REQUEST_CODE_QR_SCAN)
+        startActivityForResult(Intent(requireContext(), ScanQrActivity::class.java), REQUEST_CODE_QR_SCAN)
     }
 
     /*private fun showRemaining() {

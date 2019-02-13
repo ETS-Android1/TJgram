@@ -6,11 +6,11 @@ import android.os.Message
 import com.google.zxing.Result
 import org.michaelbel.tjgram.R
 
-import org.michaelbel.tjgram.ui.QrCodeActivity
+import org.michaelbel.tjgram.ui.ScanQrActivity
 import org.michaelbel.tjgram.utils.qrscanner.camera.CameraManager
 import timber.log.Timber
 
-class CaptureActivityHandler(private val mActivity: QrCodeActivity) : Handler() {
+class CaptureActivityHandler(private val mActivity: ScanQrActivity) : Handler() {
 
     private val mDecodeThread: DecodeThread = DecodeThread(mActivity)
     private var mState: State? = null
