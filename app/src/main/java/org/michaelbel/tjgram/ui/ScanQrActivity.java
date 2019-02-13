@@ -3,6 +3,7 @@ package org.michaelbel.tjgram.ui;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -30,7 +31,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import timber.log.Timber;
 
-public class QrCodeActivity extends AppCompatActivity implements Callback {
+public class ScanQrActivity extends AppCompatActivity implements Callback {
 
     public static final int REQUEST_PICTURE = 1;
     public static final long VIBRATE_DURATION = 200L;
@@ -47,7 +48,8 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
     private MediaPlayer mMediaPlayer;
     private boolean mPlayBeep;
     private boolean mVibrate;
-    private boolean mNeedFlashLightOpen = true;
+
+    private boolean flashLightActive = false;
 
     private AppCompatImageView flashIcon;
     private AppCompatTextView flashText;
@@ -71,18 +73,23 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qr_code);
+        setContentView(R.layout.activity_scan_qr);
 
         FrameLayout flashLayout = findViewById(R.id.flashLayout);
         flashLayout.setOnClickListener(v -> {
-            if (mNeedFlashLightOpen) {
-                turnFlashlightOn();
+            if (flashLightActive) {
+                disableFlashLight();
             } else {
-                turnFlashLightOff();
+                enableFlashlight();
             }
         });
         flashIcon = findViewById(R.id.flashIcon);
-        flashIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_flash, R.color.md_white));
+        if (Build.VERSION.SDK_INT >= 21) {
+            flashIcon.setImageResource(R.drawable.asl_trimclip_flashlight);
+        } else {
+            flashIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_flash, R.color.md_white));
+        }
+
         flashText = findViewById(R.id.flashText);
         flashText.setText(R.string.enable_flash);
 
@@ -98,14 +105,18 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
 
     private void initData() {
         CameraManager.Companion.init(this);
-        mInactivityTimer = new InactivityTimer(QrCodeActivity.this);
+        mInactivityTimer = new InactivityTimer(ScanQrActivity.this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         SurfaceHolder surfaceHolder = mSurfaceView.getHolder();
-        turnFlashLightOff();
+
+        if (flashLightActive) {
+            disableFlashLight();
+        }
+
         if (mHasSurface) {
             initCamera(surfaceHolder);
         } else {
@@ -222,19 +233,29 @@ public class QrCodeActivity extends AppCompatActivity implements Callback {
 
     private final MediaPlayer.OnCompletionListener mBeepListener = mediaPlayer -> mediaPlayer.seekTo(0);
 
-    private void turnFlashlightOn() {
+    private void enableFlashlight() {
         flashText.setText(R.string.disable_flash);
-        flashIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_flash, R.color.md_yellow_500));
+        if (Build.VERSION.SDK_INT >= 21) {
+            final int[] stateSet = {android.R.attr.state_checked};
+            flashIcon.setImageState(stateSet, true);
+        } else {
+            flashIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_flash, R.color.md_yellow_500));
+        }
 
-        mNeedFlashLightOpen = false;
+        flashLightActive = true;
         Objects.requireNonNull(CameraManager.Companion.get()).setFlashLight(true);
     }
 
-    private void turnFlashLightOff() {
+    private void disableFlashLight() {
         flashText.setText(R.string.enable_flash);
-        flashIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_flash, R.color.md_white));
+        if (Build.VERSION.SDK_INT >= 21) {
+            final int[] stateSet = {android.R.attr.state_checked * -1};
+            flashIcon.setImageState(stateSet, true);
+        } else {
+            flashIcon.setImageDrawable(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_flash, R.color.md_white));
+        }
 
-        mNeedFlashLightOpen = true;
+        flashLightActive = false;
         Objects.requireNonNull(CameraManager.Companion.get()).setFlashLight(false);
     }
 
