@@ -29,10 +29,7 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
     private val mCanvasPaint: Paint = Paint()
     private val mPath = Path()
 
-    /**
-     * {@inheritDoc}
-     */
-    internal override val subInstance: ShapeBadgeItem
+    override val subInstance: ShapeBadgeItem
         get() = this
 
     @IntDef(SHAPE_OVAL, SHAPE_RECTANGLE, SHAPE_HEART, SHAPE_STAR_3_VERTICES, SHAPE_STAR_4_VERTICES, SHAPE_STAR_5_VERTICES, SHAPE_STAR_6_VERTICES)
@@ -47,10 +44,6 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
         mCanvasPaint.isAntiAlias = true
         mCanvasPaint.style = Paint.Style.FILL
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // public methods
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * @param shape new shape that needs to be drawn
@@ -142,10 +135,6 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
         return this
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Library internal methods
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * draw's specified shape
      *
@@ -180,11 +169,6 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
         bottomNavigationTab.badgeView.setDimens(mWidthInPixels, mHeightInPixels)
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Class only access methods
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * @return shape color
      */
@@ -197,11 +181,6 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
             mShapeColor
         }
     }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Internal Methods
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * refresh's paint color if set and redraw's shape with new color
@@ -277,7 +256,6 @@ class ShapeBadgeItem : BadgeItem<ShapeBadgeItem>() {
         }
 
         mPath.close()
-
         canvas.drawPath(mPath, mCanvasPaint)
     }
 

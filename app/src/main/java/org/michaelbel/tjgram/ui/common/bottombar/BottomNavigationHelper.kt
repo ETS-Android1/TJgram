@@ -11,14 +11,6 @@ import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.ui.common.bottombar.utils.Utils
 import org.michaelbel.tjgram.utils.DeviceUtil
 
-
-/**
- * Class description : This is utils class specific for this library, most the common code goes here.
- *
- * @author ashokvarma
- * @version 1.0
- * @since 19 Mar 2016
- */
 object BottomNavigationHelper {
 
     /**

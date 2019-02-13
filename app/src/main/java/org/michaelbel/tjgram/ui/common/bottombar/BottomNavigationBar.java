@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -34,16 +35,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
-/**
- * Class description : This class is used to draw the layout and this acts like a bridge between
- * library and app, all details can be modified via this class.
- *
- * @author ashokvarma
- * @version 1.0
- * @see FrameLayout
- * @see <a href="https://www.google.com/design/spec/components/bottom-navigation.html">Google Bottom Navigation Component</a>
- * @since 19 Mar 2016
- */
 //@CoordinatorLayout.DefaultBehavior(BottomVerticalScrollBehavior.class)
 public class BottomNavigationBar extends FrameLayout {
 
@@ -120,14 +111,16 @@ public class BottomNavigationBar extends FrameLayout {
     }
 
     public BottomNavigationBar(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public BottomNavigationBar(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        super(context, attrs);
         parseAttrs(context, attrs);
         init();
     }
+
+    /*public BottomNavigationBar(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        parseAttrs(context, attrs);
+        init();
+    }*/
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public BottomNavigationBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -219,10 +212,6 @@ public class BottomNavigationBar extends FrameLayout {
         ViewCompat.setElevation(this, mElevation);
         setClipToPadding(false);
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // View Data Setter methods, Called before Initialize method
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * Used to add a new tab.
@@ -341,10 +330,6 @@ public class BottomNavigationBar extends FrameLayout {
         return this;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Initialise Method
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * This method should be called at the end of all customisation method.
      * This method will take all changes in to consideration and redraws tabs.
@@ -408,10 +393,6 @@ public class BottomNavigationBar extends FrameLayout {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // Anytime Setter methods that can be called irrespective of whether we call initialise or not
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
     /**
      * @param tabSelectedListener callback listener for tabs
      * @return this, to allow builder pattern
@@ -445,10 +426,6 @@ public class BottomNavigationBar extends FrameLayout {
         mSelectedPosition = DEFAULT_SELECTED_POSITION;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Setter methods that should called only after initialise is called
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * Should be called only after initialization of BottomBar(i.e after calling initialize method)
      *
@@ -467,10 +444,6 @@ public class BottomNavigationBar extends FrameLayout {
     public void selectTab(int newPosition, boolean callListener) {
         selectTabInternal(newPosition, false, callListener, callListener);
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Internal Methods of the class
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * Internal method to setup tabs
@@ -542,6 +515,10 @@ public class BottomNavigationBar extends FrameLayout {
         }
     }
 
+    public ImageView getImageViewByTabItemPosition(int position) {
+        return mBottomNavigationTabs.get(position).getUserAvatar();
+    }
+
     /**
      * Internal method used to send callbacks to listener
      *
@@ -566,10 +543,6 @@ public class BottomNavigationBar extends FrameLayout {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Animating methods
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * show BottomNavigationBar if it is hidden and hide if it is shown
@@ -660,10 +633,6 @@ public class BottomNavigationBar extends FrameLayout {
         return mIsHidden;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    // Behaviour Handing Handling
-    ///////////////////////////////////////////////////////////////////////////
-
     public boolean isAutoHideEnabled() {
         return mAutoHideEnabled;
     }
@@ -690,10 +659,6 @@ public class BottomNavigationBar extends FrameLayout {
             coLayoutParams.setBehavior(bottomNavBarFabBehaviour);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Getters
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * @return activeColor
@@ -729,10 +694,6 @@ public class BottomNavigationBar extends FrameLayout {
     public int getAnimationDuration() {
         return mAnimationDuration;
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Listener interfaces
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * Callback interface invoked when a tab's selection state changes.

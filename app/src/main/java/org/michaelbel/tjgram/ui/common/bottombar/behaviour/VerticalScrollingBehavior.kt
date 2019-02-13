@@ -8,9 +8,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 
 abstract class VerticalScrollingBehavior<V : View> : CoordinatorLayout.Behavior<V> {
 
-    private var mTotalDyUnconsumed = -1
-    private var mTotalDyConsumed = -1
-    private var mTotalDy = -1
+    private var totalDyUnconsumed = -1
+    private var totalDyConsumed = -1
+    private var totalDy = -1
 
     /**
      * @return Scroll direction: SCROLL_DIRECTION_UP, SCROLL_DIRECTION_DOWN, SCROLL_NONE
@@ -32,9 +32,8 @@ abstract class VerticalScrollingBehavior<V : View> : CoordinatorLayout.Behavior<
     @ScrollDirection
     @get:ScrollDirection
     var consumedScrollDirection = ScrollDirection.SCROLL_NONE
-        private set
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     constructor() : super()
 
@@ -54,41 +53,41 @@ abstract class VerticalScrollingBehavior<V : View> : CoordinatorLayout.Behavior<
 
     override fun onNestedScroll(coordinatorLayout: CoordinatorLayout, child: V, target: View, dxConsumed: Int, dyConsumed: Int, dxUnconsumed: Int, dyUnconsumed: Int) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed)
-        if (dyUnconsumed > 0 && mTotalDyUnconsumed < 0) {
-            mTotalDyUnconsumed = 0
+        if (dyUnconsumed > 0 && totalDyUnconsumed < 0) {
+            totalDyUnconsumed = 0
             scrollDirection = ScrollDirection.SCROLL_DIRECTION_UP
-            onNestedVerticalScrollUnconsumed(coordinatorLayout, child, scrollDirection, dyConsumed, mTotalDyUnconsumed)
-        } else if (dyUnconsumed < 0 && mTotalDyUnconsumed > 0) {
-            mTotalDyUnconsumed = 0
+            onNestedVerticalScrollUnconsumed(coordinatorLayout, child, scrollDirection, dyConsumed, totalDyUnconsumed)
+        } else if (dyUnconsumed < 0 && totalDyUnconsumed > 0) {
+            totalDyUnconsumed = 0
             scrollDirection = ScrollDirection.SCROLL_DIRECTION_DOWN
-            onNestedVerticalScrollUnconsumed(coordinatorLayout, child, scrollDirection, dyConsumed, mTotalDyUnconsumed)
+            onNestedVerticalScrollUnconsumed(coordinatorLayout, child, scrollDirection, dyConsumed, totalDyUnconsumed)
         }
-        mTotalDyUnconsumed += dyUnconsumed
+        totalDyUnconsumed += dyUnconsumed
 
-        if (dyConsumed > 0 && mTotalDyConsumed < 0) {
-            mTotalDyConsumed = 0
+        if (dyConsumed > 0 && totalDyConsumed < 0) {
+            totalDyConsumed = 0
             consumedScrollDirection = ScrollDirection.SCROLL_DIRECTION_UP
-            onNestedVerticalScrollConsumed(coordinatorLayout, child, consumedScrollDirection, dyConsumed, mTotalDyConsumed)
-        } else if (dyConsumed < 0 && mTotalDyConsumed > 0) {
-            mTotalDyConsumed = 0
+            onNestedVerticalScrollConsumed(coordinatorLayout, child, consumedScrollDirection, dyConsumed, totalDyConsumed)
+        } else if (dyConsumed < 0 && totalDyConsumed > 0) {
+            totalDyConsumed = 0
             consumedScrollDirection = ScrollDirection.SCROLL_DIRECTION_DOWN
-            onNestedVerticalScrollConsumed(coordinatorLayout, child, consumedScrollDirection, dyConsumed, mTotalDyConsumed)
+            onNestedVerticalScrollConsumed(coordinatorLayout, child, consumedScrollDirection, dyConsumed, totalDyConsumed)
         }
-        mTotalDyConsumed += dyConsumed
+        totalDyConsumed += dyConsumed
     }
 
     override fun onNestedPreScroll(coordinatorLayout: CoordinatorLayout, child: V, target: View, dx: Int, dy: Int, consumed: IntArray) {
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed)
-        if (dy > 0 && mTotalDy < 0) {
-            mTotalDy = 0
+        if (dy > 0 && totalDy < 0) {
+            totalDy = 0
             preScrollDirection = ScrollDirection.SCROLL_DIRECTION_UP
             onNestedVerticalPreScroll(coordinatorLayout, child, target, dx, dy, consumed, preScrollDirection)
-        } else if (dy < 0 && mTotalDy > 0) {
-            mTotalDy = 0
+        } else if (dy < 0 && totalDy > 0) {
+            totalDy = 0
             preScrollDirection = ScrollDirection.SCROLL_DIRECTION_DOWN
             onNestedVerticalPreScroll(coordinatorLayout, child, target, dx, dy, consumed, preScrollDirection)
         }
-        mTotalDy += dy
+        totalDy += dy
     }
 
 

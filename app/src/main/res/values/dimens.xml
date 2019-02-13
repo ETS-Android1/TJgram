@@ -1,4 +1,9 @@
 <resources>
+    <!--Entry Card-->
+    <dimen name="avatar_size">40dp</dimen>
+
+
+
     <dimen name="gallery_fab_margin">16dp</dimen>
     <dimen name="gallery_item_size">128dp</dimen>
     <dimen name="gallery_item_offset">1dp</dimen>

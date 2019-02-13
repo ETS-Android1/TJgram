@@ -1,14 +1,12 @@
-<androidx.cardview.widget.CardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/socialLayout"
     android:layout_width="wrap_content"
     android:layout_height="32dp"
     android:layout_marginBottom="6dp"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="0dp"
-    tools:cardBackgroundColor="@color/social_vk">
+    android:background="@drawable/background_acc"
+    tools:background="@color/social_vk">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/socialIcon"
@@ -30,7 +28,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:fontFamily="sans-serif-medium"
-        android:textColor="?android:attr/colorForeground"
+        android:textColor="@color/card"
         tools:text="Neurotoxin Neurotoxin"/>
 
-</androidx.cardview.widget.CardView>
+</FrameLayout>

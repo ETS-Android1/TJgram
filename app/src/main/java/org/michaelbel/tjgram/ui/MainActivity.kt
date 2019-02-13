@@ -2,10 +2,8 @@ package org.michaelbel.tjgram.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,22 +11,29 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.appbar.*
-import org.koin.android.ext.android.inject
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.UserConfig
 import org.michaelbel.tjgram.data.consts.Sorting
+import org.michaelbel.tjgram.data.viewmodel.Injection
+import org.michaelbel.tjgram.data.viewmodel.UserViewModel
+import org.michaelbel.tjgram.data.viewmodel.ViewModelFactory
 import org.michaelbel.tjgram.ui.common.bottombar.BottomNavigationBar
 import org.michaelbel.tjgram.ui.common.bottombar.BottomNavigationItem
 import org.michaelbel.tjgram.ui.main.MainFragment
 import org.michaelbel.tjgram.ui.profile.ProfileFragment
 import org.michaelbel.tjgram.utils.DeviceUtil
 import org.michaelbel.tjgram.utils.ViewUtil
-import org.michaelbel.tjgram.utils.consts.SharedPrefs
+import org.michaelbel.tjgram.utils.picasso.CircleTransform
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), MainFragment.Listener {
 
@@ -41,6 +46,10 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
         private const val POST_FRAGMENT = 1
         private const val USER_FRAGMENT = 2
     }
+
+    private lateinit var viewModelFactory: ViewModelFactory
+    private lateinit var viewModel: UserViewModel
+    private val disposable = CompositeDisposable()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_NEW_ENTRY) {
@@ -66,10 +75,6 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            appBarLayout.stateListAnimator = null
-        }
-        ViewCompat.setElevation(appBarLayout, DeviceUtil.dp(this, 1.5F).toFloat())
         setSupportActionBar(toolbar)
 
         val params = fullToolbar.layoutParams as FrameLayout.LayoutParams
@@ -77,6 +82,9 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
 
         fullToolbar.navigationIcon = ViewUtil.getIcon(this, R.drawable.ic_arrow_back, R.color.primary)
         fullToolbar.setNavigationOnClickListener{onBackPressed()}
+
+        viewModelFactory = Injection.provideViewModelFactory(this)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
 
         bottomBar.setBarBackgroundColor(R.color.primary)
         bottomBar.activeColor = R.color.accent
@@ -89,8 +97,8 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
         val itemPost = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_add_circle, R.color.icon_active_unfocused)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_add_circle, R.color.icon_active_unfocused))
 
-        val itemNotify = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_bell, R.color.accent)!!, "")
-                .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_bell_outline, R.color.icon_active_unfocused))
+        /*val itemNotify = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_bell, R.color.accent)!!, "")
+                .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_bell_outline, R.color.icon_active_unfocused))*/
 
         val itemProfile = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_account, R.color.accent)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_account_outline, R.color.icon_active_unfocused))
@@ -104,9 +112,11 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
             override fun onItemSelected(position: Int) {
                 when (position) {
                     MAIN_FRAGMENT -> {
-                        setActionBar(R.string.app_name, SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS)
+                        setActionBar(R.string.app_name, SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS, 1.5F)
                         replaceFragment(MainFragment.newInstance(Sorting.NEW))
                         prevPosition = MAIN_FRAGMENT
+
+
                     }
                     POST_FRAGMENT -> {
                         bottomBar.selectTab(prevPosition, false)
@@ -118,7 +128,7 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
                         }
                     }
                     USER_FRAGMENT -> {
-                        setActionBar(R.string.profile, 0)
+                        setActionBar(R.string.profile, 0, 0F)
                         replaceFragment(ProfileFragment.newInstance())
                         prevPosition = USER_FRAGMENT
                     }
@@ -130,9 +140,18 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
             override fun onItemReselected(position: Int) {}
         })
 
+        if (UserConfig.isAuthorized(this)) {
+            updateBottomAvatar()
+        }
+
         if (savedInstanceState == null) {
             bottomBar.selectTab(MAIN_FRAGMENT)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposable.clear()
     }
 
     override fun showLoginSnack() {
@@ -147,32 +166,28 @@ class MainActivity : AppCompatActivity(), MainFragment.Listener {
         snack.show()
     }
 
-    private fun setActionBar(textRes: Int, flags: Int) {
+    private fun setActionBar(textRes: Int, flags: Int, elevation: Float) {
         supportActionBar!!.setTitle(textRes)
         ViewUtil.setScrollFlags(toolbar, flags)
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            appBarLayout.stateListAnimator = null
+        }
+        ViewCompat.setElevation(appBarLayout, DeviceUtil.dp(this, elevation).toFloat())
     }
 
-    /*fun showSystemStatusBar(state: Boolean) {
-        val flags = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_IMMERSIVE
-        window.decorView.systemUiVisibility = if (state) 0 else flags
-    }*/
+    fun updateBottomAvatar() {
+        val userId = UserConfig.getUserId(this)
 
-    /*public static void setLightStatusBar(View view,Activity activity){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-            activity.getWindow().setStatusBarColor(Color.WHITE);
-        }
-    }*/
+        disposable.add(viewModel.localUser(userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Picasso.get().load(it.avatarUrl).transform(CircleTransform()).into(bottomBar.getImageViewByTabItemPosition(USER_FRAGMENT))
+            }, { error -> Timber.e(error) }))
+    }
 
-    /*public static void clearLightStatusBar(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Window window = activity.getWindow();
-            window.setStatusBarColor(ContextCompat
-                 .getColor(activity,R.color.colorPrimaryDark));
-        }
-    }*/
+    fun clearBottomAvatar() {
+        bottomBar.getImageViewByTabItemPosition(USER_FRAGMENT).setImageDrawable(null)
+    }
 
     private fun replaceFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()

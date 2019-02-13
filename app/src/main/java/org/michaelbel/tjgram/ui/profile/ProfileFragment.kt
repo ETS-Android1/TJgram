@@ -3,7 +3,6 @@ package org.michaelbel.tjgram.ui.profile
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -16,10 +15,13 @@ import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.edit
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,33 +37,44 @@ import org.michaelbel.tjgram.data.entity.User
 import org.michaelbel.tjgram.data.viewmodel.Injection
 import org.michaelbel.tjgram.data.viewmodel.UserViewModel
 import org.michaelbel.tjgram.data.viewmodel.ViewModelFactory
+import org.michaelbel.tjgram.ui.MainActivity
 import org.michaelbel.tjgram.ui.QrCodeActivity
 import org.michaelbel.tjgram.ui.profile.view.SocialView
-import org.michaelbel.tjgram.utils.DeviceUtil
+import org.michaelbel.tjgram.ui.settings.SettingsActivity
+import org.michaelbel.tjgram.ui.settings.SettingsFragment
 import org.michaelbel.tjgram.utils.ViewUtil
-import org.michaelbel.tjgram.utils.consts.SharedPrefs
 import org.michaelbel.tjgram.utils.date.TimeFormatter
 import timber.log.Timber
 
-class ProfileFragment : Fragment(), ProfileContract.View {
+class ProfileFragment : Fragment(), /*LifecycleOwner, */ProfileContract.View {
 
     companion object {
         private const val REQUEST_CODE_QR_SCAN = 101
-        private const val REQUEST_PERMISSION_CAMERA = 102
+        private const val REQUEST_CODE_LOGOUT = 102
+
+        private const val REQUEST_PERMISSION_CAMERA = 201
+
+        const val LOGOUT_RESULT = "logout"
 
         fun newInstance(): ProfileFragment {
             return ProfileFragment()
         }
     }
 
-    private val preferences: SharedPreferences by inject()
+    /*private val registry = LifecycleRegistry(this)*/
+
     private val presenter: ProfileContract.Presenter by inject()
 
+    private var accountsView: LinearLayoutCompat? = null
 
 
     private lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: UserViewModel
     private val disposable = CompositeDisposable()
+
+    /*override fun getLifecycle(): Lifecycle {
+        return registry
+    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
@@ -82,6 +95,15 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
                 val token = separated[1]
                 presenter.authQr(token)
+            } else if (requestCode == REQUEST_CODE_LOGOUT) {
+                if (data == null) return
+
+                val event = data.getBooleanExtra(LOGOUT_RESULT, false)
+                if (event) {
+                    (activity as MainActivity).clearBottomAvatar()
+                    contactsLayout.clearChildren()
+                    setFragmentUI()
+                }
             }
         }
     }
@@ -101,7 +123,9 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter.view = this
+        //registry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        setHasOptionsMenu(true)
+        presenter.create(this)
 
 
 
@@ -109,17 +133,20 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
     }
 
+    override fun onStart() {
+        super.onStart()
+        //registry.handleLifecycleEvent(Lifecycle.Event.ON_START)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_profile, menu)
-        menu.findItem(R.id.item_logout).icon = ViewUtil.getIcon(requireContext(), R.drawable.ic_logout, R.color.icon_active)
+        menu.findItem(R.id.item_settings).icon = ViewUtil.getIcon(requireContext(), R.drawable.ic_settings_outline, R.color.icon_active)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.item_logout) {
-            preferences.edit {putString(SharedPrefs.KEY_X_DEVICE_TOKEN, "")}
-            contactsLayout.clearChildren()
-            setFragmentUI()
+        if (item.itemId == R.id.item_settings) {
+            startActivityForResult(Intent(requireActivity(), SettingsActivity::class.java), REQUEST_CODE_LOGOUT)
             return true
         }
 
@@ -132,28 +159,55 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loginButton.setOnClickListener { startScan() }
-        qrIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_qr, R.color.icon_active))
+        setLoginLayout()
+        setProfileLayout()
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            ViewCompat.setElevation(profileLayout, DeviceUtil.dp(requireContext(), 1F).toFloat())
-        }
-        contactsLayout.setTitle(R.string.contacts_info)
-        paidIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_check_decagram, R.color.accent))
         setFragmentUI()
+    }
 
-        // FIXME open full image
-        /*avatar_image.setOnClickListener {
-            val position = ViewPosition.from(avatar_image)
-            PhotoActivity.show(requireActivity(), position, preferences.getString(KEY_AVATAR_URL, ""))
+    private fun setLoginLayout() {
+        qrIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_qr, R.color.icon_active))
+        loginButton.setOnClickListener { startScan() }
+    }
+
+    private fun setProfileLayout() {
+        avatarImage.setOnClickListener {
+            //val position = ViewPosition.from(avatarImage)
+            //PhotoActivity.show(requireActivity(), position, preferences.getString(KEY_AVATAR_URL, ""))
+        }
+        paidIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_check_decagram, R.color.accent))
+        contactsLayout.setTitle(R.string.contacts_info)
+
+        accountsView = LinearLayoutCompat(requireContext())
+        accountsView?.orientation = LinearLayoutCompat.VERTICAL
+        contactsLayout.addChildView(accountsView)
+
+        commentsLayout.setOnClickListener {
+            Toast.makeText(requireContext(), "Open comments", Toast.LENGTH_SHORT).show()
+        }
+
+        favoritesLayout.setOnClickListener {
+            Toast.makeText(requireContext(), "Open favorites", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //registry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+
+        /*if (UserConfig.isAuthorized(requireContext()).not()) {
+            contactsLayout.clearChildren()
+            setFragmentUI()
         }*/
     }
 
-    private fun setFragmentUI() {
-        val isUserAuth = UserConfig.isAuthorized(requireContext())
-        setHasOptionsMenu(isUserAuth)
+    override fun onPause() {
+        super.onPause()
+        //registry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    }
 
-        if (isUserAuth) {
+    private fun setFragmentUI() {
+        if (UserConfig.isAuthorized(requireContext())) {
             authLayout.visibility = GONE
             profileLayout.visibility = VISIBLE
             setProfile()
@@ -164,9 +218,8 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         }
     }
 
-    override fun setUser(user: User, xToken: String) {
+    override fun setUserMe(user: User, xToken: String) {
         if (xToken != "x") {
-            setHasOptionsMenu(true)
             UserConfig.setLocalUser(requireContext(), xToken, user.id)
         }
 
@@ -176,6 +229,9 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         for (acc in accounts) {
             addSocialAccount(acc)
         }
+
+        commentsCountText.text = user.counters.comments.toString()
+        favoritesCountText.text = user.counters.favorites.toString()
 
         setProfile()
         authLayout.visibility = GONE
@@ -191,14 +247,16 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         disposable.add(viewModel.localUser(userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 nameText.text = it.name
-                setAvatar(it.avatarUrl)
-                setKarma(it.karma)
-                setDate(it.createdDateRFC)
-                setPaidIcon(it.tjSubscriptionActive)
+                updateAvatar(it.avatarUrl)
+                updateKarma(it.karma)
+                updateDate(it.createdDateRFC)
+                updatePaidIcon(it.tjSubscriptionActive)
             }, { error -> Timber.e(error) }))
+
+        (activity as MainActivity).clearBottomAvatar()
     }
 
-    private fun setAvatar(url: String) {
+    private fun updateAvatar(url: String) {
         Timber.i("set avatar: $url")
         Picasso.get().load(url).placeholder(R.drawable.placeholder_circle).error(R.drawable.error_circle)
             .into(object : com.squareup.picasso.Target {
@@ -217,7 +275,7 @@ class ProfileFragment : Fragment(), ProfileContract.View {
             })
     }
 
-    private fun setKarma(karma: Long) {
+    private fun updateKarma(karma: Long) {
         Timber.i("set karma: $karma")
         val karmaTextColor = intArrayOf(R.color.karma_value, R.color.karma_value_pos, R.color.karma_value_neg)
         val karmaBackground = intArrayOf(R.color.karma_background, R.color.karma_background_pos, R.color.karma_background_neg)
@@ -240,22 +298,20 @@ class ProfileFragment : Fragment(), ProfileContract.View {
         }
     }
 
-    private fun setDate(date: String) {
+    private fun updateDate(date: String) {
         Timber.i("set date: $date")
-        regDate.text = getString(R.string.sign_up_date, TimeFormatter.convertRegDate(context, date))
+        regDate.text = getString(R.string.reg_date, TimeFormatter.convertRegDate(context, date))
     }
 
-    private fun setPaidIcon(paid: Boolean) {
+    private fun updatePaidIcon(paid: Boolean) {
         Timber.i("set paid icon: $paid")
         paidIcon.visibility = if (paid) VISIBLE else GONE
     }
 
-
-
     private fun addSocialAccount(account: SocialAccount) {
         val socialView = SocialView(requireContext())
         socialView.setAccount(account)
-        contactsLayout.addChildView(socialView)
+        accountsView?.addView(socialView)
     }
 
     private fun startScan() {
@@ -307,11 +363,13 @@ class ProfileFragment : Fragment(), ProfileContract.View {
 
     override fun onStop() {
         super.onStop()
+        //registry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         disposable.clear()
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        presenter.destroy()
         super.onDestroy()
+        //registry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }
 }

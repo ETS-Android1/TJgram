@@ -37,7 +37,6 @@ public class PhotoActivity extends AppCompatActivity {
     private static final String EXTRA_IMAGE_URL = "image_url";
 
     private Toolbar toolbar;
-    private AppBarLayout appBarLayout;
 
     private View background;
     private CircleGestureImageView photoView;
@@ -74,11 +73,6 @@ public class PhotoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
-        /*if (Build.VERSION.SDK_INT >= 21) {
-            appBarLayout.setStateListAnimator(null);
-        }
-        ViewCompat.setElevation(appBarLayout, DeviceUtil.INSTANCE.dp(this, 0F));*/
-
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(ViewUtil.INSTANCE.getIcon(this, R.drawable.ic_arrow_back, R.color.primary));
@@ -88,7 +82,7 @@ public class PhotoActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(getString(R.string.photo_of, 1, 1));
         }
 
-        appBarLayout = findViewById(R.id.appBarLayout);
+        AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
         appBarLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent));
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
@@ -98,15 +92,12 @@ public class PhotoActivity extends AppCompatActivity {
 
         photoView = findViewById(R.id.fullImage);
         photoView.setOnClickListener(v -> {
-            showSystemUi(!isSystemUiShown());
-            toolbar.setVisibility(!isSystemUiShown() ? View.VISIBLE : View.INVISIBLE);
+            showSystemUi(isSystemUiShown());
+            toolbar.setVisibility(isSystemUiShown() ? View.VISIBLE : View.INVISIBLE);
         });
-        photoView.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View v, DragEvent event) {
-                Timber.e("onDrag");
-                return false;
-            }
+        photoView.setOnDragListener((v, event) -> {
+            Timber.e("onDrag");
+            return false;
         });
         photoView.getController().addOnStateChangeListener(new GestureController.OnStateChangeListener() {
             @Override
@@ -220,7 +211,7 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     private boolean isSystemUiShown() {
-        return (getWindow().getDecorView().getSystemUiVisibility() & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0;
+        return (getWindow().getDecorView().getSystemUiVisibility() & View.SYSTEM_UI_FLAG_FULLSCREEN) != 0;
     }
 
     private void showSystemUi(boolean show) {

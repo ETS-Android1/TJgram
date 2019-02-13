@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="?android:attr/colorForeground"
+    android:background="@color/card"
     android:visibility="gone"
     tools:visibility="visible">
 
@@ -100,5 +100,98 @@
         android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@+id/regDate"
         app:inner_view="@layout/view_collapsed"/>
+
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="?android:attr/colorBackground"
+        app:layout_constraintTop_toBottomOf="@+id/contactsLayout"/>
+
+    <!--Comments-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/commentsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@+id/dividerView">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/commentsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginStart="16dp"
+            android:text="@string/comments"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/commentsCountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:fontFamily="sans-serif"
+            android:layout_marginEnd="16dp"
+            android:text="@string/loading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="65 536"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/dividerView2"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginStart="14dp"
+        android:background="?android:attr/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/commentsLayout"/>
+
+    <!--Favorites-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/favoritesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toBottomOf="@+id/dividerView2">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/favoritesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginStart="16dp"
+            android:text="@string/favorites"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/favoritesCountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:fontFamily="sans-serif"
+            android:layout_marginEnd="16dp"
+            android:text="@string/loading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="1536"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

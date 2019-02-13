@@ -6,15 +6,6 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import org.michaelbel.tjgram.R
 
-/**
- * Class description
- *
- * @author ashokvarma
- * @version 1.0
- * @see BottomNavigationTab
- *
- * @since 19 Mar 2016
- */
 class FixedBottomNavigationTab : BottomNavigationTab {
 
     private var labelScale: Float = 0.toFloat()
@@ -35,8 +26,9 @@ class FixedBottomNavigationTab : BottomNavigationTab {
         iconContainerView = view.findViewById(R.id.fixed_bottom_navigation_icon_container)
         badgeView = view.findViewById(R.id.fixed_bottom_navigation_badge)
 
-        labelScale = resources.getDimension(R.dimen.fixed_label_inactive) / resources.getDimension(R.dimen.fixed_label_active)
+        userAvatar = view.findViewById(R.id.user_avatar)
 
+        labelScale = resources.getDimension(R.dimen.fixed_label_inactive) / resources.getDimension(R.dimen.fixed_label_active)
         super.init()
     }
 

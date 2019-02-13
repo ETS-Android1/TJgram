@@ -1,14 +1,9 @@
 package org.michaelbel.tjgram.ui.post
 
-import io.reactivex.Observable
-import okhttp3.MultipartBody
-import org.michaelbel.tjgram.BasePresenter
+import org.michaelbel.tjgram.BaseContract
 import org.michaelbel.tjgram.data.entity.AttachResponse
-import org.michaelbel.tjgram.data.entity.BaseResult
 import org.michaelbel.tjgram.data.entity.Entry
-import org.michaelbel.tjgram.data.entity.EntryResult
 import java.io.File
-import java.util.*
 
 interface PostContract {
 
@@ -19,13 +14,8 @@ interface PostContract {
         fun setError(throwable: Throwable)
     }
 
-    interface Presenter: BasePresenter<View> {
+    interface Presenter: BaseContract.Presenter<View> {
         fun uploadFile(file: File?)
         fun createEntry(title: String, text: String, subsiteId: Long, attaches: Map<String, String>)
-    }
-
-    interface Repository {
-        fun uploadFile(body: MultipartBody.Part) : Observable<BaseResult<ArrayList<AttachResponse>>>
-        fun createEntry(title: String, text: String, subsiteId: Long, attaches: Map<String, String>) : Observable<EntryResult>
     }
 }

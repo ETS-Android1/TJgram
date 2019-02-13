@@ -1,9 +1,24 @@
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="prefs">
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="@string/account">
-        <Preference android:key="key_logout" android:title="@string/menu_log_out"/>
+    <PreferenceCategory
+        app:title="@string/category_general"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreferenceCompat
+            app:key="key_browser"
+            app:title="@string/in_app_browser"
+            app:summary="@string/in_app_browser_info"
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"/>
+
     </PreferenceCategory>
 
-</PreferenceScreen>
+    <Preference app:selectable="false" app:layout="@layout/preference_divider"/>
+
+    <Preference
+        app:key="key_logout"
+        app:title="@string/preference_logout"
+        app:iconSpaceReserved="false"/>
+
+</androidx.preference.PreferenceScreen>
