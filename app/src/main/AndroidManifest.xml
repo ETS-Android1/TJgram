@@ -30,7 +30,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".modules.MainActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Launcher">
@@ -41,24 +41,26 @@
         </activity>
 
         <activity
-            android:name=".ui.ScanQrActivity"
+            android:name="com.blikoon.qrcodescanner.QrCodeActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".ui.NewPostActivity"
+            android:name=".modules.addpost.PostActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".ui.PhotoActivity"
+            android:name=".modules.PhotoActivity"
             android:theme="@style/AppTheme.StatusBar.Transparent"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".modules.settings.SettingsActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
+
+        <activity android:name="pub.devrel.easypermissions.AppSettingsDialogHolderActivity" />
 
     </application>
 
