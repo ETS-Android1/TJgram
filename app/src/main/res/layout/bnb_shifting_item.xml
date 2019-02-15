@@ -3,13 +3,13 @@
     android:id="@+id/shifting_bottom_navigation_container"
     android:focusable="true"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/shifting_height"
     android:background="?selectableItemBackgroundBorderless"
     android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingLeft="6dp"
-    android:paddingRight="6dp"
-    android:paddingTop="10dp">
+    android:paddingBottom="@dimen/shifting_margin_top_bottom"
+    android:paddingLeft="@dimen/shifting_margin_start_end"
+    android:paddingRight="@dimen/shifting_margin_start_end"
+    android:paddingTop="@dimen/shifting_margin_top_bottom">
 
     <FrameLayout
         android:id="@+id/shifting_bottom_navigation_icon_container"

@@ -1,7 +1,7 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="88dp"
-    android:layout_height="88dp">
+    android:layout_width="@dimen/post_photo_view_size"
+    android:layout_height="@dimen/post_photo_view_size">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView"

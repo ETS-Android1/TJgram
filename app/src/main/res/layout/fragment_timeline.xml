@@ -41,8 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:layout_marginTop="8dp"
-                android:padding="8dp"
+                android:layout_marginTop="@dimen/timeline_error_retry_btn_margin"
+                android:padding="@dimen/timeline_error_retry_btn_padding"
                 android:text="@string/action_retry"
                 style="@style/Button.Borderless"/>
 

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--timeline-->
+    <dimen name="timeline_fragment_margin">48dp</dimen>
     <dimen name="timeline_error_margin">24dp</dimen>
     <dimen name="timeline_error_text_size">16sp</dimen>
+    <dimen name="timeline_error_retry_btn_margin">8dp</dimen>
+    <dimen name="timeline_error_retry_btn_padding">8dp</dimen>
     <dimen name="timeline_entry_avatar_size">40dp</dimen>
     <dimen name="timeline_entry_pin_icon_size">15dp</dimen>
     <dimen name="timeline_entry_pin_icon_margin">8dp</dimen>
@@ -11,6 +14,22 @@
     <dimen name="timeline_entry_intro_text_size">14sp</dimen>
     <dimen name="timeline_entry_divider_height">1px</dimen>
     <dimen name="timeline_entry_likes_text_size">14sp</dimen>
+    <!--post-->
+    <integer name="post_title_text_max_length">120</integer>
+    <dimen name="post_content_margin_bottom">16dp</dimen>
+    <dimen name="post_card_margin">8dp</dimen>
+    <dimen name="post_card_corner_radius">5dp</dimen>
+    <dimen name="post_card_elevation">0dp</dimen>
+    <dimen name="post_edit_text_margin">8dp</dimen>
+    <dimen name="post_title_edit_text_size">25sp</dimen>
+    <dimen name="post_intro_edit_text_size">18sp</dimen>
+    <dimen name="post_remove_icon_margin">6dp</dimen>
+    <dimen name="post_images_layout_height">104dp</dimen>
+    <dimen name="post_images_layout_placeholder_text_size">16sp</dimen>
+    <dimen name="post_photo_view_size">88dp</dimen>
+    <dimen name="post_photo_view_margin">2dp</dimen>
+    <dimen name="post_photo_view_text_margin">16dp</dimen>
+    <dimen name="post_photo_view_text_size">16sp</dimen>
     <!--profile-->
     <dimen name="auth_logo_image_margin_bottom">8dp</dimen>
     <dimen name="auth_pre_text_size">18sp</dimen>
@@ -25,4 +44,12 @@
     <dimen name="auth_login_btn_text_size">16sp</dimen>
     <dimen name="auth_login_btn_text_margin_start">56dp</dimen>
     <dimen name="auth_login_btn_text_margin_end">16dp</dimen>
+    <dimen name="profile_contacts_view_height">52dp</dimen>
+    <dimen name="profile_contacts_title_text_size">16sp</dimen>
+    <dimen name="profile_contacts_padding">16dp</dimen>
+    <!--qr-->
+    <dimen name="qr_flashlight_layout_height">110dp</dimen>
+    <dimen name="qr_flashlight_icon_size">32dp</dimen><!--todo почему не 24dp?-->
+    <dimen name="qr_flashlight_text_size">16sp</dimen>
+    <dimen name="qr_flashlight_text_margin">16dp</dimen>
 </resources>

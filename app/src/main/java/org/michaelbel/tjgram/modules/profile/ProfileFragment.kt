@@ -38,6 +38,7 @@ import org.michaelbel.tjgram.data.viewmodel.ViewModelFactory
 import org.michaelbel.tjgram.modules.MainActivity
 import com.blikoon.qrcodescanner.QrCodeActivity
 import org.michaelbel.tjgram.modules.profile.view.SocialView
+import org.michaelbel.tjgram.modules.settings.SettingsActivity
 import org.michaelbel.tjgram.utils.ViewUtil
 import org.michaelbel.tjgram.utils.date.TimeFormatter
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -163,8 +164,7 @@ class ProfileFragment : Fragment(), /*LifecycleOwner, */ProfileContract.View/*, 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.item_settings) {
-            //startActivityForResult(Intent(requireActivity(), SettingsActivity::class.java), REQUEST_CODE_LOGOUT)
-            startActivity(Intent(requireActivity(), org.michaelbel.pagingwithnetwork.MainActivity::class.java))
+            startActivityForResult(Intent(requireActivity(), SettingsActivity::class.java), REQUEST_CODE_LOGOUT)
             return true
         }
 

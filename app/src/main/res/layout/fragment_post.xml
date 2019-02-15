@@ -12,27 +12,27 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/post_content_margin_bottom"
             android:orientation="vertical">
 
             <!--Title-->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="0dp">
+                android:layout_marginStart="@dimen/post_card_margin"
+                android:layout_marginTop="@dimen/post_card_margin"
+                android:layout_marginEnd="@dimen/post_card_margin"
+                app:cardCornerRadius="@dimen/post_card_corner_radius"
+                app:cardElevation="@dimen/post_card_elevation">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/titleEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:maxLength="120"
-                    android:textSize="25sp"
+                    android:layout_marginStart="@dimen/post_edit_text_margin"
+                    android:layout_marginEnd="@dimen/post_edit_text_margin"
+                    android:maxLength="@integer/post_title_text_max_length"
+                    android:textSize="@dimen/post_title_edit_text_size"
                     android:fontFamily="sans-serif-medium"
                     android:hint="@string/header"/>
 
@@ -42,20 +42,20 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="0dp">
+                android:layout_marginStart="@dimen/post_card_margin"
+                android:layout_marginTop="@dimen/post_card_margin"
+                android:layout_marginEnd="@dimen/post_card_margin"
+                android:layout_marginBottom="@dimen/post_card_margin"
+                app:cardCornerRadius="@dimen/post_card_corner_radius"
+                app:cardElevation="@dimen/post_card_elevation">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/introEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:textSize="18sp"
+                    android:layout_marginStart="@dimen/post_edit_text_margin"
+                    android:layout_marginEnd="@dimen/post_edit_text_margin"
+                    android:textSize="@dimen/post_intro_edit_text_size"
                     android:hint="@string/entry_text"/>
 
             </androidx.cardview.widget.CardView>
@@ -65,11 +65,11 @@
                 android:id="@+id/cardImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/post_card_margin"
+                android:layout_marginEnd="@dimen/post_card_margin"
                 android:visibility="gone"
-                app:cardElevation="0dp"
-                app:cardCornerRadius="5dp">
+                app:cardElevation="@dimen/post_card_elevation"
+                app:cardCornerRadius="@dimen/post_card_corner_radius">
 
                 <org.michaelbel.tjgram.modules.addpost.view.SquaredImageView
                     android:id="@+id/imageView"
@@ -83,8 +83,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|end"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="@dimen/post_remove_icon_margin"
+                    android:layout_marginTop="@dimen/post_remove_icon_margin"
                     android:background="@drawable/remove_circle"
                     android:visibility="gone"
                     app:srcCompat="@drawable/ic_clear"/>
@@ -109,7 +109,7 @@
     <FrameLayout
         android:id="@+id/imagesLayout"
         android:layout_width="match_parent"
-        android:layout_height="104dp"
+        android:layout_height="@dimen/post_images_layout_height"
         android:layout_gravity="bottom"
         android:background="@color/card"
         android:visibility="invisible">
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textSize="16sp"
+            android:textSize="@dimen/post_images_layout_placeholder_text_size"
             android:textColor="?android:attr/textColorSecondary"
             android:text="@string/gallery_grant_permission"
             android:visibility="invisible"/>

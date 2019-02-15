@@ -28,7 +28,7 @@
     <dimen name="fixed_max_width">168dp</dimen>
     <dimen name="fixed_width_padding">12dp</dimen>
 
-    <dimen name="fixed_height">56dp</dimen>
+    <dimen name="fixed_height">48dp</dimen>
     <dimen name="fixed_no_title_icon_container_height">42dp</dimen>
     <dimen name="fixed_no_title_icon_container_width">56dp</dimen>
     <dimen name="fixed_no_title_icon_height">32dp</dimen>
@@ -45,13 +45,16 @@
     <dimen name="fixed_icon_badge_grid_height">36dp</dimen><!-- this adds 6 dp extra to top and bottom icon -->
     <dimen name="fixed_icon_badge_grid_width">48dp</dimen><!-- this adds 6 dp extra to top and bottom icon -->
 
+    <dimen name="shifting_margin_top_bottom">10dp</dimen>
+    <dimen name="shifting_margin_start_end">6dp</dimen>
+
     <dimen name="shifting_min_width_active">96dp</dimen>
     <dimen name="shifting_max_width_active">168dp</dimen>
     <dimen name="shifting_min_width_inactive">64dp</dimen>
     <dimen name="shifting_max_width_inactive">96dp</dimen>
     <dimen name="shifting_width_custom_padding">6dp</dimen>
 
-    <dimen name="shifting_height">56dp</dimen>
+    <dimen name="shifting_height">48dp</dimen>
     <dimen name="shifting_no_title_icon_container_height">42dp</dimen>
     <dimen name="shifting_no_title_icon_container_width">56dp</dimen>
     <dimen name="shifting_no_title_icon_height">32dp</dimen>
@@ -77,4 +80,6 @@
     <dimen name="badge_width_padding">4dp</dimen><!-- 4 -->
     <dimen name="badge_height_padding">1dp</dimen><!-- 1 -->
     <dimen name="badge_top_margin">2dp</dimen><!-- 2 -->
+
+    <dimen name="bottom_navigation_item_avatar_size">32dp</dimen>
 </resources>
