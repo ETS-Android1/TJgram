@@ -28,14 +28,4 @@ object FileUtil {
         }
         return path
     }
-
-    fun isImage(type: String): Boolean {
-        return type == "jpg" || type == "JPG" ||
-               type == "jpeg" || type == "JPEG" ||
-               type == "png" || type == "bmp" || type == "webp"
-    }
-
-    fun isGif(type: String): Boolean {
-        return type == "gif"
-    }
 }

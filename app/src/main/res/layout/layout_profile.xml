@@ -93,7 +93,7 @@
         tools:text="Зарегистрировался 25 июля 2015"/>
 
     <!--Expand Contacts-->
-    <org.michaelbel.tjgram.ui.profile.view.ExpandableView
+    <org.michaelbel.tjgram.modules.profile.view.ExpandableView
         android:id="@+id/contactsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -54,6 +54,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
     androidExtensions {
         experimental = true
     }
@@ -110,22 +114,28 @@ configurations.all {
 }
 
 dependencies {
+    implementation deps.kotlin.stdlib
+    implementation deps.kotlin.reflect
+
+    implementation deps.ktx.core
+
     implementation deps.material
     implementation deps.appcompat
     implementation deps.cardview
     implementation deps.preference
-    implementation deps.constraintlayout.runtime
-
+    implementation deps.support_v4
     implementation deps.vectordrawable
     implementation deps.interpolator
 
-    implementation deps.kotlin.stdlib
-
-    implementation deps.ktx.core
+    implementation deps.constraintlayout.runtime
 
     implementation deps.paging.common
     implementation deps.paging.runtime
     implementation deps.paging.rxjava2
+    implementation deps.paging.ktx
+
+    implementation deps.lifecycle.extensions
+              kapt deps.lifecycle.compiler
 
     implementation deps.room.runtime
     implementation deps.room.rxjava2
@@ -140,8 +150,13 @@ dependencies {
     implementation deps.koin.androidx_scope
     implementation deps.koin.androidx_viewmodel
 
+    implementation deps.glide.runtime
+              kapt deps.glide.compiler
+
     implementation deps.rxjava2
     implementation deps.rxandroid
+    implementation deps.rxkotlin
+
     implementation deps.okhttp_logging_interceptor
     implementation deps.leakcanary
     implementation deps.picasso
@@ -152,10 +167,4 @@ dependencies {
     implementation deps.sherlock
     implementation deps.zxing
     implementation deps.json_simple
-
-
-
-    implementation 'com.alexvasilkov:events:1.0.0'
-    implementation 'com.alexvasilkov:gesture-views:2.4.0'
-    implementation 'com.alexvasilkov:android-commons:2.0.2'
 }

@@ -1,68 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--Entry Card-->
-    <dimen name="avatar_size">40dp</dimen>
-
-
-
-    <dimen name="gallery_fab_margin">16dp</dimen>
-    <dimen name="gallery_item_size">128dp</dimen>
-    <dimen name="gallery_item_offset">1dp</dimen>
-    <dimen name="gallery_item_check_padding">16dp</dimen>
-    <dimen name="gallery_item_text_padding">8dp</dimen>
-
-    <!--BottomNavigationBar-->
-    <dimen name="fixed_min_width">120dp</dimen>
-    <dimen name="fixed_min_width_small_views">104dp</dimen>
-    <dimen name="fixed_max_width">168dp</dimen>
-    <dimen name="fixed_width_padding">12dp</dimen>
-
-    <dimen name="fixed_height">56dp</dimen>
-    <dimen name="fixed_no_title_icon_container_height">42dp</dimen>
-    <dimen name="fixed_no_title_icon_container_width">56dp</dimen>
-    <dimen name="fixed_no_title_icon_height">32dp</dimen>
-    <dimen name="fixed_no_title_icon_width">32dp</dimen>
-    <dimen name="fixed_height_top_padding_inactive">2dp</dimen><!-- 8(Top Padding) - 12/2(extra padding due to badges) = 2 -->
-    <dimen name="fixed_height_top_padding_active">0dp</dimen><!-- 6(Top Padding) - 12/2(extra padding due to badges) = 0 -->
-    <dimen name="fixed_height_bottom_padding">10dp</dimen>
-
-    <dimen name="fixed_label_active">14sp</dimen>
-    <dimen name="fixed_label_inactive">12sp</dimen>
-    <item name="fixed_label_active_to_inactive_ratio" format="float" type="dimen">0.857</item>
-
-    <dimen name="fixed_icon_grid">24dp</dimen>
-    <dimen name="fixed_icon_badge_grid_height">36dp</dimen><!-- this adds 6 dp extra to top and bottom icon -->
-    <dimen name="fixed_icon_badge_grid_width">48dp</dimen><!-- this adds 6 dp extra to top and bottom icon -->
-
-    <dimen name="shifting_min_width_active">96dp</dimen>
-    <dimen name="shifting_max_width_active">168dp</dimen>
-    <dimen name="shifting_min_width_inactive">64dp</dimen>
-    <dimen name="shifting_max_width_inactive">96dp</dimen>
-    <dimen name="shifting_width_custom_padding">6dp</dimen>
-
-    <dimen name="shifting_height">56dp</dimen>
-    <dimen name="shifting_no_title_icon_container_height">42dp</dimen>
-    <dimen name="shifting_no_title_icon_container_width">56dp</dimen>
-    <dimen name="shifting_no_title_icon_height">32dp</dimen>
-    <dimen name="shifting_no_title_icon_width">32dp</dimen>
-    <dimen name="shifting_height_bottom_padding_inactive">16dp</dimen><!-- not used because in inactive state text-view will be hidden and for icon top padding would be enough -->
-    <dimen name="shifting_height_bottom_padding_active">10dp</dimen>
-    <dimen name="shifting_height_top_padding_active">0dp</dimen><!-- 6(Top padding) - 12/2(extra padding due to badges) = 0 -->
-    <dimen name="shifting_height_top_padding_inactive">10dp</dimen><!-- 56(total) - 24(icon) - 16(bottom padding inactive) = 16 ||| 16 - 12/2(extra padding due to badges)  = 10-->
-
-    <dimen name="shifting_label">14sp</dimen>
-
-    <dimen name="shifting_icon_grid">24dp</dimen>
-    <dimen name="shifting_icon_badge_grid_height">36dp</dimen>
-    <dimen name="shifting_icon_badge_grid_width">48dp</dimen>
-
-    <dimen name="bottom_navigation_elevation">8dp</dimen>
-    <dimen name="bottom_navigation_height">56dp</dimen>
-    <dimen name="bottom_navigation_padded_height">64dp</dimen>
-    <dimen name="bottom_navigation_top_margin_correction">-8dp</dimen><!-- 64 - 56 = 8 -->
-
-    <dimen name="badge_text_size">12sp</dimen><!-- 10 -->
-    <dimen name="badge_corner_radius">13dp</dimen><!-- 15 -->
-    <dimen name="badge_width_padding">4dp</dimen><!-- 4 -->
-    <dimen name="badge_height_padding">1dp</dimen><!-- 1 -->
-    <dimen name="badge_top_margin">2dp</dimen><!-- 2 -->
+    <!--timeline-->
+    <dimen name="timeline_fragment_margin">48dp</dimen>
+    <dimen name="timeline_error_margin">24dp</dimen>
+    <dimen name="timeline_error_text_size">16sp</dimen>
+    <dimen name="timeline_error_retry_btn_margin">8dp</dimen>
+    <dimen name="timeline_error_retry_btn_padding">8dp</dimen>
+    <dimen name="timeline_entry_avatar_size">40dp</dimen>
+    <dimen name="timeline_entry_pin_icon_size">15dp</dimen>
+    <dimen name="timeline_entry_pin_icon_margin">8dp</dimen>
+    <dimen name="timeline_entry_menu_icon_margin">8dp</dimen>
+    <dimen name="timeline_entry_title_text_size">16sp</dimen>
+    <dimen name="timeline_entry_intro_text_size">14sp</dimen>
+    <dimen name="timeline_entry_divider_height">1px</dimen>
+    <dimen name="timeline_entry_likes_text_size">14sp</dimen>
+    <!--post-->
+    <integer name="post_title_text_max_length">120</integer>
+    <dimen name="post_content_margin_bottom">16dp</dimen>
+    <dimen name="post_card_margin">8dp</dimen>
+    <dimen name="post_card_corner_radius">5dp</dimen>
+    <dimen name="post_card_elevation">0dp</dimen>
+    <dimen name="post_edit_text_margin">8dp</dimen>
+    <dimen name="post_title_edit_text_size">25sp</dimen>
+    <dimen name="post_intro_edit_text_size">18sp</dimen>
+    <dimen name="post_remove_icon_margin">6dp</dimen>
+    <dimen name="post_images_layout_height">104dp</dimen>
+    <dimen name="post_images_layout_placeholder_text_size">16sp</dimen>
+    <dimen name="post_photo_view_size">88dp</dimen>
+    <dimen name="post_photo_view_margin">2dp</dimen>
+    <dimen name="post_photo_view_text_margin">16dp</dimen>
+    <dimen name="post_photo_view_text_size">16sp</dimen>
+    <!--profile-->
+    <dimen name="auth_logo_image_margin_bottom">8dp</dimen>
+    <dimen name="auth_pre_text_size">18sp</dimen>
+    <dimen name="auth_pre_text_margin">16dp</dimen>
+    <dimen name="auth_pre_text_margin_top">8dp</dimen>
+    <dimen name="auth_login_btn_margin_bottom">56dp</dimen>
+    <dimen name="auth_login_btn_corner_radius">8dp</dimen>
+    <dimen name="auth_login_btn_elevation">1dp</dimen>
+    <dimen name="auth_login_btn_icon_margin_start">16dp</dimen>
+    <dimen name="auth_login_btn_icon_margin_top">12dp</dimen>
+    <dimen name="auth_login_btn_icon_margin_bottom">12dp</dimen>
+    <dimen name="auth_login_btn_text_size">16sp</dimen>
+    <dimen name="auth_login_btn_text_margin_start">56dp</dimen>
+    <dimen name="auth_login_btn_text_margin_end">16dp</dimen>
+    <dimen name="profile_contacts_view_height">52dp</dimen>
+    <dimen name="profile_contacts_title_text_size">16sp</dimen>
+    <dimen name="profile_contacts_padding">16dp</dimen>
+    <!--qr-->
+    <dimen name="qr_flashlight_layout_height">110dp</dimen>
+    <dimen name="qr_flashlight_icon_size">32dp</dimen><!--todo почему не 24dp?-->
+    <dimen name="qr_flashlight_text_size">16sp</dimen>
+    <dimen name="qr_flashlight_text_margin">16dp</dimen>
 </resources>

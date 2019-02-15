@@ -2,7 +2,7 @@ package org.michaelbel.tjgram.data.viewmodel
 
 import android.content.Context
 import org.michaelbel.tjgram.data.persistence.AppDatabase
-import org.michaelbel.tjgram.data.persistence.UserDao
+import org.michaelbel.tjgram.data.persistence.dao.UserDao
 
 object Injection {
 

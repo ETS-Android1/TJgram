@@ -3,7 +3,7 @@
     android:id="@+id/fixed_bottom_navigation_container"
     android:focusable="true"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/fixed_height"
     android:background="?selectableItemBackgroundBorderless">
 
     <FrameLayout
@@ -14,13 +14,13 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/fixed_bottom_navigation_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/fixed_icon_grid"
+            android:layout_height="@dimen/fixed_icon_grid"
             android:layout_gravity="center"
             android:gravity="center"
             android:scaleType="fitXY"/>
 
-        <org.michaelbel.tjgram.ui.common.bottombar.BadgeTextView
+        <com.ashokvarma.bottomnavigation.BadgeTextView
             android:id="@+id/fixed_bottom_navigation_badge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,8 +31,8 @@
         <!--Avatar-->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/user_avatar"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/bottom_navigation_item_avatar_size"
+            android:layout_height="@dimen/bottom_navigation_item_avatar_size"
             android:layout_gravity="center"
             android:gravity="center"
             android:scaleType="fitXY"/>

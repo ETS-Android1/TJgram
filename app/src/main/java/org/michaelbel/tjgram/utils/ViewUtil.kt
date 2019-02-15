@@ -26,9 +26,7 @@ object ViewUtil {
         cursorDrawableRes.setInt(editText, 0)
     }
 
-    fun getIcon(context: Context, @DrawableRes resource: Int, colorFilter: Int): Drawable? {
-        return getIcon(context, resource, colorFilter, PorterDuff.Mode.MULTIPLY)
-    }
+    fun getIcon(context: Context, @DrawableRes resource: Int, colorFilter: Int): Drawable? = getIcon(context, resource, colorFilter, PorterDuff.Mode.MULTIPLY)
 
     fun getIcon(context: Context, @DrawableRes resource: Int, colorFilter: Int, mode: PorterDuff.Mode): Drawable? {
         val iconDrawable = ContextCompat.getDrawable(context, resource)
