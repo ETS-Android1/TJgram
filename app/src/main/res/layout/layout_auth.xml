@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,7 +17,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/auth_logo_image_margin_bottom"
         app:layout_constraintBottom_toBottomOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,10 +32,10 @@
         android:lineSpacingMultiplier="1.2"
         android:text="@string/msg_pre_auth"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="18sp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:textSize="@dimen/auth_pre_text_size"
+        android:layout_marginStart="@dimen/auth_pre_text_margin"
+        android:layout_marginTop="@dimen/auth_pre_text_margin_top"
+        android:layout_marginEnd="@dimen/auth_pre_text_margin"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -50,11 +51,11 @@
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="@dimen/auth_login_btn_margin_bottom"
         android:foreground="?attr/selectableItemBackground"
         app:cardBackgroundColor="@color/md_amber_50"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="1dp"
+        app:cardCornerRadius="@dimen/auth_login_btn_corner_radius"
+        app:cardElevation="@dimen/auth_login_btn_elevation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -64,22 +65,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginStart="@dimen/auth_login_btn_icon_margin_start"
+            android:layout_marginTop="@dimen/auth_login_btn_icon_margin_top"
+            android:layout_marginBottom="@dimen/auth_login_btn_icon_margin_bottom"
             tools:srcCompat="@drawable/ic_qr"/>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="56dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="@dimen/auth_login_btn_text_margin_start"
+            android:layout_marginEnd="@dimen/auth_login_btn_text_margin_end"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"
             android:text="@string/login_qr"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/auth_login_btn_text_size"/>
 
     </androidx.cardview.widget.CardView>
 

@@ -3,9 +3,9 @@ package org.michaelbel.tjgram.data.viewmodel
 import androidx.lifecycle.ViewModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import org.michaelbel.tjgram.data.entity.User
-import org.michaelbel.tjgram.data.persistence.LocalUser
-import org.michaelbel.tjgram.data.persistence.UserDao
+import org.michaelbel.tjgram.data.entities.User
+import org.michaelbel.tjgram.data.persistence.entities.LocalUser
+import org.michaelbel.tjgram.data.persistence.dao.UserDao
 
 class UserViewModel(private val dataSource: UserDao) : ViewModel() {
 
@@ -20,7 +20,7 @@ class UserViewModel(private val dataSource: UserDao) : ViewModel() {
     fun updateUser(user: User): Completable {
         val localUser = LocalUser(
                 id = user.id,
-                name =  user.name,
+                name = user.name,
                 avatarUrl = user.avatarUrl,
                 createdDate = user.createdDate,
                 createdDateRFC = user.createdDateRFC,

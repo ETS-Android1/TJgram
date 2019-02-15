@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.PhotoActivity">
+    tools:context=".modules.PhotoActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -27,7 +27,7 @@
         android:layout_height="match_parent"
         android:background="#000"/>
 
-    <org.michaelbel.tjgram.ui.common.gestures.CircleGestureImageView
+    <com.alexvasilkov.gestures.commons.circle.CircleGestureImageView
         android:id="@+id/fullImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

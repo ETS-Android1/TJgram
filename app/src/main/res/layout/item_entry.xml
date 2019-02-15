@@ -1,274 +1,266 @@
-<androidx.cardview.widget.CardView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/card"
+    tools:background="@color/card">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
+    <!--Author-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/authorCard"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/card"
-        tools:background="@color/card">
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="0dp">
 
-        <!--Author-->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/authorCard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <!--Avatar-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/authorIcon"
+            android:layout_width="@dimen/timeline_entry_avatar_size"
+            android:layout_height="@dimen/timeline_entry_avatar_size"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
-            android:foreground="?attr/selectableItemBackground"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="start|center_vertical"
+            tools:background="#000"/>
 
-            <!--Avatar-->
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/authorIcon"
-                android:layout_width="@dimen/avatar_size"
-                android:layout_height="@dimen/avatar_size"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_gravity="start|center_vertical"
-                tools:background="#000"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="64dp"
-                android:paddingStart="0dp"
-                android:paddingTop="4dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="4dp">
-
-                <!--Name-->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/authorName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:fontFamily="sans-serif-medium"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    tools:text="Трехтысячилетний пёс"/>
-
-                <!--Date-->
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/dateText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="13sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:fontFamily="sans-serif"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:layout_below="@+id/authorName"
-                    tools:text="14 световых лет назад"/>
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!--Pin Icon-->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/pinImage"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toEndOf="@id/authorCard"
-            app:layout_constraintTop_toTopOf="@id/authorCard"
-            tools:srcCompat="@drawable/ic_pin"/>
-
-        <!--Menu Icon-->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/menuImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/authorCard"
-            app:layout_constraintBottom_toBottomOf="@id/authorCard"
-            tools:srcCompat="@drawable/ic_dots_vertical"/>
-
-        <!--Media-->
-        <FrameLayout
-            android:id="@+id/mediaLayout"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="194dp"
-            android:layout_marginTop="4dp"
-            android:background="?android:attr/colorBackground"
-            app:layout_constraintTop_toBottomOf="@id/authorCard">
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="64dp"
+            android:paddingStart="0dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp">
 
-            <!--Image-->
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/coverImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                tools:src="@mipmap/ic_launcher"
-                tools:visibility="visible"/>
-
-            <!--Gif-->
-            <FrameLayout
-                android:id="@+id/gifLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:visibility="gone">
-
-                <VideoView
-                    android:id="@+id/videoView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <!--GIF Badge-->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:cardBackgroundColor="@color/transparent40"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="4dp"
-                        android:maxLines="1"
-                        android:textSize="14sp"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="?android:attr/colorForeground"
-                        android:text="@string/gif"
-                        android:textAllCaps="true"/>
-
-                </androidx.cardview.widget.CardView>
-
-            </FrameLayout>
-
-            <!--Double Tap Like-->
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/doubleTapHeart"
+            <!--Name-->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/authorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="invisible"/>
+                android:textSize="16sp"
+                android:textColor="?android:attr/textColorPrimary"
+                android:fontFamily="sans-serif-medium"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Трехтысячилетний пёс"/>
 
-        </FrameLayout>
+            <!--Date-->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:fontFamily="sans-serif"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_below="@+id/authorName"
+                tools:text="14 световых лет назад"/>
 
-        <!--Title-->
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/entryTitle"
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!--Pin Icon-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/pinImage"
+        android:layout_width="@dimen/timeline_entry_pin_icon_size"
+        android:layout_height="@dimen/timeline_entry_pin_icon_size"
+        android:layout_marginStart="@dimen/timeline_entry_pin_icon_margin"
+        android:layout_marginEnd="@dimen/timeline_entry_pin_icon_margin"
+        app:layout_constraintStart_toEndOf="@id/authorCard"
+        app:layout_constraintTop_toTopOf="@id/authorCard"
+        tools:srcCompat="@drawable/ic_pin"/>
+
+    <!--Menu Icon-->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/menuImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/timeline_entry_menu_icon_margin"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/authorCard"
+        app:layout_constraintBottom_toBottomOf="@id/authorCard"
+        tools:srcCompat="@drawable/ic_dots_vertical"/>
+
+    <!--Media-->
+    <FrameLayout
+        android:id="@+id/mediaLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="?android:attr/colorBackground"
+        app:layout_constraintTop_toBottomOf="@id/authorCard">
+
+        <!--Image-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/coverImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="16sp"
-            android:textStyle="normal"
-            android:lineSpacingMultiplier="1.10"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="?android:attr/textColorPrimary"
-            app:layout_constraintTop_toBottomOf="@id/mediaLayout"
-            tools:text="Никита сказал, что лучше здесь публиковать фотографии, чем в Instagram"/>
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            tools:src="@mipmap/ic_launcher"
+            tools:visibility="visible"/>
 
-        <!--Intro-->
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/introText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="14sp"
-            android:fontFamily="sans-serif"
-            android:lineSpacingMultiplier="1.10"
-            android:textColor="?android:attr/textColorPrimary"
-            app:layout_constraintTop_toBottomOf="@id/entryTitle"
-            tools:text="В поддержку писал, там молчат, что за дела? Выдает ошибку 403 уже не первый день!"/>
-
-        <!--Divider-->
-        <View
-            android:id="@+id/dividerView"
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="14dp"
-            android:background="?android:attr/divider"
-            app:layout_constraintTop_toBottomOf="@id/introText"
-            tools:layout_height="1dp"
-            tools:background="@color/error_text"/>
-
-        <!--BottomBar-->
+        <!--Gif-->
         <FrameLayout
+            android:id="@+id/gifLayout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            app:layout_constraintTop_toBottomOf="@id/dividerView">
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="gone">
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:orientation="horizontal"
+            <VideoView
+                android:id="@+id/videoView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp">
+                android:layout_height="wrap_content"/>
 
-                <!--Heart Icon-->
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/heartImage"
+            <!--GIF Badge-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:cardBackgroundColor="@color/transparent40"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    tools:srcCompat="@drawable/ic_heart"/>
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:maxLines="1"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="?android:attr/colorForeground"
+                    android:text="@string/gif"
+                    android:textAllCaps="true"/>
 
-                <!--Rating Value-->
-                <TextSwitcher
-                    android:id="@+id/likesCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginEnd="7dp"
-                    android:inAnimation="@anim/slide_in_likes_counter"
-                    android:outAnimation="@anim/slide_out_likes_counter">
-
-                    <TextView
-                        android:id="@+id/textLike1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14sp"
-                        tools:text="1487"/>
-
-                    <TextView
-                        android:id="@+id/textLike2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="14sp"/>
-
-                </TextSwitcher>
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.cardview.widget.CardView>
 
         </FrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <!--Double Tap Like-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/doubleTapHeart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
 
-</androidx.cardview.widget.CardView>
+    </FrameLayout>
+
+    <!--Title-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/entryTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="@dimen/timeline_entry_title_text_size"
+        android:textStyle="normal"
+        android:lineSpacingMultiplier="1.10"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="?android:attr/textColorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/mediaLayout"
+        tools:text="Никита сказал, что лучше здесь публиковать фотографии, чем в Instagram"/>
+
+    <!--Intro-->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/introText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="@dimen/timeline_entry_intro_text_size"
+        android:fontFamily="sans-serif"
+        android:lineSpacingMultiplier="1.10"
+        android:textColor="?android:attr/textColorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/entryTitle"
+        tools:text="В поддержку писал, там молчат, что за дела? Выдает ошибку 403 уже не первый день!"/>
+
+    <!--Divider-->
+    <View
+        android:id="@+id/dividerView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/timeline_entry_divider_height"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="14dp"
+        android:background="?android:attr/divider"
+        app:layout_constraintTop_toBottomOf="@id/introText"
+        tools:layout_height="1dp"
+        tools:background="@color/error_text"/>
+
+    <!--BottomBar-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toBottomOf="@id/dividerView">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <!--Heart Icon-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/heartImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:srcCompat="@drawable/ic_heart"/>
+
+            <!--Rating Value-->
+            <TextSwitcher
+                android:id="@+id/likesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:inAnimation="@anim/slide_in_likes_counter"
+                android:outAnimation="@anim/slide_out_likes_counter">
+
+                <TextView
+                    android:id="@+id/textLike1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="@dimen/timeline_entry_likes_text_size"
+                    tools:text="1487"/>
+
+                <TextView
+                    android:id="@+id/textLike2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="@dimen/timeline_entry_likes_text_size"/>
+
+            </TextSwitcher>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

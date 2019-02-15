@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package androidx.paging;
 
 import java.util.Arrays;
@@ -28,7 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 /**
- * A helper class for {@link androidx.paging.PagedList.BoundaryCallback BoundaryCallback}s and
+ * A helper class for {@link PagedList.BoundaryCallback BoundaryCallback}s and
  * {@link DataSource}s to help with tracking network requests.
  * <p>
  * It is designed to support 3 types of requests, {@link RequestType#INITIAL INITIAL},
@@ -106,21 +105,16 @@ import androidx.annotation.VisibleForTesting;
  */
 // THIS class is likely to be moved into the library in a future release. Feel free to copy it
 // from this sample.
-@SuppressWarnings("all")
 public class PagingRequestHelper {
-
     private final Object mLock = new Object();
     private final Executor mRetryService;
-
     @GuardedBy("mLock")
-    private final RequestQueue[] mRequestQueues = new RequestQueue[] {
-                    new RequestQueue(RequestType.INITIAL),
+    private final RequestQueue[] mRequestQueues = new RequestQueue[]
+            {new RequestQueue(RequestType.INITIAL),
                     new RequestQueue(RequestType.BEFORE),
-                    new RequestQueue(RequestType.AFTER)
-                };
+                    new RequestQueue(RequestType.AFTER)};
     @NonNull
     final CopyOnWriteArrayList<Listener> mListeners = new CopyOnWriteArrayList<>();
-
     /**
      * Creates a new PagingRequestHelper with the given {@link Executor} which is used to run
      * retry actions.
@@ -130,7 +124,6 @@ public class PagingRequestHelper {
     public PagingRequestHelper(@NonNull Executor retryService) {
         mRetryService = retryService;
     }
-
     /**
      * Adds a new listener that will be notified when any request changes {@link Status state}.
      *
@@ -141,7 +134,6 @@ public class PagingRequestHelper {
     public boolean addListener(@NonNull Listener listener) {
         return mListeners.add(listener);
     }
-
     /**
      * Removes the given listener from the listeners list.
      *
@@ -151,7 +143,6 @@ public class PagingRequestHelper {
     public boolean removeListener(@NonNull Listener listener) {
         return mListeners.remove(listener);
     }
-
     /**
      * Runs the given {@link Request} if no other requests in the given request type is already
      * running.
@@ -162,7 +153,6 @@ public class PagingRequestHelper {
      * @param request The request to run.
      * @return True if the request is run, false otherwise.
      */
-
     @SuppressWarnings("WeakerAccess")
     @AnyThread
     public boolean runIfNotRunning(@NonNull RequestType type, @NonNull Request request) {
@@ -188,7 +178,6 @@ public class PagingRequestHelper {
         wrapper.run();
         return true;
     }
-
     @GuardedBy("mLock")
     private StatusReport prepareStatusReportLocked() {
         Throwable[] errors = new Throwable[]{
@@ -203,12 +192,10 @@ public class PagingRequestHelper {
                 errors
         );
     }
-
     @GuardedBy("mLock")
     private Status getStatusForLocked(RequestType type) {
         return mRequestQueues[type.ordinal()].mStatus;
     }
-
     @AnyThread
     @VisibleForTesting
     void recordResult(@NonNull RequestWrapper wrapper, @Nullable Throwable throwable) {
@@ -234,7 +221,6 @@ public class PagingRequestHelper {
             dispatchReport(report);
         }
     }
-
     private void dispatchReport(StatusReport report) {
         for (Listener listener : mListeners) {
             listener.onStatusChange(report);
@@ -262,7 +248,6 @@ public class PagingRequestHelper {
         }
         return retried;
     }
-
     static class RequestWrapper implements Runnable {
         @NonNull
         final Request mRequest;
@@ -289,7 +274,6 @@ public class PagingRequestHelper {
             });
         }
     }
-
     /**
      * Runner class that runs a request tracked by the {@link PagingRequestHelper}.
      * <p>
@@ -352,7 +336,6 @@ public class PagingRequestHelper {
             }
         }
     }
-
     /**
      * Data class that holds the information about the current status of the ongoing requests
      * using this helper.
@@ -442,7 +425,6 @@ public class PagingRequestHelper {
             return result;
         }
     }
-
     /**
      * Listener interface to get notified by request status changes.
      */
@@ -454,7 +436,6 @@ public class PagingRequestHelper {
          */
         void onStatusChange(@NonNull StatusReport report);
     }
-
     /**
      * Represents the status of a Request for each {@link RequestType}.
      */
@@ -472,30 +453,28 @@ public class PagingRequestHelper {
          */
         FAILED
     }
-
     /**
      * Available request types.
      */
     public enum RequestType {
         /**
          * Corresponds to an initial request made to a {@link DataSource} or the empty state for
-         * a {@link androidx.paging.PagedList.BoundaryCallback BoundaryCallback}.
+         * a {@link PagedList.BoundaryCallback BoundaryCallback}.
          */
         INITIAL,
         /**
          * Corresponds to the {@code loadBefore} calls in {@link DataSource} or
          * {@code onItemAtFrontLoaded} in
-         * {@link androidx.paging.PagedList.BoundaryCallback BoundaryCallback}.
+         * {@link PagedList.BoundaryCallback BoundaryCallback}.
          */
         BEFORE,
         /**
          * Corresponds to the {@code loadAfter} calls in {@link DataSource} or
          * {@code onItemAtEndLoaded} in
-         * {@link androidx.paging.PagedList.BoundaryCallback BoundaryCallback}.
+         * {@link PagedList.BoundaryCallback BoundaryCallback}.
          */
         AFTER
     }
-
     class RequestQueue {
         @NonNull
         final RequestType mRequestType;

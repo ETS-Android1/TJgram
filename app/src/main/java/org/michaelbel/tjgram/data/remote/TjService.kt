@@ -2,7 +2,7 @@ package org.michaelbel.tjgram.data.remote
 
 import io.reactivex.Observable
 import okhttp3.MultipartBody
-import org.michaelbel.tjgram.data.entity.*
+import org.michaelbel.tjgram.data.entities.*
 import retrofit2.Response
 import retrofit2.http.*
 import java.util.*

@@ -2,7 +2,7 @@ package org.michaelbel.tjgram.data.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.michaelbel.tjgram.data.persistence.UserDao
+import org.michaelbel.tjgram.data.persistence.dao.UserDao
 
 class ViewModelFactory(private val dataSource: UserDao) : ViewModelProvider.Factory {
 

@@ -29,21 +29,13 @@ val networkModule = module {
 
 fun okHttpClient(context: Context): OkHttpClient {
     val okHttpClient = OkHttpClient().newBuilder()
-    okHttpClient.networkInterceptors().add(userInterceptor(context))
+    okHttpClient.networkInterceptors().add(UserInterceptor(context))
     if (BuildConfig.DEBUG) {
-        okHttpClient.interceptors().add(chuckInterceptor(context))
+        okHttpClient.interceptors().add(ChuckInterceptor(context))
         okHttpClient.interceptors().add(httpLoggingInterceptor())
-        okHttpClient.networkInterceptors().add(stethoInterceptor())
+        okHttpClient.networkInterceptors().add(StethoInterceptor())
     }
     return okHttpClient.build()
-}
-
-fun userInterceptor(context: Context): UserInterceptor {
-    return UserInterceptor(context)
-}
-
-fun chuckInterceptor(context: Context): ChuckInterceptor {
-    return ChuckInterceptor(context)
 }
 
 fun httpLoggingInterceptor(): HttpLoggingInterceptor {
@@ -52,15 +44,11 @@ fun httpLoggingInterceptor(): HttpLoggingInterceptor {
     return httpLoggingInterceptor
 }
 
-fun stethoInterceptor(): StethoInterceptor {
-    return StethoInterceptor()
-}
-
 fun gson(): Gson {
-    val gsonBuilder = GsonBuilder()
-    gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-    gsonBuilder.setDateFormat(TjConfig.GSON_DATE_FORMAT)
-    return gsonBuilder.create()
+    return GsonBuilder()
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        .setDateFormat(TjConfig.GSON_DATE_FORMAT)
+        .create()
 }
 
 fun retrofit(context: Context): Retrofit {
