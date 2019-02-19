@@ -15,6 +15,7 @@ android {
         project.ext.set("archivesBaseName", "tjgram-v" + versionName)
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     
     buildTypes {
@@ -44,7 +45,8 @@ android {
 
         developing {
             flavorDimensions "beta"
-            minSdkVersion 19
+            // Для тестовых сборок 21 собирается быстрее.
+            minSdkVersion 21
             applicationId "org.michaelbel.tjgram.beta"
         }
     }
@@ -105,6 +107,10 @@ android {
         preDexLibraries false
         javaMaxHeapSize "8g"
     }
+
+    kapt {
+        generateStubs = true
+    }
 }
 
 configurations.all {
@@ -116,14 +122,19 @@ configurations.all {
 dependencies {
     implementation deps.kotlin.stdlib
     implementation deps.kotlin.reflect
+    implementation deps.kotlin.coroutinesCore
+    implementation deps.kotlin.coroutinesAndroid
 
     implementation deps.ktx.core
+    implementation deps.ktx.fragment
+    implementation deps.ktx.collection
+    implementation deps.ktx.lifecycleViewModel
 
     implementation deps.material
     implementation deps.appcompat
     implementation deps.cardview
     implementation deps.preference
-    implementation deps.support_v4
+    implementation deps.supportV4
     implementation deps.vectordrawable
     implementation deps.interpolator
 
@@ -141,30 +152,24 @@ dependencies {
     implementation deps.room.rxjava2
               kapt deps.room.compiler
 
+    implementation deps.dagger.runtime
+              kapt deps.dagger.compiler
+
     implementation deps.retrofit.runtime
-    implementation deps.retrofit.adapter_rxjava2
+    implementation deps.retrofit.adapterRxJava2
     implementation deps.retrofit.gson
 
-    implementation deps.koin.core
-    implementation deps.koin.android
-    implementation deps.koin.androidx_scope
-    implementation deps.koin.androidx_viewmodel
-
-    implementation deps.glide.runtime
-              kapt deps.glide.compiler
-
-    implementation deps.rxjava2
-    implementation deps.rxandroid
     implementation deps.rxkotlin
+    implementation deps.rxandroid
 
-    implementation deps.okhttp_logging_interceptor
-    implementation deps.leakcanary
-    implementation deps.picasso
-    implementation deps.stetho
-    implementation deps.timber
-    implementation deps.traceur
     implementation deps.chuck
-    implementation deps.sherlock
     implementation deps.zxing
-    implementation deps.json_simple
+    implementation deps.timber
+    implementation deps.stetho
+    implementation deps.traceur
+    implementation deps.picasso
+    implementation deps.sherlock
+    implementation deps.jsonSimple
+    implementation deps.leakCanary
+    implementation deps.okhttpLoggingInterceptor
 }
