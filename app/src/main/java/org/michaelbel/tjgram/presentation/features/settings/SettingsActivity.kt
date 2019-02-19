@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.modules.settings
+package org.michaelbel.tjgram.presentation.features.settings
 
 import android.os.Build
 import android.os.Bundle
@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.utils.DeviceUtil
-import org.michaelbel.tjgram.utils.ViewUtil
+import org.michaelbel.tjgram.presentation.utils.DeviceUtil
+import org.michaelbel.tjgram.presentation.utils.ViewUtil
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -28,9 +28,7 @@ class SettingsActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragmentView, SettingsFragment())
-                .commit()
+                .beginTransaction().replace(R.id.fragmentView, SettingsFragment()).commitNow()
         }
     }
 }

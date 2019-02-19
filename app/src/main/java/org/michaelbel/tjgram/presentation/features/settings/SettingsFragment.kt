@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.modules.settings
+package org.michaelbel.tjgram.presentation.features.settings
 
 import android.app.Activity
 import android.content.Intent
@@ -7,8 +7,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.data.UserConfig
-import org.michaelbel.tjgram.modules.profile.ProfileFragment
+import org.michaelbel.tjgram.data.net.UserConfig
+import org.michaelbel.tjgram.presentation.features.profile.ProfileFragment
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -25,8 +25,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun logout(): Boolean {
-        if (UserConfig.isAuthorized(requireContext()).not())
+        if (UserConfig.isAuthorized(requireContext()).not()) {
             return true
+        }
 
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.app_name)
