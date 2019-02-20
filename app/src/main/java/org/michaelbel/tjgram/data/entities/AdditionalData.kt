@@ -17,5 +17,4 @@ data class AdditionalData (
     fun isGif(): Boolean = type == "gif"
 
     fun isImage(): Boolean = type == "jpg" || type == "JPG" || type == "jpeg" || type == "JPEG" || type == "png" || type == "bmp" || type == "webp"
-
 }

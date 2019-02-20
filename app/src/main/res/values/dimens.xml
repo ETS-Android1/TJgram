@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="toolbar_elevation">1.5dp</dimen>
     <!--timeline-->
     <dimen name="timeline_fragment_margin">48dp</dimen>
     <dimen name="timeline_error_margin">24dp</dimen>
@@ -25,11 +26,13 @@
     <dimen name="post_intro_edit_text_size">18sp</dimen>
     <dimen name="post_remove_icon_margin">6dp</dimen>
     <dimen name="post_images_layout_height">104dp</dimen>
+    <dimen name="post_images_layout_elevation">1.5dp</dimen>
     <dimen name="post_images_layout_placeholder_text_size">16sp</dimen>
     <dimen name="post_photo_view_size">88dp</dimen>
     <dimen name="post_photo_view_margin">2dp</dimen>
     <dimen name="post_photo_view_text_margin">16dp</dimen>
     <dimen name="post_photo_view_text_size">16sp</dimen>
+    <dimen name="post_item_decoration_margin">3dp</dimen>
     <!--profile-->
     <dimen name="auth_logo_image_margin_bottom">8dp</dimen>
     <dimen name="auth_pre_text_size">18sp</dimen>

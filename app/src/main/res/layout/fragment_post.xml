@@ -71,7 +71,7 @@
                 app:cardElevation="@dimen/post_card_elevation"
                 app:cardCornerRadius="@dimen/post_card_corner_radius">
 
-                <org.michaelbel.tjgram.modules.addpost.view.SquaredImageView
+                <org.michaelbel.tjgram.presentation.features.addpost.SquaredImageView
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

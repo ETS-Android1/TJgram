@@ -10,7 +10,7 @@ import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.data.net.UserConfig
 import org.michaelbel.tjgram.presentation.features.profile.ProfileFragment
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsFragment: PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -36,8 +36,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 UserConfig.userLogout(requireContext())
                 val intent = Intent()
                 intent.putExtra(ProfileFragment.LOGOUT_RESULT, true)
-                (activity as SettingsActivity).setResult(Activity.RESULT_OK, intent)
-                (activity as SettingsActivity).finish()
+                // todo test
+                requireActivity().setResult(Activity.RESULT_OK, intent)
+                requireActivity().finish()
+                //(activity as SettingsActivity).setResult(Activity.RESULT_OK, intent)
+                //(activity as SettingsActivity).finish()
             }
             .setNegativeButton(R.string.action_cancel, null)
             .show()
