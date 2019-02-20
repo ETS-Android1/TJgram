@@ -1,11 +1,11 @@
 /**
-* Shared file between builds so that they can all use the same dependencies and maven repositories.
+ * Shared file between builds so that they can all use the same dependencies and maven repositories.
+ *
+ * Kotlin KTX libs - https://developer.android.com/kotlin/ktx
+ * AndroidX libs - https://developer.android.com/jetpack/androidx/migrate
+ * Google Play Services libs - https://developers.google.com/android/guides/setup
+ * Firebase libs - https://firebase.google.com/docs/android/setup
 **/
-
-// https://developer.android.com/kotlin/ktx
-// https://developer.android.com/jetpack/androidx/migrate
-// https://developers.google.com/android/guides/setup
-// https://firebase.google.com/docs/android/setup
 
 ext.deps = [:]
 
@@ -138,7 +138,7 @@ deps.media = 'androidx.media:media:1.0.0'
 deps.tvprovider = 'androidx.tvprovider:tvprovider:1.0.0'
 
 deps.support_v13 = 'androidx.legacy:legacy-support-v13:1.0.0'
-deps.support_v4 = 'androidx.legacy:legacy-support-v4:1.0.0'
+deps.supportV4 = 'androidx.legacy:legacy-support-v4:1.0.0'
 
 deps.vectordrawable = 'androidx.vectordrawable:vectordrawable:1.0.0'
 deps.swiperefreshlayout = 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
@@ -156,8 +156,8 @@ kotlin.reflect_lite = 'org.jetbrains.kotlinx:kotlinx.reflect.lite:1.0.0'
 kotlin.test = 'org.jetbrains.kotlin:kotlin-test-junit:1.3.21'
 kotlin.plugin = 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21'
 kotlin.allopen = 'org.jetbrains.kotlin:kotlin-allopen:1.3.21'
-kotlin.coroutines_core = 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
-kotlin.coroutines_android = 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+kotlin.coroutinesCore = 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
+kotlin.coroutinesAndroid = 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
 deps.kotlin = kotlin
 
 def ktx = [:]
@@ -166,8 +166,8 @@ ktx.fragment = 'androidx.fragment:fragment-ktx:1.0.0'
 ktx.palette = 'androidx.palette:palette-ktx:1.0.0'
 ktx.sqlite = 'androidx.sqlite:sqlite-ktx:2.0.0'
 ktx.collection = 'androidx.collection:collection-ktx:1.0.0'
-ktx.lifecycle_viewmodel = 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
-ktx.lifecycle_reactivestreams = 'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.0.0'
+ktx.lifecycleViewModel = 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
+ktx.lifecycleReactiveStreams = 'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.0.0'
 ktx.navigation_common = 'android.arch.navigation:navigation-common-ktx:1.0.0-alpha06'
 ktx.navigation_fragment = 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha06'
 ktx.navigation_runtime = 'android.arch.navigation:navigation-runtime-ktx:1.0.0-alpha06'
@@ -178,7 +178,7 @@ deps.ktx = ktx
 
 def retrofit = [:]
 retrofit.runtime = 'com.squareup.retrofit2:retrofit:2.4.0'
-retrofit.adapter_rxjava2 = 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+retrofit.adapterRxJava2 = 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 retrofit.gson = 'com.squareup.retrofit2:converter-gson:2.4.0'
 retrofit.mock = 'com.squareup.retrofit2:retrofit-mock:2.3.0'
 deps.retrofit = retrofit
@@ -187,9 +187,9 @@ deps.rxjava2 = 'io.reactivex.rxjava2:rxjava:2.2.5'
 deps.rxkotlin = 'io.reactivex.rxjava2:rxkotlin:2.0.0'
 deps.rxandroid = 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
-deps.okhttp_logging_interceptor = 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+deps.okhttpLoggingInterceptor = 'com.squareup.okhttp3:logging-interceptor:3.11.0'
 
-deps.leakcanary = 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+deps.leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.6.3'
 
 deps.picasso = 'com.squareup.picasso:picasso:2.71828'
 
@@ -205,13 +205,13 @@ deps.sherlock = 'com.github.ajitsing:sherlock:1.0.4'
 
 deps.zxing = 'com.google.zxing:core:3.3.0'
 
-deps.json_simple = 'com.googlecode.json-simple:json-simple:1.1'
+deps.jsonSimple = 'com.googlecode.json-simple:json-simple:1.1'
 
 def dagger = [:]
-dagger.runtime = 'com.google.dagger:dagger:2.16'
+dagger.runtime = 'com.google.dagger:dagger:2.20'
 dagger.android = 'com.google.dagger:dagger-android:2.16'
 dagger.android_support = 'com.google.dagger:dagger-android-support:2.16'
-dagger.compiler = 'com.google.dagger:dagger-compiler:2.16'
+dagger.compiler = 'com.google.dagger:dagger-compiler:2.20'
 dagger.android_support_compiler = 'com.google.dagger:dagger-android-processor:2.16'
 deps.dagger = dagger
 

@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:visibility="visible"/>
 
-    <org.michaelbel.tjgram.modules.profile.view.QrFinderView
+    <org.michaelbel.tjgram.presentation.features.profile.widget.QrFinderView
         android:id="@+id/qrFinderView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

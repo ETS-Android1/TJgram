@@ -25,3 +25,10 @@
 -keep class * {
     public private *;
 }
+
+# For Timber logs.
+-assumenosideeffects class android.util.Log {
+    public static *** d(...);
+    public static *** v(...);
+    public static *** e(...);
+}

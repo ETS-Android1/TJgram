@@ -2,12 +2,12 @@ package com.blikoon.qrcodescanner.camera
 
 import android.content.Context
 import android.hardware.Camera
-import org.michaelbel.tjgram.utils.DeviceUtil
+import org.michaelbel.tjgram.presentation.utils.DeviceUtil
 import timber.log.Timber
 import java.util.*
 import java.util.regex.Pattern
 
-class CameraConfigurationManager(private val mContext: Context) {
+class CameraConfigurationManager(private val context: Context) {
 
     companion object {
         const val TEN_DESIRED_ZOOM = 10
@@ -36,18 +36,20 @@ class CameraConfigurationManager(private val mContext: Context) {
     }
 
     var cameraResolution: Camera.Size? = null
-    private var mPictureResolution: Camera.Size? = null
+    private var pictureResolution: Camera.Size? = null
 
     fun initFromCameraParameters(camera: Camera) {
         val parameters = camera.parameters
-        cameraResolution = findCloselySize(DeviceUtil.getScreenWidth(mContext), DeviceUtil.getScreenHeight(mContext), parameters.supportedPreviewSizes)
-        mPictureResolution = findCloselySize(DeviceUtil.getScreenWidth(mContext), DeviceUtil.getScreenHeight(mContext), parameters.supportedPictureSizes)
+        cameraResolution = findCloselySize(DeviceUtil.getScreenWidth(context),
+                DeviceUtil.getScreenHeight(context), parameters.supportedPreviewSizes)
+        pictureResolution = findCloselySize(DeviceUtil.getScreenWidth(context),
+                DeviceUtil.getScreenHeight(context), parameters.supportedPictureSizes)
     }
 
     fun setDesiredCameraParameters(camera: Camera) {
         val parameters = camera.parameters
         parameters.setPreviewSize(cameraResolution!!.width, cameraResolution!!.height)
-        parameters.setPictureSize(mPictureResolution!!.width, mPictureResolution!!.height)
+        parameters.setPictureSize(pictureResolution!!.width, pictureResolution!!.height)
         setZoom(parameters)
         camera.setDisplayOrientation(90)
         camera.parameters = parameters

@@ -3,23 +3,23 @@ package com.blikoon.qrcodescanner.camera
 import android.hardware.Camera
 import android.os.Handler
 
-class PreviewCallback(private val mConfigManager: CameraConfigurationManager) : Camera.PreviewCallback {
+class PreviewCallback(private val configManager: CameraConfigurationManager): Camera.PreviewCallback {
 
-    private var mPreviewHandler: Handler? = null
-    private var mPreviewMessage: Int = 0
+    private var previewHandler: Handler? = null
+    private var previewMessage: Int = 0
 
     fun setHandler(previewHandler: Handler, previewMessage: Int) {
-        mPreviewHandler = previewHandler
-        mPreviewMessage = previewMessage
+        this.previewHandler = previewHandler
+        this.previewMessage = previewMessage
     }
 
     override fun onPreviewFrame(data: ByteArray, camera: Camera) {
-        val cameraResolution = mConfigManager.cameraResolution
+        val cameraResolution = configManager.cameraResolution
 
-        if (mPreviewHandler != null) {
-            val message = mPreviewHandler!!.obtainMessage(mPreviewMessage, cameraResolution?.width!!, cameraResolution.height, data)
+        if (previewHandler != null) {
+            val message = previewHandler!!.obtainMessage(previewMessage, cameraResolution?.width!!, cameraResolution.height, data)
             message.sendToTarget()
-            mPreviewHandler = null
+            previewHandler = null
         }
     }
 }

@@ -3,25 +3,25 @@ package com.blikoon.qrcodescanner.decode
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import com.blikoon.qrcodescanner.QrCodeActivity
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
 import org.michaelbel.tjgram.R
-import com.blikoon.qrcodescanner.QrCodeActivity
 import timber.log.Timber
 import java.util.*
 
-class DecodeHandler(private val mActivity: QrCodeActivity) : Handler() {
+class DecodeHandler(private val activity: QrCodeActivity) : Handler() {
 
-    private val mQrCodeReader: QRCodeReader = QRCodeReader()
-    private val mHints: MutableMap<DecodeHintType, Any>
-    private var mRotatedData: ByteArray? = null
+    private val qrCodeReader: QRCodeReader = QRCodeReader()
+    private val hints: MutableMap<DecodeHintType, Any>
+    private var rotatedData: ByteArray? = null
 
     init {
-        mHints = Hashtable()
-        mHints[DecodeHintType.CHARACTER_SET] = "utf-8"
-        mHints[DecodeHintType.TRY_HARDER] = java.lang.Boolean.TRUE
-        mHints[DecodeHintType.POSSIBLE_FORMATS] = BarcodeFormat.QR_CODE
+        hints = Hashtable()
+        hints[DecodeHintType.CHARACTER_SET] = "utf-8"
+        hints[DecodeHintType.TRY_HARDER] = java.lang.Boolean.TRUE
+        hints[DecodeHintType.POSSIBLE_FORMATS] = BarcodeFormat.QR_CODE
     }
 
     override fun handleMessage(message: Message) {
@@ -33,23 +33,24 @@ class DecodeHandler(private val mActivity: QrCodeActivity) : Handler() {
         }
     }
 
-    private fun decode(data: ByteArray, width: Int, height: Int) {
-        var width = width
-        var height = height
-        if (null == mRotatedData) {
-            mRotatedData = ByteArray(width * height)
+    private fun decode(data: ByteArray, w: Int, h: Int) {
+        var width = w
+        var height = h
+
+        if (null == rotatedData) {
+            rotatedData = ByteArray(width * height)
         } else {
-            if (mRotatedData!!.size < width * height) {
-                mRotatedData = ByteArray(width * height)
+            if (rotatedData!!.size < width * height) {
+                rotatedData = ByteArray(width * height)
             }
         }
-        Arrays.fill(mRotatedData!!, 0.toByte())
+        Arrays.fill(rotatedData!!, 0.toByte())
         for (y in 0 until height) {
             for (x in 0 until width) {
                 if (x + y * width >= data.size) {
                     break
                 }
-                mRotatedData!![x * height + height - y - 1] = data[x + y * width]
+                rotatedData!![x * height + height - y - 1] = data[x + y * width]
             }
         }
         val tmp = width
@@ -58,20 +59,20 @@ class DecodeHandler(private val mActivity: QrCodeActivity) : Handler() {
 
         var rawResult: Result? = null
         try {
-            val source = PlanarYUVLuminanceSource(mRotatedData, width, height, 0, 0, width, height, false)
+            val source = PlanarYUVLuminanceSource(rotatedData, width, height, 0, 0, width, height, false)
             val bitmap1 = BinaryBitmap(HybridBinarizer(source))
-            rawResult = mQrCodeReader.decode(bitmap1, mHints)
+            rawResult = qrCodeReader.decode(bitmap1, hints)
         } catch (e: ReaderException) {
             Timber.e(e)
         } finally {
-            mQrCodeReader.reset()
+            qrCodeReader.reset()
         }
 
         if (rawResult != null) {
-            val message = Message.obtain(mActivity.captureActivityHandler, R.id.decode_succeeded, rawResult)
+            val message = Message.obtain(activity.captureActivityHandler, R.id.decode_succeeded, rawResult)
             message.sendToTarget()
         } else {
-            val message = Message.obtain(mActivity.captureActivityHandler, R.id.decode_failed)
+            val message = Message.obtain(activity.captureActivityHandler, R.id.decode_failed)
             message.sendToTarget()
         }
     }

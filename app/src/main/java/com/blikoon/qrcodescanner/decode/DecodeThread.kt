@@ -8,15 +8,15 @@ import timber.log.Timber
 
 import java.util.concurrent.CountDownLatch
 
-class DecodeThread(private val mActivity: QrCodeActivity) : Thread() {
+class DecodeThread(private val activity: QrCodeActivity): Thread() {
 
     private var mHandler: Handler? = null
-    private val mHandlerInitLatch: CountDownLatch = CountDownLatch(1)
+    private val handlerInitLatch: CountDownLatch = CountDownLatch(1)
 
     val handler: Handler?
         get() {
             try {
-                mHandlerInitLatch.await()
+                handlerInitLatch.await()
             } catch (ie: InterruptedException) {
                 Timber.e(ie)
             }
@@ -26,8 +26,8 @@ class DecodeThread(private val mActivity: QrCodeActivity) : Thread() {
 
     override fun run() {
         Looper.prepare()
-        mHandler = DecodeHandler(mActivity)
-        mHandlerInitLatch.countDown()
+        mHandler = DecodeHandler(activity)
+        handlerInitLatch.countDown()
         Looper.loop()
     }
 }

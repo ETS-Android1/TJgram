@@ -19,18 +19,21 @@
     <!--<uses-permission android:name="android.permission.WAKE_LOCK"/>-->
 
     <application
-        android:allowBackup="true"
-        android:fullBackupContent="true"
+        android:name=".presentation.common.App"
         android:label="@string/app_name"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="false"
         android:theme="@style/AppTheme.Launcher"
-        android:name=".App"
+        android:extractNativeLibs="false"
+        android:resizeableActivity="false"
+        tools:targetApi="24"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".modules.MainActivity"
+            android:name="org.michaelbel.tjgram.presentation.features.main.MainActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Launcher">
@@ -46,21 +49,21 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".modules.addpost.PostActivity"
+            android:name=".presentation.features.addpost.PostActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".modules.PhotoActivity"
+            android:name=".presentation.PhotoActivity"
             android:theme="@style/AppTheme.StatusBar.Transparent"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".modules.settings.SettingsActivity"
+            android:name="org.michaelbel.tjgram.presentation.features.settings.SettingsActivity"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="pub.devrel.easypermissions.AppSettingsDialogHolderActivity" />
+        <activity android:name="pub.devrel.easypermissions.AppSettingsDialogHolderActivity"/>
 
     </application>
 
