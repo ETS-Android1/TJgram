@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.DialogInterface
 
 class FinishListener internal constructor(
-    private val mActivityToFinish: Activity) : DialogInterface.OnClickListener, DialogInterface.OnCancelListener, Runnable {
+    private val activityToFinish: Activity) : DialogInterface.OnClickListener, DialogInterface.OnCancelListener, Runnable {
 
     override fun onCancel(dialogInterface: DialogInterface) {
         run()
@@ -15,6 +15,6 @@ class FinishListener internal constructor(
     }
 
     override fun run() {
-        mActivityToFinish.finish()
+        activityToFinish.finish()
     }
 }

@@ -15,33 +15,29 @@ import android.view.SurfaceHolder.Callback
 import android.view.SurfaceView
 import android.view.View
 import android.widget.FrameLayout
-
-import com.google.zxing.Result
-
-import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.modules.profile.view.QrFinderView
-import org.michaelbel.tjgram.utils.ViewUtil
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import com.blikoon.qrcodescanner.camera.CameraManager
 import com.blikoon.qrcodescanner.decode.CaptureActivityHandler
 import com.blikoon.qrcodescanner.decode.DecodeManager
 import com.blikoon.qrcodescanner.decode.InactivityTimer
-
-import java.util.Objects
-
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
+import com.google.zxing.Result
+import org.michaelbel.tjgram.R
+import org.michaelbel.tjgram.presentation.features.profile.widget.QrFinderView
+import org.michaelbel.tjgram.presentation.utils.ViewUtil
 import timber.log.Timber
+import java.util.*
 
-class QrCodeActivity : AppCompatActivity(), Callback {
+class QrCodeActivity: AppCompatActivity(), Callback {
 
     private var mCaptureActivityHandler: CaptureActivityHandler? = null
-    private var mHasSurface: Boolean = false
-    private var mInactivityTimer: InactivityTimer? = null
-    private var mQrCodeFinderView: QrFinderView? = null
-    private var mSurfaceView: SurfaceView? = null
+    private var hasSurface: Boolean = false
+    private var inactivityTimer: InactivityTimer? = null
+    private var qrCodeFinderView: QrFinderView? = null
+    private var surfaceView: SurfaceView? = null
 
-    private val mDecodeManager = DecodeManager()
+    private val decodeManager = DecodeManager()
 
     private var mMediaPlayer: MediaPlayer? = null
     private var mPlayBeep: Boolean = false
@@ -54,8 +50,6 @@ class QrCodeActivity : AppCompatActivity(), Callback {
 
     val captureActivityHandler: Handler?
         get() = mCaptureActivityHandler
-
-    //private val mBeepListener = { mediaPlayer -> mediaPlayer.seekTo(0) }
 
     override fun setTheme(resId: Int) {
         super.setTheme(R.style.AppTheme_StatusBar_Transparent)
@@ -98,25 +92,25 @@ class QrCodeActivity : AppCompatActivity(), Callback {
     }
 
     private fun initView() {
-        mQrCodeFinderView = findViewById(R.id.qrFinderView)
-        mSurfaceView = findViewById(R.id.surfaceView)
-        mHasSurface = false
+        qrCodeFinderView = findViewById(R.id.qrFinderView)
+        surfaceView = findViewById(R.id.surfaceView)
+        hasSurface = false
     }
 
     private fun initData() {
         CameraManager.init(this)
-        mInactivityTimer = InactivityTimer(this@QrCodeActivity)
+        inactivityTimer = InactivityTimer(this@QrCodeActivity)
     }
 
     override fun onResume() {
         super.onResume()
-        val surfaceHolder = mSurfaceView!!.holder
+        val surfaceHolder = surfaceView!!.holder
 
         if (flashLightActive) {
             disableFlashLight()
         }
 
-        if (mHasSurface) {
+        if (hasSurface) {
             initCamera(surfaceHolder)
         } else {
             surfaceHolder.addCallback(this)
@@ -143,19 +137,19 @@ class QrCodeActivity : AppCompatActivity(), Callback {
     }
 
     override fun onDestroy() {
-        if (null != mInactivityTimer) {
-            mInactivityTimer!!.shutdown()
+        if (null != inactivityTimer) {
+            inactivityTimer!!.shutdown()
         }
 
         super.onDestroy()
     }
 
     fun handleDecode(result: Result?) {
-        mInactivityTimer!!.onActivity()
+        inactivityTimer!!.onActivity()
         playBeepSoundAndVibrate()
 
         if (null == result) {
-            mDecodeManager.showCouldNotReadQrCodeFromScanner(this, object : DecodeManager.OnRefreshCameraListener {
+            decodeManager.showCouldNotReadQrCodeFromScanner(this, object : DecodeManager.OnRefreshCameraListener {
                 override fun refresh() {
                     restartPreview()
                 }
@@ -176,8 +170,8 @@ class QrCodeActivity : AppCompatActivity(), Callback {
             return
         }
 
-        mQrCodeFinderView!!.visibility = View.VISIBLE
-        mSurfaceView!!.visibility = View.VISIBLE
+        qrCodeFinderView!!.visibility = View.VISIBLE
+        surfaceView!!.visibility = View.VISIBLE
         findViewById<View>(R.id.viewBackground).visibility = View.GONE
 
         if (mCaptureActivityHandler == null) {
@@ -194,24 +188,15 @@ class QrCodeActivity : AppCompatActivity(), Callback {
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {}
 
     override fun surfaceCreated(holder: SurfaceHolder) {
-        if (!mHasSurface) {
-            mHasSurface = true
+        if (!hasSurface) {
+            hasSurface = true
             initCamera(holder)
         }
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
-        mHasSurface = false
+        hasSurface = false
     }
-
-    /*private fun initBeepSound() {
-        if (mPlayBeep && mMediaPlayer == null) {
-            volumeControlStream = AudioManager.STREAM_MUSIC
-            mMediaPlayer = MediaPlayer()
-            mMediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
-            mMediaPlayer!!.setOnCompletionListener(mBeepListener)
-        }
-    }*/
 
     private fun playBeepSoundAndVibrate() {
         if (mPlayBeep && mMediaPlayer != null) {
@@ -251,7 +236,7 @@ class QrCodeActivity : AppCompatActivity(), Callback {
 
     private fun handleResult(resultString: String) {
         if (TextUtils.isEmpty(resultString)) {
-            mDecodeManager.showCouldNotReadQrCodeFromScanner(this, object : DecodeManager.OnRefreshCameraListener {
+            decodeManager.showCouldNotReadQrCodeFromScanner(this, object : DecodeManager.OnRefreshCameraListener {
                 override fun refresh() {
                     restartPreview()
                 }

@@ -23,41 +23,41 @@ class CameraManager private constructor(context: Context) {
         }
     }
 
-    private val mConfigManager: CameraConfigurationManager = CameraConfigurationManager(context)
-    private var mCamera: Camera? = null
-    private var mInitialized: Boolean = false
-    private var mPreviewing: Boolean = false
+    private val configManager: CameraConfigurationManager = CameraConfigurationManager(context)
+    private var camera: Camera? = null
+    private var initialized: Boolean = false
+    private var previewing: Boolean = false
 
-    private val mPreviewCallback: PreviewCallback
-    private val mAutoFocusCallback: AutoFocusCallback
+    private val previewCallback: PreviewCallback
+    private val autoFocusCallback: AutoFocusCallback
 
     init {
-        mPreviewCallback = PreviewCallback(mConfigManager)
-        mAutoFocusCallback = AutoFocusCallback()
+        previewCallback = PreviewCallback(configManager)
+        autoFocusCallback = AutoFocusCallback()
     }
 
     fun openDriver(holder: SurfaceHolder) {
-        if (mCamera == null) {
-            mCamera = Camera.open()
-            if (mCamera == null) {
+        if (camera == null) {
+            camera = Camera.open()
+            if (camera == null) {
                 throw IOException()
             }
-            mCamera!!.setPreviewDisplay(holder)
+            camera!!.setPreviewDisplay(holder)
 
-            if (!mInitialized) {
-                mInitialized = true
-                mConfigManager.initFromCameraParameters(mCamera!!)
+            if (!initialized) {
+                initialized = true
+                configManager.initFromCameraParameters(camera!!)
             }
-            mConfigManager.setDesiredCameraParameters(mCamera!!)
+            configManager.setDesiredCameraParameters(camera!!)
         }
     }
 
     fun setFlashLight(open: Boolean): Boolean {
-        if (mCamera == null) {
+        if (camera == null) {
             return false
         }
 
-        val parameters = mCamera!!.parameters ?: return false
+        val parameters = camera!!.parameters ?: return false
         val flashModes = parameters.supportedFlashModes
 
         if (null == flashModes || 0 == flashModes.size) {
@@ -73,7 +73,7 @@ class CameraManager private constructor(context: Context) {
 
             return if (flashModes.contains(Camera.Parameters.FLASH_MODE_TORCH)) {
                 parameters.flashMode = Camera.Parameters.FLASH_MODE_TORCH
-                mCamera!!.parameters = parameters
+                camera!!.parameters = parameters
                 true
             } else {
                 false
@@ -85,7 +85,7 @@ class CameraManager private constructor(context: Context) {
 
             return if (flashModes.contains(Camera.Parameters.FLASH_MODE_OFF)) {
                 parameters.flashMode = Camera.Parameters.FLASH_MODE_OFF
-                mCamera!!.parameters = parameters
+                camera!!.parameters = parameters
                 true
             } else
                 false
@@ -93,39 +93,39 @@ class CameraManager private constructor(context: Context) {
     }
 
     fun closeDriver() {
-        if (mCamera != null) {
-            mCamera!!.release()
-            mInitialized = false
-            mPreviewing = false
-            mCamera = null
+        if (camera != null) {
+            camera!!.release()
+            initialized = false
+            previewing = false
+            camera = null
         }
     }
 
     fun startPreview() {
-        if (mCamera != null && !mPreviewing) {
-            mCamera!!.startPreview()
-            mPreviewing = true
+        if (camera != null && !previewing) {
+            camera!!.startPreview()
+            previewing = true
         }
     }
 
     fun stopPreview() {
-        if (mCamera != null && mPreviewing) {
-            mCamera!!.stopPreview()
-            mPreviewing = false
+        if (camera != null && previewing) {
+            camera!!.stopPreview()
+            previewing = false
         }
     }
 
     fun requestPreviewFrame(handler: Handler, message: Int) {
-        if (mCamera != null && mPreviewing) {
-            mPreviewCallback.setHandler(handler, message)
-            mCamera!!.setOneShotPreviewCallback(mPreviewCallback)
+        if (camera != null && previewing) {
+            previewCallback.setHandler(handler, message)
+            camera!!.setOneShotPreviewCallback(previewCallback)
         }
     }
 
     fun requestAutoFocus(handler: Handler, message: Int) {
-        if (mCamera != null && mPreviewing) {
-            mAutoFocusCallback.setHandler(handler, message)
-            mCamera!!.autoFocus(mAutoFocusCallback)
+        if (camera != null && previewing) {
+            autoFocusCallback.setHandler(handler, message)
+            camera!!.autoFocus(autoFocusCallback)
         }
     }
 }
