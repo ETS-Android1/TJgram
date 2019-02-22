@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.michaelbel.tjgram.R;
 import com.ashokvarma.bottomnavigation.behaviour.BottomNavBarFabBehaviour;
 import com.ashokvarma.bottomnavigation.utils.Utils;
-import org.michaelbel.tjgram.utils.DeviceUtil;
+import org.michaelbel.tjgram.core.views.DeviceUtil;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

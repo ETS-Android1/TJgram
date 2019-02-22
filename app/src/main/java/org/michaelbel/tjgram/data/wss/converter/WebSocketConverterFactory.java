@@ -3,10 +3,12 @@ package org.michaelbel.tjgram.data.wss.converter;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;
+
 import org.michaelbel.tjgram.data.wss.WebSocketConverter;
 
 import java.lang.reflect.Type;
 
+@SuppressWarnings("unused")
 public class WebSocketConverterFactory extends WebSocketConverter.Factory {
 
     public static WebSocketConverterFactory create() {

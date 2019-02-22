@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import org.michaelbel.tjgram.R
 import com.ashokvarma.bottomnavigation.utils.Utils
-import org.michaelbel.tjgram.utils.DeviceUtil
+import org.michaelbel.tjgram.core.views.DeviceUtil
 
 object BottomNavigationHelper {
 

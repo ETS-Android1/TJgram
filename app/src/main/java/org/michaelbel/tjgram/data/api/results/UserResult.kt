@@ -4,7 +4,7 @@ import org.michaelbel.tjgram.data.entities.BaseResult
 import org.michaelbel.tjgram.data.entities.User
 
 @Suppress("unused")
-class UserResult : BaseResult<User>() {
+class UserResult: BaseResult<User>() {
 
     object Accounts {
         const val ACCOUNT_VK = 1

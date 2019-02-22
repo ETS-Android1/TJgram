@@ -1,10 +1,10 @@
 /**
  * Shared file between builds so that they can all use the same dependencies and maven repositories.
  *
- * Kotlin KTX libs - https://developer.android.com/kotlin/ktx
- * AndroidX libs - https://developer.android.com/jetpack/androidx/migrate
- * Google Play Services libs - https://developers.google.com/android/guides/setup
- * Firebase libs - https://firebase.google.com/docs/android/setup
+ * Kotlin KTX - https://developer.android.com/kotlin/ktx
+ * AndroidX - https://developer.android.com/jetpack/androidx/migrate
+ * Google Play Services - https://developers.google.com/android/guides/setup
+ * Firebase - https://firebase.google.com/docs/android/setup
 **/
 
 ext.deps = [:]
@@ -175,6 +175,10 @@ ktx.navigation_testing = 'android.arch.navigation:navigation-testing-ktx:1.0.0-a
 ktx.navigation_ui = 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha06'
 ktx.work_runtime = 'android.arch.work:work-runtime-ktx:1.0.0-alpha10'
 deps.ktx = ktx
+
+def anko = [:]
+anko.coroutines = 'org.jetbrains.anko:anko-coroutines:0.10.8'
+deps.anko = anko
 
 def retrofit = [:]
 retrofit.runtime = 'com.squareup.retrofit2:retrofit:2.4.0'

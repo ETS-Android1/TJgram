@@ -9,4 +9,4 @@ data class SocialAccount(
     @Expose @SerializedName("type") val type: Int,
     @Expose @SerializedName("url") val url: String,
     @Expose @SerializedName("username") val username: String
-) : Serializable
+): Serializable

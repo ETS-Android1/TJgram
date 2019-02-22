@@ -5,9 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.presentation.utils.ViewUtil
-import org.michaelbel.tjgram.presentation.utils.ext.setAppBarElevation
-import org.michaelbel.tjgram.presentation.utils.ext.startFragment
+import org.michaelbel.tjgram.core.ext.setAppBarElevation
+import org.michaelbel.tjgram.core.ext.startFragment
+import org.michaelbel.tjgram.core.views.ViewUtil
 
 class SettingsActivity: AppCompatActivity() {
 

@@ -8,8 +8,8 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.item_social.view.*
 import org.michaelbel.tjgram.R
+import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.data.entities.SocialAccount
-import org.michaelbel.tjgram.presentation.utils.ViewUtil
 
 class SocialView: FrameLayout {
 

@@ -8,12 +8,8 @@ import org.michaelbel.tjgram.data.wss.model.SocketResponse
 class DataWrapper {
 
     companion object {
-        fun fromJson(response: Response): SocketResponse {
-            return Gson().fromJson(response.toString(), SocketResponse::class.java)
-        }
+        fun fromJson(response: Response): SocketResponse = Gson().fromJson(response.toString(), SocketResponse::class.java)
     }
 
-    override fun toString(): String {
-        return Gson().toJson(this)
-    }
+    override fun toString(): String = Gson().toJson(this)
 }

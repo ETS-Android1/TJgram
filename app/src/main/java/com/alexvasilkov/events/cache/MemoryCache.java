@@ -23,7 +23,9 @@ public class MemoryCache implements CacheProvider {
     private final CacheHandler handler = new CacheHandler(this);
     private final long maxLifetime;
 
-    @SuppressWarnings("unused") // Used through reflection
+    /**
+     * Used through reflection.
+     */
     public MemoryCache() {
         this(NO_TIME_LIMIT);
     }
@@ -36,7 +38,6 @@ public class MemoryCache implements CacheProvider {
      * @deprecated {@code isClearExpired} parameter is ignored (it will always be true),
      * so use {@link #MemoryCache(long)} constructor instead.
      */
-    @SuppressWarnings("UnusedParameters")
     @Deprecated
     public MemoryCache(long maxLifetime, boolean isClearExpired) {
         this(maxLifetime);
@@ -54,8 +55,7 @@ public class MemoryCache implements CacheProvider {
     @Override
     public void saveToCache(@NonNull Event event, EventResult result) {
         synchronized (cache) {
-            long expires = maxLifetime == NO_TIME_LIMIT
-                    ? Long.MAX_VALUE : SystemClock.uptimeMillis() + maxLifetime;
+            long expires = maxLifetime == NO_TIME_LIMIT ? Long.MAX_VALUE : SystemClock.uptimeMillis() + maxLifetime;
             cache.put(toCacheKey(event), new CacheEntry(result, expires));
             handler.clear(expires);
         }
@@ -85,8 +85,8 @@ public class MemoryCache implements CacheProvider {
         return builder.toString();
     }
 
-
     private static class CacheEntry {
+
         final EventResult result;
         final long expires;
 
@@ -97,6 +97,7 @@ public class MemoryCache implements CacheProvider {
     }
 
     private static class CacheHandler extends Handler {
+
         private WeakReference<MemoryCache> cache;
 
         CacheHandler(MemoryCache cache) {

@@ -40,7 +40,6 @@ public class Dispatcher {
 
     private boolean isExecuting;
 
-
     // Registers events target
     public void register(Object targetObj) {
         mainThreadHandler.register(targetObj);
@@ -75,7 +74,6 @@ public class Dispatcher {
     private void executeTasks(boolean delay) {
         mainThreadHandler.executeTasks(delay);
     }
-
 
     // Schedules status updates of all active events for given target.
     @MainThread
@@ -163,7 +161,6 @@ public class Dispatcher {
             }
         }
     }
-
 
     // Handles target object registration
     @MainThread
@@ -358,7 +355,6 @@ public class Dispatcher {
         }
         return null;
     }
-
 
     // Handler class to execute different operations on main thread
     private static class MainThreadHandler extends Handler {

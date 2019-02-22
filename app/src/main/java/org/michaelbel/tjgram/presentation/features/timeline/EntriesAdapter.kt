@@ -15,15 +15,15 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_entry.*
 import org.michaelbel.tjgram.R
+import org.michaelbel.tjgram.core.imageload.ImageLoader
+import org.michaelbel.tjgram.core.imageload.transform.CircleTransform
+import org.michaelbel.tjgram.core.time.TimeFormatter
+import org.michaelbel.tjgram.core.views.DeviceUtil
+import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.data.api.results.LikesResult
 import org.michaelbel.tjgram.data.entities.Entry
 import org.michaelbel.tjgram.data.entities.Likes
 import org.michaelbel.tjgram.data.net.UserConfig
-import org.michaelbel.tjgram.presentation.common.ImageLoader
-import org.michaelbel.tjgram.presentation.utils.DeviceUtil
-import org.michaelbel.tjgram.presentation.utils.ViewUtil
-import org.michaelbel.tjgram.presentation.utils.date.TimeFormatter
-import org.michaelbel.tjgram.presentation.utils.picasso.CircleTransform
 import java.util.*
 
 class EntriesAdapter(
@@ -108,9 +108,8 @@ class EntriesAdapter(
         notifyItemChanged(pos, payload)
     }
 
-    class EntriesDiffUtils internal constructor(
-            private val oldList: List<Entry>,
-            private val newList: List<Entry>
+    private inner class EntriesDiffUtils internal constructor(
+            private val oldList: List<Entry>, private val newList: List<Entry>
     ): DiffUtil.Callback() {
 
         override fun getOldListSize(): Int = oldList.size
@@ -168,7 +167,7 @@ class EntriesAdapter(
         }
     }
 
-    class EntriesViewHolder (
+    private class EntriesViewHolder (
             override val containerView: View,
             private val entriesListener: Listener,
             private val imageLoader: ImageLoader

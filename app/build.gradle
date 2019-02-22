@@ -124,6 +124,12 @@ configurations.all {
     }
 }
 
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
 dependencies {
     implementation deps.kotlin.stdlib
     implementation deps.kotlin.reflect
@@ -134,6 +140,8 @@ dependencies {
     implementation deps.ktx.fragment
     implementation deps.ktx.collection
     implementation deps.ktx.lifecycleViewModel
+
+    implementation deps.anko.coroutines
 
     implementation deps.material
     implementation deps.appcompat

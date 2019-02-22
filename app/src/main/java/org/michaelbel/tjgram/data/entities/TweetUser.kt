@@ -13,4 +13,4 @@ data class TweetUser(
     @SerializedName("profile_image_url_bigger") val profileImageUrlBigger: String,
     @SerializedName("screen_name") val screenName: String,
     @SerializedName("statuses_count") val statusesCount: Long
-) : Serializable
+): Serializable

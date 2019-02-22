@@ -18,4 +18,4 @@ data class User(
     @Expose @SerializedName("social_accounts") val socialAccounts: List<SocialAccount>,
     @Expose @SerializedName("url") val url: String,
     @Expose @SerializedName("user_hash") val userHash: String
-) : Serializable
+): Serializable
