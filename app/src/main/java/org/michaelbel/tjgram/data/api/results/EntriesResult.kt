@@ -8,7 +8,7 @@ import java.io.Serializable
 @Suppress("unused")
 data class EntriesResult(
         @Expose @SerializedName("result") val results: List<Entry>
-) : Serializable {
+): Serializable {
 
     object Category {
         const val INDEX = "index"

@@ -16,9 +16,9 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.presentation.utils.ViewUtil
+import org.michaelbel.tjgram.core.views.ViewUtil
 
-class ExpandableView : LinearLayout {
+class ExpandableView: LinearLayout {
 
     companion object {
         const val DEFAULT_ANIM_DURATION = 250
@@ -227,9 +227,9 @@ class ExpandableView : LinearLayout {
         innerView = stub.inflate() as LinearLayoutCompat
     }
 
-    fun clearChildren() {
+    /*fun clearChildren() {
         innerView!!.removeAllViews()
-    }
+    }*/
 
     fun addChildView(view: View?) {
         innerView!!.addView(view)

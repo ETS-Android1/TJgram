@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Rect
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -27,19 +28,19 @@ import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import kotlinx.android.synthetic.main.fragment_post.*
 import org.michaelbel.tjgram.R
+import org.michaelbel.tjgram.core.imageload.ImageLoader
+import org.michaelbel.tjgram.core.views.FileUtil
+import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.data.api.consts.Subsites
 import org.michaelbel.tjgram.data.entities.AttachResponse
-import org.michaelbel.tjgram.data.entities.Entry
-import org.michaelbel.tjgram.presentation.common.App
-import org.michaelbel.tjgram.presentation.common.ImageLoader
+import org.michaelbel.tjgram.presentation.App
 import org.michaelbel.tjgram.presentation.features.main.MainActivity.Companion.NEW_ENTRY_RESULT
-import org.michaelbel.tjgram.presentation.utils.FileUtil
-import org.michaelbel.tjgram.presentation.utils.ViewUtil
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -47,7 +48,8 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickListener {
+// todo add easy permissions
+class PostFragment: Fragment(), GalleryAdapter.PhotoClickListener {
 
     companion object {
         private const val MENU_ITEM_SENT = 10
@@ -73,16 +75,16 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
 
         private var INTERPOLATOR = LinearInterpolator()
 
-        fun newInstance(): PostFragment {
-            return PostFragment()
-        }
+        fun newInstance() = PostFragment()
     }
 
     @Inject
-    lateinit var presenter: PostContract.Presenter
+    lateinit var imageLoader: ImageLoader
 
     @Inject
-    lateinit var imageLoader: ImageLoader
+    lateinit var factory: PostVMFactory
+
+    private lateinit var postVM: PostVM
 
     private var menuItem: MenuItem? = null
     private var menuIconMode: Int = MENU_ITEM_SENT
@@ -183,7 +185,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
                     if (attachedMedia.size == 0) {
                         postEntry()
                     } else {
-                        presenter.uploadFile(photoFile)
+                        postVM.uploadFile(photoFile)
                     }
 
                     menuIconMode = MENU_ITEM_PROGRESS
@@ -200,7 +202,30 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         App[requireActivity().application].createPostComponent().inject(this)
-        presenter.create(this)
+
+        postVM = ViewModelProviders.of(requireActivity(), factory)[PostVM::class.java]
+        postVM.attaches.observe(this, androidx.lifecycle.Observer {
+            attachedMedia.add(it)
+            postEntry()
+        })
+        postVM.attachError.observe(this, androidx.lifecycle.Observer {
+            //Toast.makeText(requireContext(), R.string.err_loading_image, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.err_while_posting, Toast.LENGTH_SHORT).show()
+        })
+        postVM.entryCreate.observe(this, androidx.lifecycle.Observer {
+            //progress_bar.visibility = GONE
+
+            val intent = Intent()
+            intent.putExtra(NEW_ENTRY_RESULT, true)
+            // todo test
+            requireActivity().setResult(RESULT_OK, intent)
+            requireActivity().finish()
+            /*activity!!.setResult(RESULT_OK, intent)
+            activity!!.finish()*/
+        })
+        postVM.entryError.observe(this, androidx.lifecycle.Observer {
+            Toast.makeText(requireContext(), R.string.err_while_posting, Toast.LENGTH_SHORT).show()
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -221,7 +246,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
         recyclerView.adapter = adapter
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.hasFixedSize()
-        recyclerView.addItemDecoration(PhotoSpacingDecoration(RECYCLER_SPAN_COUNT, resources.getDimension(R.dimen.post_item_decoration_margin).toInt()))
+        recyclerView.addItemDecoration(PhotosSpacingDecoration(RECYCLER_SPAN_COUNT, resources.getDimension(R.dimen.post_item_decoration_margin).toInt()))
 
         placeholderText.visibility = VISIBLE
 
@@ -254,29 +279,12 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.destroy()
-        App[requireActivity().application].removePostComponent()
-    }
-
     override fun onPhotoClick(photo: File) {
         photoFile = photo
 
         imageLoader.load(Uri.fromFile(photo), imageView, R.drawable.placeholder_rectangle, R.drawable.error_rectangle) {
             showRemoveIcon()
         }
-
-        // fixme удалить эту паутину
-        /*Picasso.get().load(Uri.fromFile(photo)).placeholder(R.drawable.placeholder_rectangle).error(R.drawable.error_rectangle)
-            .into(imageView, object : Callback {
-                    override fun onSuccess() {
-                        showRemoveIcon()
-                    }
-                    override fun onError(e: Exception) {
-                        showRemoveIcon()
-                    }
-                })*/
 
         cardImage.visibility = VISIBLE
         animateImagesLayout(true)
@@ -288,32 +296,6 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
 
     override fun onGalleryClick() {
         chooseFromGallery()
-    }
-
-    override fun photoUploaded(attach: AttachResponse) {
-        attachedMedia.add(attach)
-        postEntry()
-    }
-
-    override fun uploadError(throwable: Throwable) {
-        //Toast.makeText(requireContext(), R.string.err_loading_image, Toast.LENGTH_SHORT).show()
-        Toast.makeText(requireContext(), R.string.err_while_posting, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun setEntryCreated(entry: Entry) {
-        //progress_bar.visibility = GONE
-
-        val intent = Intent()
-        intent.putExtra(NEW_ENTRY_RESULT, true)
-        // todo test
-        requireActivity().setResult(RESULT_OK, intent)
-        requireActivity().finish()
-        /*activity!!.setResult(RESULT_OK, intent)
-        activity!!.finish()*/
-    }
-
-    override fun setError(throwable: Throwable) {
-        Toast.makeText(requireContext(), R.string.err_while_posting, Toast.LENGTH_SHORT).show()
     }
 
     private fun loadPhotos() {
@@ -459,7 +441,7 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
             map["attaches[$i][data][data][url]"] = ""
         }
 
-        presenter.createEntry(titleText!!, introText!!, Subsites.TJGRAM.toLong(), map)
+        postVM.createEntry(titleText!!, introText!!, Subsites.TJGRAM, map)
     }
 
     private fun animateImagesLayout(hide: Boolean) {
@@ -507,6 +489,24 @@ class PostFragment : Fragment(), PostContract.View, GalleryAdapter.PhotoClickLis
 
         if (!removeIcon.isVisible) {
             set.start()
+        }
+    }
+
+    private inner class PhotosSpacingDecoration(
+            private val spanCount: Int, private val spacing: Int
+    ): RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            val position = parent.getChildAdapterPosition(view)
+            val column = position % spanCount
+            outRect.left = spacing - column * spacing / spanCount
+            outRect.right = (column + 1) * spacing / spanCount
+
+            if (position < spanCount) {
+                outRect.top = spacing
+            }
+
+            outRect.bottom = spacing
         }
     }
 }

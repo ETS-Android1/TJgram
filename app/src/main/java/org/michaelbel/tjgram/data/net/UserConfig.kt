@@ -9,14 +9,12 @@ import android.view.Display
 import androidx.core.content.edit
 import org.michaelbel.tjgram.BuildConfig
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.presentation.utils.consts.SharedPrefs
+import org.michaelbel.tjgram.core.persistense.SharedPrefs
 import java.util.*
 
 object UserConfig {
 
-    fun isAuthorized(context: Context): Boolean {
-        return getToken(context).isNotEmpty()
-    }
+    fun isAuthorized(context: Context): Boolean = getToken(context).isNotEmpty()
 
     fun getToken(context: Context): String {
         val preferences = context.getSharedPreferences(SharedPrefs.SP_NAME, MODE_PRIVATE)
@@ -26,14 +24,6 @@ object UserConfig {
     fun getUserId(context: Context): Int {
         val preferences = context.getSharedPreferences(SharedPrefs.SP_NAME, MODE_PRIVATE)
         return preferences.getInt(SharedPrefs.KEY_LOCAL_USER_ID, 0)
-    }
-
-    fun setLocalUser(context: Context, token: String, userId: Int) {
-        val preferences = context.getSharedPreferences(SharedPrefs.SP_NAME, MODE_PRIVATE)
-        preferences.edit {
-            putString(SharedPrefs.KEY_X_DEVICE_TOKEN, token)
-            putInt(SharedPrefs.KEY_LOCAL_USER_ID, userId)
-        }
     }
 
     fun userLogout(context: Context) {

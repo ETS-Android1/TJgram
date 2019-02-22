@@ -10,7 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 import android.widget.FrameLayout
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.utils.DeviceUtil
+import org.michaelbel.tjgram.core.views.DeviceUtil
 
 class ShiftingBottomNavigationTab : BottomNavigationTab {
 

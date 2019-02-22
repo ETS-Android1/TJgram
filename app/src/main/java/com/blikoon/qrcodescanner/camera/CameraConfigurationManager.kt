@@ -2,7 +2,7 @@ package com.blikoon.qrcodescanner.camera
 
 import android.content.Context
 import android.hardware.Camera
-import org.michaelbel.tjgram.presentation.utils.DeviceUtil
+import org.michaelbel.tjgram.core.views.DeviceUtil
 import timber.log.Timber
 import java.util.*
 import java.util.regex.Pattern

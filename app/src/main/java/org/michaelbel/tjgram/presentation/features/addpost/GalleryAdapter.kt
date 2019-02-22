@@ -12,11 +12,11 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_camera.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.presentation.utils.ViewUtil
+import org.michaelbel.tjgram.core.views.ViewUtil
 import java.io.File
 import java.util.*
 
-class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GalleryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val PHOTO_SIZE = 320
@@ -67,8 +67,6 @@ class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        // todo test
-        //val data = Uri.fromFile(photos[position])
         val data = photos[position].toUri()
 
         when {
@@ -87,7 +85,7 @@ class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    private inner class BucketViewHolder (override val containerView: View):
+    private inner class BucketViewHolder(override val containerView: View):
             RecyclerView.ViewHolder(containerView), View.OnClickListener, LayoutContainer {
 
         fun bind(@StringRes textId: Int, @DrawableRes iconId: Int) {
@@ -98,15 +96,15 @@ class GalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onClick(v: View) {
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 if (adapterPosition == 0) {
-                    photoClickListener!!.onCameraClick()
+                    photoClickListener?.onCameraClick()
                 } else {
-                    photoClickListener!!.onGalleryClick()
+                    photoClickListener?.onGalleryClick()
                 }
             }
         }
     }
 
-    private inner class MediaViewHolder (override val containerView: View):
+    private inner class MediaViewHolder(override val containerView: View):
             RecyclerView.ViewHolder(containerView), View.OnClickListener, LayoutContainer {
 
         fun bind(image: Uri) {

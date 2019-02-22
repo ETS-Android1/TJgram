@@ -12,4 +12,4 @@ data class Similar(
     @Expose @SerializedName("isAdvertisement") val isAdvertisement: Boolean,
     @Expose @SerializedName("title") val title: String,
     @Expose @SerializedName("url") val url: String
-) : Serializable
+): Serializable

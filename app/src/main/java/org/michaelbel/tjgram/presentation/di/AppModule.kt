@@ -6,9 +6,9 @@ import android.content.SharedPreferences
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
-import org.michaelbel.tjgram.presentation.common.ImageLoader
-import org.michaelbel.tjgram.presentation.common.PicassoImageLoader
-import org.michaelbel.tjgram.presentation.utils.consts.SharedPrefs.SP_NAME
+import org.michaelbel.tjgram.core.imageload.ImageLoader
+import org.michaelbel.tjgram.core.imageload.PicassoImageLoader
+import org.michaelbel.tjgram.core.persistense.SharedPrefs.SP_NAME
 import javax.inject.Singleton
 
 @Module
@@ -18,19 +18,13 @@ class AppModule constructor(context: Context) {
 
     @Singleton
     @Provides
-    fun provideAppContext(): Context {
-        return appContext
-    }
+    fun provideAppContext(): Context = appContext
 
     @Singleton
     @Provides
-    fun sharedPreferences(): SharedPreferences {
-        return appContext.getSharedPreferences(SP_NAME, MODE_PRIVATE)
-    }
+    fun sharedPreferences(): SharedPreferences = appContext.getSharedPreferences(SP_NAME, MODE_PRIVATE)
 
     @Singleton
     @Provides
-    fun provideImageLoader(): ImageLoader {
-        return PicassoImageLoader(Picasso.get())
-    }
+    fun provideImageLoader(): ImageLoader = PicassoImageLoader(Picasso.get())
 }

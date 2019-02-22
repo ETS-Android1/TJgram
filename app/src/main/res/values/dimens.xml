@@ -33,7 +33,7 @@
     <dimen name="post_photo_view_text_margin">16dp</dimen>
     <dimen name="post_photo_view_text_size">16sp</dimen>
     <dimen name="post_item_decoration_margin">3dp</dimen>
-    <!--profile-->
+    <!--auth-->
     <dimen name="auth_logo_image_margin_bottom">8dp</dimen>
     <dimen name="auth_pre_text_size">18sp</dimen>
     <dimen name="auth_pre_text_margin">16dp</dimen>
@@ -47,12 +47,16 @@
     <dimen name="auth_login_btn_text_size">16sp</dimen>
     <dimen name="auth_login_btn_text_margin_start">56dp</dimen>
     <dimen name="auth_login_btn_text_margin_end">16dp</dimen>
+    <!--profile-->
     <dimen name="profile_contacts_view_height">52dp</dimen>
     <dimen name="profile_contacts_title_text_size">16sp</dimen>
     <dimen name="profile_contacts_padding">16dp</dimen>
     <!--qr-->
     <dimen name="qr_flashlight_layout_height">110dp</dimen>
-    <dimen name="qr_flashlight_icon_size">32dp</dimen><!--todo почему не 24dp?-->
+    <dimen name="qr_flashlight_icon_size">24dp</dimen>
     <dimen name="qr_flashlight_text_size">16sp</dimen>
     <dimen name="qr_flashlight_text_margin">16dp</dimen>
+    <!--settings-->
+    <dimen name="settings_preference_divider_height">1px</dimen>
+    <dimen name="settings_preference_divider_margin">14dp</dimen>
 </resources>

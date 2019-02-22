@@ -7,7 +7,7 @@ import java.io.Serializable
 @Suppress("unused")
 data class TweetsResult(
     @SerializedName("result") val result: List<Tweet>
-) : Serializable {
+): Serializable {
 
     object Mode {
         const val TWEETS_FRESH = "fresh"

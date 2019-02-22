@@ -36,11 +36,8 @@ class SettingsFragment: PreferenceFragmentCompat() {
                 UserConfig.userLogout(requireContext())
                 val intent = Intent()
                 intent.putExtra(ProfileFragment.LOGOUT_RESULT, true)
-                // todo test
                 requireActivity().setResult(Activity.RESULT_OK, intent)
                 requireActivity().finish()
-                //(activity as SettingsActivity).setResult(Activity.RESULT_OK, intent)
-                //(activity as SettingsActivity).finish()
             }
             .setNegativeButton(R.string.action_cancel, null)
             .show()

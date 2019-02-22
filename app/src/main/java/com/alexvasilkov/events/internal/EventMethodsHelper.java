@@ -214,5 +214,4 @@ class EventMethodsHelper {
                     + Utils.methodToString(javaMethod), e);
         }
     }
-
 }

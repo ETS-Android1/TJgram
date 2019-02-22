@@ -24,8 +24,8 @@ import com.blikoon.qrcodescanner.decode.DecodeManager
 import com.blikoon.qrcodescanner.decode.InactivityTimer
 import com.google.zxing.Result
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.presentation.features.profile.widget.QrFinderView
-import org.michaelbel.tjgram.presentation.utils.ViewUtil
+import org.michaelbel.tjgram.presentation.features.profile.widget.QrFindView
+import org.michaelbel.tjgram.core.views.ViewUtil
 import timber.log.Timber
 import java.util.*
 
@@ -34,7 +34,7 @@ class QrCodeActivity: AppCompatActivity(), Callback {
     private var mCaptureActivityHandler: CaptureActivityHandler? = null
     private var hasSurface: Boolean = false
     private var inactivityTimer: InactivityTimer? = null
-    private var qrCodeFinderView: QrFinderView? = null
+    private var qrCodeFinderView: QrFindView? = null
     private var surfaceView: SurfaceView? = null
 
     private val decodeManager = DecodeManager()

@@ -36,9 +36,7 @@ class NetworkModule(private val baseUrl: String, val context: Context) {
 
     @Singleton
     @Provides
-    fun provideTjApi(retrofit: Retrofit): TjApi {
-        return retrofit.create(TjApi::class.java)
-    }
+    fun provideTjApi(retrofit: Retrofit): TjApi = retrofit.create(TjApi::class.java)
 
     private fun okHttpClient(): OkHttpClient {
         val okHttpClient = OkHttpClient().newBuilder()
@@ -57,14 +55,12 @@ class NetworkModule(private val baseUrl: String, val context: Context) {
         return httpLoggingInterceptor
     }
 
-    private fun gson(): Gson {
-        return GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .setDateFormat(TjConfig.GSON_DATE_FORMAT)
-                .create()
-    }
+    private fun gson(): Gson =
+        GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .setDateFormat(TjConfig.GSON_DATE_FORMAT)
+            .create()
 
-    inline fun <reified T> createService(): T {
-        return retrofit().create(T::class.java)
-    }
+    @Suppress("unused")
+    inline fun <reified T> createService(): T = retrofit().create(T::class.java)
 }

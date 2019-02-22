@@ -7,6 +7,7 @@ import java.io.Serializable;
 
 @SuppressWarnings("all")
 public class SocketResponse implements Serializable {
+
     @Expose @SerializedName("type") public String type;
     @Expose @SerializedName("content_id") public long contentId;
     @Expose @SerializedName("count") public long count;

@@ -20,16 +20,17 @@ import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_timeline.*
 import org.michaelbel.tjgram.R
+import org.michaelbel.tjgram.core.ext.replaceFragment
+import org.michaelbel.tjgram.core.ext.toast
+import org.michaelbel.tjgram.core.views.DeviceUtil
+import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.data.api.results.EntriesResult
 import org.michaelbel.tjgram.data.net.UserConfig
-import org.michaelbel.tjgram.presentation.common.App
+import org.michaelbel.tjgram.presentation.App
 import org.michaelbel.tjgram.presentation.features.addpost.PostActivity
+import org.michaelbel.tjgram.presentation.features.auth.AuthFragment
 import org.michaelbel.tjgram.presentation.features.profile.ProfileFragment
 import org.michaelbel.tjgram.presentation.features.timeline.TimelineFragment
-import org.michaelbel.tjgram.presentation.utils.DeviceUtil
-import org.michaelbel.tjgram.presentation.utils.ViewUtil
-import org.michaelbel.tjgram.presentation.utils.ext.replaceFragment
-import org.michaelbel.tjgram.presentation.utils.ext.toast
 import javax.inject.Inject
 
 class MainActivity: AppCompatActivity() {
@@ -39,17 +40,17 @@ class MainActivity: AppCompatActivity() {
 
         private const val REQUEST_CODE_NEW_ENTRY = 201
 
-        private const val MAIN_FRAGMENT = 0
-        private const val POST_FRAGMENT = 1
-        private const val USER_FRAGMENT = 2
+        private const val MAIN_TAB = 0
+        private const val POST_TAB = 1
+        private const val USER_TAB = 2
     }
 
     private var snackbar: Snackbar? = null
 
     @Inject
-    lateinit var factory: MainViewModelFactory
+    lateinit var factory: MainVMFactory
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainVM
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_NEW_ENTRY) {
@@ -72,8 +73,6 @@ class MainActivity: AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // todo test
-        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timeline)
 
@@ -82,7 +81,7 @@ class MainActivity: AppCompatActivity() {
         initToolbar()
         initBottomBar()
 
-        viewModel = ViewModelProviders.of(this, factory)[MainViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, factory)[MainVM::class.java]
         viewModel.snackbarMessage.observe(this, Observer {
             showSnackbar(it)
         })
@@ -91,7 +90,7 @@ class MainActivity: AppCompatActivity() {
         })
 
         if (savedInstanceState == null) {
-            bottomBar.selectTab(MAIN_FRAGMENT)
+            bottomBar.selectTab(MAIN_TAB)
         }
     }
 
@@ -125,20 +124,20 @@ class MainActivity: AppCompatActivity() {
         val itemProfile = BottomNavigationItem(ViewUtil.getIcon(this, R.drawable.ic_account, R.color.accent)!!, "")
                 .setInactiveIcon(ViewUtil.getIcon(this, R.drawable.ic_account_outline, R.color.icon_active_unfocused))
 
-        var prevPosition = MAIN_FRAGMENT
+        var prevPosition = MAIN_TAB
 
-        bottomBar.setFirstSelectedPosition(MAIN_FRAGMENT)
+        bottomBar.setFirstSelectedPosition(MAIN_TAB)
         bottomBar.addItems(itemMain, itemPost, /*itemNotify, */itemProfile)
         bottomBar.initialise()
         bottomBar.setTabSelectedListener(object : BottomNavigationBar.OnNavigationItemSelectedListener {
             override fun onItemSelected(position: Int) {
                 when (position) {
-                    MAIN_FRAGMENT -> {
+                    MAIN_TAB -> {
                         setActionBarBehavior(SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS, 1.5F)
                         replaceFragment(R.id.fragmentView, TimelineFragment.newInstance(EntriesResult.Sorting.NEW))
-                        prevPosition = MAIN_FRAGMENT
+                        prevPosition = MAIN_TAB
                     }
-                    POST_FRAGMENT -> {
+                    POST_TAB -> {
                         bottomBar.selectTab(prevPosition, false)
 
                         if (UserConfig.isAuthorized(this@MainActivity)) {
@@ -147,10 +146,15 @@ class MainActivity: AppCompatActivity() {
                             showSnackbar("")
                         }
                     }
-                    USER_FRAGMENT -> {
-                        setActionBarBehavior(0, 0F)
-                        replaceFragment(R.id.fragmentView, ProfileFragment.newInstance())
-                        prevPosition = USER_FRAGMENT
+                    USER_TAB -> {
+                        setActionBarBehavior(0, 1.5F)
+                        if (UserConfig.isAuthorized(this@MainActivity)) {
+                            replaceFragment(R.id.fragmentView, ProfileFragment.newInstance())
+                        } else {
+                            replaceFragment(R.id.fragmentView, AuthFragment.newInstance())
+                        }
+
+                        prevPosition = USER_TAB
                     }
                 }
             }
@@ -198,18 +202,11 @@ class MainActivity: AppCompatActivity() {
 
         /*disposable.add(viewModel.localUser(userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Picasso.get().load(it.avatarUrl).transform(CircleTransform()).into(bottomBar.getImageViewByTabItemPosition(USER_FRAGMENT))
+                Picasso.get().load(it.avatarUrl).transform(CircleTransform()).into(bottomBar.getImageViewByTabItemPosition(USER_TAB))
             }, { error -> Timber.e(error) }))*/
     }
 
     fun clearBottomAvatar() {
-        bottomBar.getImageViewByTabItemPosition(USER_FRAGMENT).setImageDrawable(null)
+        bottomBar.getImageViewByTabItemPosition(USER_TAB).setImageDrawable(null)
     }
-
-    /*private fun replaceFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        transaction.replace(R.id.fragmentView, fragment)
-        transaction.commitNow()
-    }*/
 }

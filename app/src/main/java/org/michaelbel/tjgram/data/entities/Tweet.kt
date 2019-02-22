@@ -13,4 +13,4 @@ data class Tweet(
     @Expose @SerializedName("has_media") val hasMedia: Boolean,
     @Expose @SerializedName("media") val media: List<TweetMedia>,
     @Expose @SerializedName("created_at") val createdAt: Long
-) : Serializable
+): Serializable

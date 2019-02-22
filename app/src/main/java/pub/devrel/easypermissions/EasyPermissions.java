@@ -38,6 +38,7 @@ import pub.devrel.easypermissions.helper.PermissionHelper;
 /**
  * Utility to request and check System permissions for apps targeting Android M (API &gt;= 23).
  */
+// fixme легче сказать что меня устраивает в этой гугловской поделке. все переписать.
 public class EasyPermissions {
 
     /**
@@ -71,8 +72,7 @@ public class EasyPermissions {
      * yet granted.
      * @see Manifest.permission
      */
-    public static boolean hasPermissions(@NonNull Context context,
-                                         @Size(min = 1) @NonNull String... perms) {
+    public static boolean hasPermissions(@NonNull Context context, @Size(min = 1) @NonNull String... perms) {
         // Always return true for SDK < M, let the system deal with the permissions
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             Log.w(TAG, "hasPermissions: API version < M, returning true by default");

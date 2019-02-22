@@ -11,4 +11,4 @@ data class TweetMedia(
     @Expose @SerializedName("thumbnail_width") val thumbnailWidth: Long,
     @Expose @SerializedName("thumbnail_height") val thumbnailHeight: Long,
     @Expose @SerializedName("ratio") val ratio: Double
-) : Serializable
+): Serializable

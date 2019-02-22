@@ -31,7 +31,7 @@ data class UserData(
 
         // Subscription
         @ColumnInfo(name = "tj_subscription") var tjSubscriptionActive: Boolean = false,
-        var tjSubscriptionActiveUntil : Long = 0L,
+        var tjSubscriptionActiveUntil: Long = 0L,
 
         @Ignore val advancedAccess: AdvancedAccess? = null,
         @Ignore val counters: Counters? = null,
