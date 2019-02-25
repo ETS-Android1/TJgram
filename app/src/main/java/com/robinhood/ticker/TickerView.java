@@ -171,14 +171,14 @@ public class TickerView extends View {
                 arr.getInt(R.styleable.TickerView_ticker_defaultCharacterList, 0);
         switch (defaultCharList) {
             case 1:
-                setCharacterLists(TickerUtils.provideNumberList());
+                setCharacterLists(TickerUtils.INSTANCE.provideNumberList());
                 break;
             case 2:
-                setCharacterLists(TickerUtils.provideAlphabeticalList());
+                setCharacterLists(TickerUtils.INSTANCE.provideAlphabeticalList());
                 break;
             default:
                 if (isInEditMode()) {
-                    setCharacterLists(TickerUtils.provideNumberList());
+                    setCharacterLists(TickerUtils.INSTANCE.provideNumberList());
                 }
         }
 

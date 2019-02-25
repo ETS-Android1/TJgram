@@ -16,9 +16,9 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:layout_marginBottom="@dimen/auth_logo_image_margin_bottom"
-        app:layout_constraintBottom_toBottomOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/guideline"
         app:srcCompat="@drawable/tj_logo"/>
 
     <androidx.appcompat.widget.AppCompatTextView
