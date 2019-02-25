@@ -25,6 +25,7 @@ import java.util.Set;
  * https://en.wikipedia.org/wiki/Levenshtein_distance
  */
 public class LevenshteinUtils {
+
     static final int ACTION_SAME = 0;
     static final int ACTION_INSERT = 1;
     static final int ACTION_DELETE = 2;

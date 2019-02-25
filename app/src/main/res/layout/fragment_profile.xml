@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@mipmap/ic_launcher"/>
+        tools:src="@drawable/example"/>
 
     <!--Karma-->
     <androidx.cardview.widget.CardView
@@ -29,7 +29,8 @@
         app:cardCornerRadius="@dimen/profile_karma_card_radius"
         app:cardElevation="@dimen/profile_karma_card_elevation"
         app:layout_constraintStart_toEndOf="@id/avatarImage"
-        app:layout_constraintBottom_toBottomOf="@id/avatarImage">
+        app:layout_constraintBottom_toBottomOf="@id/avatarImage"
+        tools:cardBackgroundColor="@color/karma_background_pos">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/karmaValue"
@@ -44,7 +45,8 @@
             android:fontFamily="sans-serif-medium"
             android:ellipsize="end"
             android:textSize="@dimen/profile_karma_text_size"
-            tools:text="+148,787" />
+            tools:text="+148,787"
+            tools:textColor="@color/karma_value_pos"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -92,112 +94,5 @@
         app:layout_constraintTop_toBottomOf="@+id/nameText"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Зарегистрировался 25 июля 2015"/>
-
-    <!--Expand Contacts-->
-    <!--<org.michaelbel.tjgram.presentation.features.profile.widget.ExpandableView
-        android:id="@+id/contactsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/regDate"
-        app:inner_view="@layout/view_collapsed"
-        android:visibility="gone"/>-->
-
-    <!--<View
-        android:id="@+id/dividerView"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="?android:attr/colorBackground"
-        app:layout_constraintTop_toBottomOf="@+id/contactsLayout"
-        android:visibility="gone"/>-->
-
-    <!--Comments-->
-    <!--<androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/commentsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:orientation="vertical"
-        android:background="?attr/selectableItemBackground"
-        app:layout_constraintTop_toBottomOf="@+id/dividerView"
-        android:visibility="gone">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/commentsText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:fontFamily="sans-serif-medium"
-            android:layout_marginStart="16dp"
-            android:text="@string/comments"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/commentsCountText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="?android:attr/textColorSecondary"
-            android:fontFamily="sans-serif"
-            android:layout_marginEnd="16dp"
-            android:text="@string/loading"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="65 536"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-    <!--<View
-        android:id="@+id/dividerView2"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginStart="14dp"
-        android:background="?android:attr/divider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/commentsLayout"
-        android:visibility="gone"/>-->
-
-    <!--Favorites-->
-    <!--<androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/favoritesLayout"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:orientation="vertical"
-        android:background="?attr/selectableItemBackground"
-        app:layout_constraintTop_toBottomOf="@+id/dividerView2"
-        android:visibility="gone">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/favoritesText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:fontFamily="sans-serif-medium"
-            android:layout_marginStart="16dp"
-            android:text="@string/favorites"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/favoritesCountText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="?android:attr/textColorSecondary"
-            android:fontFamily="sans-serif"
-            android:layout_marginEnd="16dp"
-            android:text="@string/loading"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="1536"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

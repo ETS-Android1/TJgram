@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.robinhood.ticker;
+package com.robinhood.ticker
 
 /**
  * Static utility class for the ticker package. This class contains helper methods such as those
@@ -22,14 +22,11 @@ package com.robinhood.ticker;
  *
  * @author Jin Cao, Robinhood
  */
-public class TickerUtils {
-    static final char EMPTY_CHAR = (char) 0;
+object TickerUtils {
 
-    public static String provideNumberList() {
-        return "0123456789";
-    }
+    const val EMPTY_CHAR = 0.toChar()
 
-    public static String provideAlphabeticalList() {
-        return "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    }
+    fun provideNumberList() = "0123456789"
+
+    fun provideAlphabeticalList() = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 }

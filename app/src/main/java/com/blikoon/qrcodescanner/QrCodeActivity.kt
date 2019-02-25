@@ -14,7 +14,6 @@ import android.view.SurfaceHolder
 import android.view.SurfaceHolder.Callback
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.blikoon.qrcodescanner.camera.CameraManager
 import com.blikoon.qrcodescanner.decode.CaptureActivityHandler
@@ -68,7 +67,6 @@ class QrCodeActivity: AppCompatActivity(), Callback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_qr)
 
-        val flashLayout = findViewById<FrameLayout>(R.id.flashLayout)
         flashLayout.setOnClickListener {
             if (flashLightActive) {
                 disableFlashLight()
@@ -168,9 +166,7 @@ class QrCodeActivity: AppCompatActivity(), Callback {
     }
 
     private fun restartPreview() {
-        if (null != mCaptureActivityHandler) {
-            mCaptureActivityHandler?.restartPreviewAndDecode()
-        }
+        mCaptureActivityHandler?.restartPreviewAndDecode()
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {}
