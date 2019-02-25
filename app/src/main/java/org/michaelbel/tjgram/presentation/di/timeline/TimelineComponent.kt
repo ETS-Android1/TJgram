@@ -6,5 +6,5 @@ import org.michaelbel.tjgram.presentation.features.timeline.TimelineFragment
 @TimelineScope
 @Subcomponent(modules = [TimelineModule::class])
 interface TimelineComponent {
-    fun inject(fragment: TimelineFragment)
+    fun inject(target: TimelineFragment)
 }

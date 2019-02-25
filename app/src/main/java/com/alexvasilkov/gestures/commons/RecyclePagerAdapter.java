@@ -4,6 +4,8 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -16,8 +18,7 @@ import androidx.viewpager.widget.PagerAdapter;
  * <p>
  * Inspired by {@link RecyclerView.Adapter}.
  */
-public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.ViewHolder>
-        extends PagerAdapter {
+public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.ViewHolder> extends PagerAdapter {
 
     private final Queue<VH> cache = new LinkedList<>();
     private final SparseArray<VH> attached = new SparseArray<>();
@@ -40,7 +41,7 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.ViewHol
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NotNull ViewGroup container, int position) {
         VH holder = cache.poll();
         if (holder == null) {
             holder = onCreateViewHolder(container);
@@ -57,7 +58,7 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.ViewHol
 
     @SuppressWarnings("unchecked")
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
         VH holder = (VH) object;
         attached.remove(position);
         container.removeView(holder.itemView);
@@ -66,13 +67,13 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.ViewHol
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NotNull View view, @NotNull Object object) {
         ViewHolder holder = (ViewHolder) object;
         return holder.itemView == view;
     }
 
     @Override
-    public int getItemPosition(Object object) {
+    public int getItemPosition(@NotNull Object object) {
         // Forcing all views reinitialization when data set changed.
         // It should be safe because we're using views recycling logic.
         return POSITION_NONE;
@@ -85,5 +86,4 @@ public abstract class RecyclePagerAdapter<VH extends RecyclePagerAdapter.ViewHol
             this.itemView = itemView;
         }
     }
-
 }

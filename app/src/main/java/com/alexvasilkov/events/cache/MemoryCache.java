@@ -8,6 +8,8 @@ import android.os.SystemClock;
 import com.alexvasilkov.events.Event;
 import com.alexvasilkov.events.EventResult;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,7 +55,7 @@ public class MemoryCache implements CacheProvider {
     }
 
     @Override
-    public void saveToCache(@NonNull Event event, EventResult result) {
+    public void saveToCache(@NonNull Event event, @NotNull EventResult result) {
         synchronized (cache) {
             long expires = maxLifetime == NO_TIME_LIMIT ? Long.MAX_VALUE : SystemClock.uptimeMillis() + maxLifetime;
             cache.put(toCacheKey(event), new CacheEntry(result, expires));

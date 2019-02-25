@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
@@ -15,16 +16,16 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.core.customtabs.Browser
-import org.michaelbel.tjgram.core.imageload.ImageLoader
+import org.michaelbel.tjgram.core.imageloader.ImageLoader
 import org.michaelbel.tjgram.core.views.DeviceUtil
 import org.michaelbel.tjgram.core.views.LinearSmoothScrollerMiddle
 import org.michaelbel.tjgram.data.api.consts.Subsites
 import org.michaelbel.tjgram.data.api.results.EntriesResult
 import org.michaelbel.tjgram.data.entities.Entry
+import org.michaelbel.tjgram.data.entities.Likes
 import org.michaelbel.tjgram.data.net.NetworkUtil
 import org.michaelbel.tjgram.data.net.TjConfig
 import org.michaelbel.tjgram.presentation.App
@@ -33,29 +34,30 @@ import java.lang.String.format
 import java.util.*
 import javax.inject.Inject
 
-class TimelineFragment: Fragment(), EntriesAdapter.Listener, SwipeRefreshLayout.OnRefreshListener {
+class TimelineFragment: Fragment(), EntriesAdapter.Listener {
 
     companion object {
-        private const val ARG_SORTING = "sorting"
-        private const val SPAN_COUNT = 1
+        private const val EXTRA_SORTING = "sorting"
+        private const val LIST_SPAN_COUNT = 1
 
         fun newInstance(sorting: String): TimelineFragment {
             val args = Bundle()
-            args.putString(ARG_SORTING, sorting)
+            args.putString(EXTRA_SORTING, sorting)
             val fragment = TimelineFragment()
             fragment.arguments = args
             return fragment
         }
     }
 
-    private lateinit var adapter: EntriesAdapter
-
     private var offset: Int = 0
     private var loading = true
 
-    private lateinit var mainViewModel: MainVM
+    private var likedEntry: Entry? = null
 
-    private lateinit var viewModel: TimelineVM
+    private lateinit var adapter: EntriesAdapter
+
+    private lateinit var mainVM: MainVM
+    private lateinit var timelineVM: TimelineVM
 
     @Inject
     lateinit var factory: TimelineVMFactory
@@ -69,22 +71,40 @@ class TimelineFragment: Fragment(), EntriesAdapter.Listener, SwipeRefreshLayout.
 
         adapter = EntriesAdapter(this, imageLoader)
 
-        mainViewModel = ViewModelProviders.of(requireActivity())[MainVM::class.java]
+        mainVM = ViewModelProviders.of(requireActivity())[MainVM::class.java]
 
-        viewModel = ViewModelProviders.of(requireActivity(), factory)[TimelineVM::class.java]
-        viewModel.dataLoading.observe(this, androidx.lifecycle.Observer {
+        timelineVM = ViewModelProviders.of(requireActivity(), factory)[TimelineVM::class.java]
+        timelineVM.dataLoading.observe(this, androidx.lifecycle.Observer {
             swipeRefreshLayout.isRefreshing = it
         })
-        viewModel.reportSent.observe(this, androidx.lifecycle.Observer {
+        timelineVM.reportSent.observe(this, androidx.lifecycle.Observer {
             Toast.makeText(requireContext(), if (it) R.string.msg_complaint_sent else R.string.err_complaint_sent, Toast.LENGTH_SHORT).show()
         })
-        viewModel.items.observe(this, androidx.lifecycle.Observer {
+        timelineVM.items.observe(this, androidx.lifecycle.Observer {
             offset += it.size
             loading = true
             adapter.setEntries(it)
         })
-        viewModel.dataLoadingError.observe(this, androidx.lifecycle.Observer {
+        timelineVM.dataLoadingError.observe(this, androidx.lifecycle.Observer {
             errorView.visibility = VISIBLE
+        })
+        timelineVM.likedEntry.observe(this, androidx.lifecycle.Observer {
+            val likes = Likes(count = it.count, isHidden = it.isHidden, isLiked = it.isLiked, summ = it.summ)
+            likedEntry?.likes = likes
+            adapter.changeLikes(likedEntry)
+        })
+        timelineVM.likedEntryError.observe(this, androidx.lifecycle.Observer {
+            if (NetworkUtil.isHttpStatusCode(it, 400)) {
+                Toast.makeText(requireContext(), R.string.msg_like_old_entry, Toast.LENGTH_SHORT).show()
+            }
+
+            adapter.changeLikes(likedEntry)
+        })
+        timelineVM.refreshedItems.observe(this, androidx.lifecycle.Observer {
+            offset += it.size
+
+            adapter.swapEntries(it)
+            errorView.visibility = GONE
         })
     }
 
@@ -93,20 +113,27 @@ class TimelineFragment: Fragment(), EntriesAdapter.Listener, SwipeRefreshLayout.
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainViewModel.setToolbarTitle(getString(R.string.app_name))
+        mainVM.changeToolbarTitle(R.string.app_name)
 
         initSwipeRefresh()
         initRecyclerView()
         initEmptyView()
 
         offset = 0
-        viewModel.entries(Subsites.TJGRAM, EntriesResult.Sorting.NEW, offset)
+        timelineVM.entries(Subsites.TJGRAM, EntriesResult.Sorting.NEW, offset)
     }
 
     private fun initSwipeRefresh() {
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.accent))
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.primary))
-        swipeRefreshLayout.setOnRefreshListener(this)
+        swipeRefreshLayout.setOnRefreshListener {
+            if (NetworkUtil.isNetworkConnected(requireContext()).not()) {
+                swipeRefreshLayout.isRefreshing = false
+            } else {
+                offset = 0
+                timelineVM.entriesRefresh(Subsites.TJGRAM, EntriesResult.Sorting.NEW, offset)
+            }
+        }
         swipeRefreshLayout.isRefreshing = true
     }
 
@@ -134,13 +161,13 @@ class TimelineFragment: Fragment(), EntriesAdapter.Listener, SwipeRefreshLayout.
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.setHasFixedSize(false)
-        recyclerView.addItemDecoration(EntriesSpacingDecoration(SPAN_COUNT, DeviceUtil.dp(requireContext(), 8F)))
+        recyclerView.addItemDecoration(EntriesSpacingDecoration(LIST_SPAN_COUNT, resources.getDimension(R.dimen.timeline_entries_space_margin).toInt()))
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && adapter.itemCount != 0 && loading) {
                     loading = false
-                    viewModel.entriesNext(Subsites.TJGRAM, EntriesResult.Sorting.NEW, offset)
+                    timelineVM.entriesNext(Subsites.TJGRAM, EntriesResult.Sorting.NEW, offset)
                 }
             }
         })
@@ -149,21 +176,12 @@ class TimelineFragment: Fragment(), EntriesAdapter.Listener, SwipeRefreshLayout.
     private fun initEmptyView() {
         retryButton.setOnClickListener {
             swipeRefreshLayout.isRefreshing = true
-            viewModel.entriesNext(Subsites.TJGRAM, EntriesResult.Sorting.NEW, offset)
-        }
-    }
-
-    override fun onRefresh() {
-        if (NetworkUtil.isNetworkConnected(requireContext())) {
-            offset = 0
-            //presenter.entries(Subsites.TJGRAM, EntriesResult.Sorting.NEW, offset, adapter.itemCount != 0)
-        } else {
-            swipeRefreshLayout.isRefreshing = false
+            timelineVM.entriesNext(Subsites.TJGRAM, EntriesResult.Sorting.NEW, offset)
         }
     }
 
     override fun doLoginFirst() {
-        mainViewModel.showSnackbar("Please, login first!")
+        mainVM.showSnackBarMessage(R.string.msg_login_first)
     }
 
     override fun onAuthorClick(authorId: Int) {
@@ -183,10 +201,9 @@ class TimelineFragment: Fragment(), EntriesAdapter.Listener, SwipeRefreshLayout.
 
     override fun popupItemClick(itemId: Int, entryId: Int): Boolean {
         if (itemId == R.id.item_report) {
-            viewModel.complaintEntry(entryId)
+            timelineVM.complaintEntry(entryId)
         } else if (itemId == R.id.item_open_entry) {
             val entryLink = format(Locale.getDefault(), TjConfig.TJ_ENTRY, entryId)
-
             if (DeviceUtil.isAppInstalled(requireContext(), TjConfig.TJ_PACKAGE_NAME)) {
                 val entryIntent = Intent(Intent.ACTION_VIEW, Uri.parse(entryLink))
                 startActivity(entryIntent)
@@ -207,14 +224,6 @@ class TimelineFragment: Fragment(), EntriesAdapter.Listener, SwipeRefreshLayout.
         return true
     }
 
-    /*override fun updateEntries(entries: ArrayList<Entry>) {
-        offset += entries.size
-
-        adapter.swapEntries(entries)
-        errorView.visibility = GONE
-        swipeRefreshLayout.isRefreshing = false
-    }*/
-
     /*override fun errorEntries(throwable: Throwable, upd: Boolean) {
         if (upd) {
             Toast.makeText(requireContext(), R.string.err_load_data, Toast.LENGTH_SHORT).show()
@@ -229,22 +238,9 @@ class TimelineFragment: Fragment(), EntriesAdapter.Listener, SwipeRefreshLayout.
     }*/
 
     override fun likeEntry(entry: Entry, sign: Int) {
-        //viewModel.likeEntry(entry, sign)
+        likedEntry = entry
+        timelineVM.likeEntry(entry, sign)
     }
-
-    /*override fun updateLikes(entry: Entry, likesResult: LikesResult) {
-        val likes = Likes(count = likesResult.result!!.count, isHidden = likesResult.result!!.isHidden, isLiked = likesResult.result!!.isLiked, summ = likesResult.result!!.summ)
-        entry.likes = likes
-        adapter.changeLikes(entry)
-    }*/
-
-    /*override fun updateLikesError(entry: Entry, throwable: Throwable) {
-        if (NetworkUtil.isHttpStatusCode(throwable, 400)) {
-            Toast.makeText(requireContext(), R.string.msg_like_old_entry, Toast.LENGTH_SHORT).show()
-        }
-
-        adapter.changeLikes(entry)
-    }*/
 
     private inner class EntriesSpacingDecoration(
             private val spanCount: Int, private val spacing: Int

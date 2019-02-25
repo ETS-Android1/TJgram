@@ -8,5 +8,4 @@ public interface IntoTracker<ID> extends AbstractTracker<ID> {
      * Note, that only one id per position should be possible for "To" view.
      */
     ID getIdByPosition(int position);
-
 }

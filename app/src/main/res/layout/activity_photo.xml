@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".presentation.features.photoviewer.PhotoActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!--<com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
@@ -20,7 +20,7 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>-->
 
     <View
         android:id="@+id/backgroundView"
@@ -29,10 +29,11 @@
         android:background="#000"/>
 
     <com.alexvasilkov.gestures.commons.circle.CircleGestureImageView
-        android:id="@+id/fullImage"
+        android:id="@+id/photoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:gest_doubleTapZoom="3"
-        app:gest_maxZoom="10"/>
+        app:gest_maxZoom="10"
+        tools:src="@drawable/example"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -32,14 +32,14 @@ class SettingsFragment: PreferenceFragmentCompat() {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.app_name)
             .setMessage(R.string.logout_dialog_message)
-            .setPositiveButton(R.string.action_ok) {_,_ ->
+            .setPositiveButton(R.string.dialog_action_ok) { _, _ ->
                 UserConfig.userLogout(requireContext())
                 val intent = Intent()
-                intent.putExtra(ProfileFragment.LOGOUT_RESULT, true)
+                intent.putExtra(ProfileFragment.EXTRA_LOGOUT_RESULT, true)
                 requireActivity().setResult(Activity.RESULT_OK, intent)
                 requireActivity().finish()
             }
-            .setNegativeButton(R.string.action_cancel, null)
+            .setNegativeButton(R.string.dialog_action_cancel, null)
             .show()
 
         return true

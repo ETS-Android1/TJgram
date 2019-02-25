@@ -12,10 +12,10 @@ import android.view.WindowManager
 
 object DeviceUtil {
 
-    fun dp(context: Context, value: Float): Int = Math.ceil((context.resources.displayMetrics.density * value).toDouble()).toInt()
+    fun dp(context: Context, value: Float)/*: Int*/ = Math.ceil((context.resources.displayMetrics.density * value).toDouble()).toInt()
 
     @Suppress("unused")
-    fun isLandscape(context: Context): Boolean = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    fun isLandscape(context: Context)/*: Boolean*/ = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     fun statusBarHeight(context: Context): Int {
         var result = 0

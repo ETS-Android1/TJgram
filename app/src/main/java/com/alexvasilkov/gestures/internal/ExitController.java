@@ -53,7 +53,6 @@ public class ExitController {
     private float initialY;
     private float initialZoom;
 
-
     public ExitController(View view, GestureController gestureController) {
         controller = gestureController;
         animatorView = view instanceof AnimatorView ? ((AnimatorView) view) : null;
@@ -229,7 +228,6 @@ public class ExitController {
         return isExitDetected();
     }
 
-
     private boolean canDetectExit() {
         return controller.getSettings().isExitEnabled() && animatorView != null
                 && !animatorView.getPositionAnimator().isLeaving();
@@ -247,7 +245,6 @@ public class ExitController {
                 && !isRotationInAction && isZoomedOut();
     }
 
-
     private boolean canScroll(float dy) {
         if (!controller.getSettings().isRestrictBounds()) {
             return true;
@@ -263,7 +260,6 @@ public class ExitController {
         final float minZoom = controller.getStateController().getMinZoom(state);
         return State.compare(state.getZoom(), minZoom) <= 0;
     }
-
 
     private void startDetection() {
         controller.getSettings().disableBounds();
@@ -329,5 +325,4 @@ public class ExitController {
             animatorView.getPositionAnimator().setState(exitState, false, false);
         }
     }
-
 }

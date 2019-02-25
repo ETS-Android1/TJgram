@@ -71,10 +71,6 @@ public class ViewsCoordinator<ID> {
 
         cleanupRequest();
 
-        if (GestureDebug.isDebugAnimator()) {
-            Log.d(TAG, "Requesting " + id);
-        }
-
         requestedId = id;
         fromListener.onRequestView(id);
         toListener.onRequestView(id);
@@ -83,7 +79,6 @@ public class ViewsCoordinator<ID> {
     public ID getRequestedId() {
         return requestedId;
     }
-
 
     /**
      * @return 'From' view, if set.<br>
@@ -110,7 +105,6 @@ public class ViewsCoordinator<ID> {
     public AnimatorView getToView() {
         return toView;
     }
-
 
     public void setFromView(@NonNull ID id, @NonNull View fromView) {
         setFromInternal(id, fromView, null);
@@ -139,10 +133,6 @@ public class ViewsCoordinator<ID> {
             return; // Already set
         }
 
-        if (GestureDebug.isDebugAnimator()) {
-            Log.d(TAG, "Setting 'from' view for " + id);
-        }
-
         onFromViewChanged(fromView, fromPos);
 
         fromId = id;
@@ -155,17 +145,12 @@ public class ViewsCoordinator<ID> {
         // Can be overridden to setup views
     }
 
-
     public void setToView(@NonNull ID id, @NonNull AnimatorView toView) {
         if (requestedId == null || !requestedId.equals(id)) {
             return;
         }
         if (this.toView == toView) {
             return; // Already set
-        }
-
-        if (GestureDebug.isDebugAnimator()) {
-            Log.d(TAG, "Setting 'to' view for " + id);
         }
 
         onToViewChanged(this.toView, toView);
@@ -178,7 +163,6 @@ public class ViewsCoordinator<ID> {
     protected void onToViewChanged(@Nullable AnimatorView old, @NonNull AnimatorView view) {
         // Can be overridden to setup views
     }
-
 
     public boolean isReady() {
         return requestedId != null && requestedId.equals(fromId) && requestedId.equals(toId);
@@ -212,16 +196,11 @@ public class ViewsCoordinator<ID> {
             return;
         }
 
-        if (GestureDebug.isDebugAnimator()) {
-            Log.d(TAG, "Cleaning up request " + requestedId);
-        }
-
         fromView = null;
         fromPos = null;
         toView = null;
         requestedId = fromId = toId = null;
     }
-
 
     public interface OnRequestViewListener<ID> {
         /**
@@ -247,5 +226,4 @@ public class ViewsCoordinator<ID> {
          */
         void onViewsReady(@NonNull ID id);
     }
-
 }

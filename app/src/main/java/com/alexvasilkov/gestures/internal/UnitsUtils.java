@@ -15,5 +15,4 @@ public class UnitsUtils {
         return TypedValue.applyDimension(type, value,
                 context.getResources().getDisplayMetrics());
     }
-
 }

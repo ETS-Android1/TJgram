@@ -1,5 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/navigation_main" android:title=""/>
-    <item android:id="@+id/navigation_add" android:title="" android:icon="@drawable/ic_add_circle"/>
-    <item android:id="@+id/navigation_user" android:title=""/>
+    <item
+        android:id="@+id/nav_main"
+        android:title=""/>
+
+    <item
+        android:id="@+id/nav_add"
+        android:title=""
+        android:icon="@drawable/ic_add_circle"/>
+
+    <item
+        android:id="@+id/nav_user"
+        android:title=""/>
 </menu>

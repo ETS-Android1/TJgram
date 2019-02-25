@@ -136,18 +136,15 @@ public class DebugOverlay {
             try {
                 stateSourceField = GestureController.class.getDeclaredField("stateSource");
                 stateSourceField.setAccessible(true);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
 
         if (stateSourceField != null) {
             try {
                 return (StateSource) stateSourceField.get(controller);
-            } catch (Exception ignored) {
-            }
+            } catch (Exception ignored) {}
         }
 
         return StateSource.NONE;
     }
-
 }

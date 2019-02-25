@@ -1,6 +1,5 @@
 package com.ashokvarma.bottomnavigation;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -14,12 +13,11 @@ import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.ashokvarma.bottomnavigation.behaviour.BottomNavBarFabBehaviour;
+import com.ashokvarma.bottomnavigation.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.michaelbel.tjgram.R;
-import com.ashokvarma.bottomnavigation.behaviour.BottomNavBarFabBehaviour;
-import com.ashokvarma.bottomnavigation.utils.Utils;
-import org.michaelbel.tjgram.core.views.DeviceUtil;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -112,13 +110,6 @@ public class BottomNavigationBar extends FrameLayout {
         init();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public BottomNavigationBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        parseAttrs(context, attrs);
-        init();
-    }
-
     /**
      * This method initiates the bottomBar properties,
      * Tries to get them form XML if not preset sets them to their default values.
@@ -134,7 +125,7 @@ public class BottomNavigationBar extends FrameLayout {
             mInActiveColor = typedArray.getColor(R.styleable.BottomNavigationBar_bnbInactiveColor, Color.LTGRAY);
             mBackgroundColor = typedArray.getColor(R.styleable.BottomNavigationBar_bnbBackgroundColor, Color.WHITE);
             mAutoHideEnabled = typedArray.getBoolean(R.styleable.BottomNavigationBar_bnbAutoHideEnabled, true);
-            mElevation = DeviceUtil.INSTANCE.dp(context, 8);
+            mElevation = context.getResources().getDimension(R.dimen.bottom_navigation_elevation);
 
             setAnimationDuration(typedArray.getInt(R.styleable.BottomNavigationBar_bnbAnimationDuration, DEFAULT_ANIMATION_DURATION));
 

@@ -66,5 +66,4 @@ public class ScaleGestureDetectorFixed extends ScaleGestureDetector {
             return factor;
         }
     }
-
 }

@@ -27,7 +27,6 @@ public class StateController {
     private static final Point tmpPoint = new Point();
     private static final PointF tmpPointF = new PointF();
 
-
     private final Settings settings;
     private final ZoomBounds zoomBounds;
     private final MovementBounds movBounds;
@@ -323,7 +322,6 @@ public class StateController {
         movBounds.set(state).getExternalBounds(out);
     }
 
-
     /*
      * Deprecated methods.
      */
@@ -430,5 +428,4 @@ public class StateController {
     public static void interpolate(RectF out, RectF start, RectF end, float factor) {
         MathUtils.interpolate(out, start, end, factor);
     }
-
 }

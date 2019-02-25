@@ -25,5 +25,4 @@ interface AbstractTracker<ID> {
      * {@link #getPositionById(Object)}) and this method will be called again.
      */
     View getViewById(@NonNull ID id);
-
 }

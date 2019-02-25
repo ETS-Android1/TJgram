@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -6,21 +7,21 @@
 
     <FrameLayout
         android:id="@+id/qrCodeScanner"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="@dimen/scan_view_size"
+        android:layout_height="@dimen/scan_view_size"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="112dp"/>
+        android:layout_marginTop="@dimen/scan_view_margin"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/scan_view_text_margin"
         android:layout_below="@+id/qrCodeScanner"
         android:gravity="center_horizontal"
         android:textColor="@color/md_white"
-        android:textSize="16sp"
-        android:text="@string/position_qr_code"
+        android:textSize="@dimen/scan_view_text_size"
+        android:text="@string/position_code"
         android:textAllCaps="true"/>
 
 </RelativeLayout>

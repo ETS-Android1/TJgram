@@ -30,6 +30,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:layout_gravity="start|center_vertical"
+            android:background="@drawable/avatar_frame"
             tools:background="#000"/>
 
         <RelativeLayout
@@ -80,7 +81,8 @@
         android:layout_marginEnd="@dimen/timeline_entry_pin_icon_margin"
         app:layout_constraintStart_toEndOf="@id/authorCard"
         app:layout_constraintTop_toTopOf="@id/authorCard"
-        tools:srcCompat="@drawable/ic_pin"/>
+        tools:srcCompat="@drawable/ic_pin"
+        tools:visibility="visible"/>
 
     <!--Menu Icon-->
     <androidx.appcompat.widget.AppCompatImageView
@@ -92,7 +94,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/authorCard"
         app:layout_constraintBottom_toBottomOf="@id/authorCard"
-        tools:srcCompat="@drawable/ic_dots_vertical"/>
+        tools:srcCompat="@drawable/ic_dots_vertical"
+        tools:visibility="visible"/>
 
     <!--Media-->
     <FrameLayout
@@ -103,60 +106,40 @@
         android:background="?android:attr/colorBackground"
         app:layout_constraintTop_toBottomOf="@id/authorCard">
 
-        <!--Image-->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/coverImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            tools:src="@mipmap/ic_launcher"
+            android:layout_height="match_parent"
+            tools:src="@drawable/example"
+            tools:layout_height="220dp"
             tools:visibility="visible"/>
 
-        <!--Gif-->
-        <FrameLayout
-            android:id="@+id/gifLayout"
+        <!--todo Stream Content
+            GIFs, MP4 videos-->
+
+        <!--<TextureView
+            android:id="@+id/playerView"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>-->
+
+        <!--GIF Badge-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/gifBadge"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="gone">
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:background="@drawable/gif_badge"
+            android:textColor="@color/card"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:text="@string/gif"/>
 
-            <VideoView
-                android:id="@+id/videoView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <!--GIF Badge-->
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:cardBackgroundColor="@color/transparent40"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="0dp">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:maxLines="1"
-                    android:textSize="14sp"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="?android:attr/colorForeground"
-                    android:text="@string/gif"
-                    android:textAllCaps="true"/>
-
-            </androidx.cardview.widget.CardView>
-
-        </FrameLayout>
-
-        <!--Double Tap Like-->
+        <!--DoubleTapLike-->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/doubleTapHeart"
             android:layout_width="wrap_content"
@@ -210,7 +193,7 @@
         tools:layout_height="1dp"
         tools:background="@color/error_text"/>
 
-    <!--BottomBar-->
+    <!--Bottom Panel-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -231,33 +214,16 @@
                 android:layout_gravity="center"
                 tools:srcCompat="@drawable/ic_heart"/>
 
-            <!--Rating Value-->
-            <TextSwitcher
-                android:id="@+id/likesCount"
+            <!--Rating-->
+            <com.robinhood.ticker.TickerView
+                android:id="@+id/tickerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="7dp"
-                android:layout_marginEnd="7dp"
-                android:inAnimation="@anim/slide_in_likes_counter"
-                android:outAnimation="@anim/slide_out_likes_counter">
-
-                <TextView
-                    android:id="@+id/textLike1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="@dimen/timeline_entry_likes_text_size"
-                    tools:text="1487"/>
-
-                <TextView
-                    android:id="@+id/textLike2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="@dimen/timeline_entry_likes_text_size"/>
-
-            </TextSwitcher>
+                android:layout_marginStart="@dimen/timeline_entry_likes_margin"
+                android:layout_marginEnd="@dimen/timeline_entry_likes_margin"
+                android:textSize="@dimen/timeline_entry_likes_text_size"
+                app:ticker_defaultCharacterList="number"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

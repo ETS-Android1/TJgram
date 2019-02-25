@@ -140,7 +140,6 @@ public class IntoViewPagerListener<ID> extends ViewsTransitionAnimator.RequestLi
         }
     }
 
-
     private class PagerListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -173,5 +172,4 @@ public class IntoViewPagerListener<ID> extends ViewsTransitionAnimator.RequestLi
             // No-op
         }
     }
-
 }

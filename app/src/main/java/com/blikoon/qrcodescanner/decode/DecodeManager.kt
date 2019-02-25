@@ -10,7 +10,7 @@ class DecodeManager {
     fun showCouldNotReadQrCodeFromScanner(context: Context, listener: OnRefreshCameraListener?) {
         AlertDialog.Builder(context).setTitle(R.string.app_name)
             .setMessage(R.string.msg_qr_code_not_read)
-            .setPositiveButton(R.string.action_ok) { dialog, _ ->
+            .setPositiveButton(R.string.dialog_action_ok) { dialog, _ ->
                 dialog.dismiss()
                 listener?.refresh()
             }.show()

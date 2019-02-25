@@ -128,7 +128,6 @@ public class ZoomBounds {
         return this;
     }
 
-
     public float getMinZoom() {
         return minZoom;
     }
@@ -144,5 +143,4 @@ public class ZoomBounds {
     public float restrict(float zoom, float extraZoom) {
         return MathUtils.restrict(zoom, minZoom / extraZoom, maxZoom * extraZoom);
     }
-
 }

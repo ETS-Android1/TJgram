@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--main-->
     <dimen name="toolbar_elevation">1.5dp</dimen>
+    <dimen name="snackbar_margin">4dp</dimen>
     <!--timeline-->
     <dimen name="timeline_fragment_margin">48dp</dimen>
     <dimen name="timeline_error_margin">24dp</dimen>
@@ -15,6 +17,8 @@
     <dimen name="timeline_entry_intro_text_size">14sp</dimen>
     <dimen name="timeline_entry_divider_height">1px</dimen>
     <dimen name="timeline_entry_likes_text_size">14sp</dimen>
+    <dimen name="timeline_entry_likes_margin">7dp</dimen>
+    <dimen name="timeline_entries_space_margin">8dp</dimen>
     <!--post-->
     <integer name="post_title_text_max_length">120</integer>
     <dimen name="post_content_margin_bottom">16dp</dimen>
@@ -48,14 +52,40 @@
     <dimen name="auth_login_btn_text_margin_start">56dp</dimen>
     <dimen name="auth_login_btn_text_margin_end">16dp</dimen>
     <!--profile-->
+    <dimen name="profile_avatar_size">112dp</dimen>
+    <dimen name="profile_avatar_margin">24dp</dimen>
+    <dimen name="profile_karma_card_radius">5dp</dimen>
+    <dimen name="profile_karma_card_elevation">0dp</dimen>
+    <dimen name="profile_karma_text_margin_start">16dp</dimen>
+    <dimen name="profile_karma_text_margin_top">6dp</dimen>
+    <dimen name="profile_karma_text_size">18sp</dimen>
+    <dimen name="profile_name_size">26sp</dimen>
+    <dimen name="profile_name_margin">16sp</dimen>
+    <dimen name="profile_paid_icon_size">20sp</dimen>
+    <dimen name="profile_paid_icon_margin">8dp</dimen>
+    <dimen name="profile_date_margin_start">16dp</dimen>
+    <dimen name="profile_date_margin_top">12dp</dimen>
+    <dimen name="profile_date_size">17sp</dimen>
     <dimen name="profile_contacts_view_height">52dp</dimen>
     <dimen name="profile_contacts_title_text_size">16sp</dimen>
     <dimen name="profile_contacts_padding">16dp</dimen>
+    <!--profile: social button-->
+    <dimen name="social_button_height">36dp</dimen>
+    <dimen name="social_button_margin">6dp</dimen>
+    <dimen name="social_button_icon_margin">8dp</dimen>
+    <dimen name="social_button_text_margin_start">40dp</dimen>
+    <dimen name="social_button_text_margin_end">8dp</dimen>
+    <dimen name="social_button_text_size">16sp</dimen>
     <!--qr-->
     <dimen name="qr_flashlight_layout_height">110dp</dimen>
     <dimen name="qr_flashlight_icon_size">24dp</dimen>
     <dimen name="qr_flashlight_text_size">16sp</dimen>
     <dimen name="qr_flashlight_text_margin">16dp</dimen>
+    <!--qr: scan view-->
+    <dimen name="scan_view_size">250dp</dimen>
+    <dimen name="scan_view_margin">112dp</dimen>
+    <dimen name="scan_view_text_margin">16dp</dimen>
+    <dimen name="scan_view_text_size">16sp</dimen>
     <!--settings-->
     <dimen name="settings_preference_divider_height">1px</dimen>
     <dimen name="settings_preference_divider_margin">14dp</dimen>

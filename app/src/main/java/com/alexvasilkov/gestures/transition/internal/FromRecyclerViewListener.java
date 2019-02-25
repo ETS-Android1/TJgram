@@ -4,6 +4,8 @@ import android.view.View;
 
 import com.alexvasilkov.gestures.transition.tracker.FromTracker;
 
+import org.jetbrains.annotations.NotNull;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnChildAttachStateChangeListener;
@@ -23,7 +25,7 @@ public class FromRecyclerViewListener<ID> extends FromBaseListener<RecyclerView,
         // Tracking attached list items to pick up newly visible views
         list.addOnChildAttachStateChangeListener(new OnChildAttachStateChangeListener() {
             @Override
-            public void onChildViewAttachedToWindow(View view) {
+            public void onChildViewAttachedToWindow(@NotNull View view) {
                 final ID id = getAnimator() == null ? null : getAnimator().getRequestedId();
 
                 // If view was requested and list is scrolled we should try to find the view again
@@ -41,7 +43,7 @@ public class FromRecyclerViewListener<ID> extends FromBaseListener<RecyclerView,
             }
 
             @Override
-            public void onChildViewDetachedFromWindow(View view) {
+            public void onChildViewDetachedFromWindow(@NotNull View view) {
                 // No-op
             }
         });
@@ -74,5 +76,4 @@ public class FromRecyclerViewListener<ID> extends FromBaseListener<RecyclerView,
             list.scrollToPosition(pos);
         }
     }
-
 }

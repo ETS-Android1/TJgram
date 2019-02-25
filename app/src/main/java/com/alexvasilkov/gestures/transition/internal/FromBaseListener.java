@@ -31,7 +31,6 @@ abstract class FromBaseListener<P extends View, ID> extends RequestListener<ID> 
 
     abstract void scrollToPosition(P parentView, int pos);
 
-
     @Override
     protected void initAnimator(ViewsTransitionAnimator<ID> animator) {
         super.initAnimator(animator);
@@ -82,7 +81,6 @@ abstract class FromBaseListener<P extends View, ID> extends RequestListener<ID> 
         }
     }
 
-
     private static boolean isFullyVisible(View parent, View child) {
         parent.getGlobalVisibleRect(locationParent);
         locationParent.left += parent.getPaddingLeft();
@@ -96,5 +94,4 @@ abstract class FromBaseListener<P extends View, ID> extends RequestListener<ID> 
                 && child.getWidth() == locationChild.width()
                 && child.getHeight() == locationChild.height();
     }
-
 }

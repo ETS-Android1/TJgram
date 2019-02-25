@@ -2,6 +2,8 @@ package com.alexvasilkov.gestures;
 
 import android.graphics.Matrix;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Represents 2d transformation state.
  */
@@ -188,6 +190,7 @@ public class State {
         return result;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "{x=" + x + ",y=" + y + ",zoom=" + zoom + ",rotation=" + rotation + "}";
@@ -216,5 +219,4 @@ public class State {
     public static int compare(float v1, float v2) {
         return v1 > v2 + EPSILON ? 1 : v1 < v2 - EPSILON ? -1 : 0;
     }
-
 }

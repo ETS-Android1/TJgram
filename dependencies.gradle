@@ -161,7 +161,7 @@ kotlin.coroutinesAndroid = 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1
 deps.kotlin = kotlin
 
 def ktx = [:]
-ktx.core = 'androidx.core:core-ktx:1.0.0'
+ktx.core = 'androidx.core:core-ktx:1.0.1'
 ktx.fragment = 'androidx.fragment:fragment-ktx:1.0.0'
 ktx.palette = 'androidx.palette:palette-ktx:1.0.0'
 ktx.sqlite = 'androidx.sqlite:sqlite-ktx:2.0.0'
@@ -191,21 +191,32 @@ deps.rxjava2 = 'io.reactivex.rxjava2:rxjava:2.2.5'
 deps.rxkotlin = 'io.reactivex.rxjava2:rxkotlin:2.0.0'
 deps.rxandroid = 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
+deps.sherlockDebug = 'com.github.ajitsing:sherlock:1.0.4@aar'
+deps.sherlockRelease = 'com.github.ajitsing:sherlock-no-op:1.0.4@aar'
+
+deps.chuckDebug = 'com.readystatesoftware.chuck:library:1.1.0'
+deps.chuckRelease = 'com.readystatesoftware.chuck:library-no-op:1.1.0'
+
+def stetho = [:]
+stetho.runtime = 'com.facebook.stetho:stetho:1.5.0'
+stetho.okhttp = 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+stetho.urlconnection = 'com.facebook.stetho:stetho-urlconnection:1.5.0'
+stetho.js = 'com.facebook.stetho:stetho-js-rhino:1.5.0'
+deps.stetho = stetho
+
+def leakCanary = [:]
+leakCanary.debug = 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+leakCanary.release = 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+leakCanary.fragment = 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
+deps.leakCanary = leakCanary
+
 deps.okhttpLoggingInterceptor = 'com.squareup.okhttp3:logging-interceptor:3.11.0'
 
-deps.leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.6.3'
-
 deps.picasso = 'com.squareup.picasso:picasso:2.71828'
-
-deps.stetho = 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
 deps.timber = 'com.jakewharton.timber:timber:4.7.1'
 
 deps.traceur = 'com.tspoon.traceur:traceur:1.0.1'
-
-deps.chuck = 'com.readystatesoftware.chuck:library:1.1.0'
-
-deps.sherlock = 'com.github.ajitsing:sherlock:1.0.4'
 
 deps.zxing = 'com.google.zxing:core:3.3.0'
 
@@ -257,6 +268,10 @@ exoplayer.runtime = 'com.google.android.exoplayer:exoplayer:2.9.5'
 exoplayer.core = 'com.google.android.exoplayer:exoplayer-core:2.9.5'
 exoplayer.dash = 'com.google.android.exoplayer:exoplayer-dash:2.9.5'
 exoplayer.ui = 'com.google.android.exoplayer:exoplayer-ui:2.9.5'
+
+exoplayer.hls = 'com.google.android.exoplayer:exoplayer-hls:2.9.5'
+exoplayer.smoothstreaming = 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.9.5'
+
 deps.exoplayer = exoplayer
 
 deps.prettytime = 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'

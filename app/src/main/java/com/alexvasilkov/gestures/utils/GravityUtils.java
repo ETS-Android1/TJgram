@@ -17,7 +17,6 @@ public class GravityUtils {
     private static final Rect tmpRect1 = new Rect();
     private static final Rect tmpRect2 = new Rect();
 
-
     private GravityUtils() {}
 
     /**
@@ -75,5 +74,4 @@ public class GravityUtils {
         Gravity.apply(settings.getGravity(), 0, 0, tmpRect2, tmpRect1);
         out.set(tmpRect1.left, tmpRect1.top);
     }
-
 }
