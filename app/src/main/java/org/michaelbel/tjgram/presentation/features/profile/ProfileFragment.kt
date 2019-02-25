@@ -11,33 +11,32 @@ import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.alexvasilkov.gestures.animation.ViewPosition
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
-import kotlinx.android.synthetic.main.fragment_auth.*
-import kotlinx.android.synthetic.main.layout_profile.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.core.imageload.ImageLoader
+import org.michaelbel.tjgram.core.imageloader.ImageLoader
+import org.michaelbel.tjgram.core.persistense.SharedPrefs
 import org.michaelbel.tjgram.core.time.TimeFormatter
 import org.michaelbel.tjgram.core.views.ViewUtil
-import org.michaelbel.tjgram.data.entities.SocialAccount
 import org.michaelbel.tjgram.data.net.UserConfig
 import org.michaelbel.tjgram.presentation.App
+import org.michaelbel.tjgram.presentation.features.auth.AuthFragment
 import org.michaelbel.tjgram.presentation.features.main.MainVM
-import org.michaelbel.tjgram.presentation.features.profile.widget.SocialView
+import org.michaelbel.tjgram.presentation.features.photoviewer.PhotoActivity
 import org.michaelbel.tjgram.presentation.features.settings.SettingsActivity
 import javax.inject.Inject
 
-class ProfileFragment: Fragment() {
+class ProfileFragment: Fragment(), View.OnClickListener {
 
     companion object {
-        private const val REQUEST_CODE_LOGOUT = 102
-
-        const val LOGOUT_RESULT = "logout"
+        private const val REQUEST_CODE_LOGOUT = 42
+        const val EXTRA_LOGOUT_RESULT = "logout"
 
         fun newInstance() = ProfileFragment()
     }
@@ -54,12 +53,22 @@ class ProfileFragment: Fragment() {
     @Inject
     lateinit var factory: ProfileVMFactory
 
-    private var accountsView: LinearLayoutCompat? = null
+    //private var accountsView: LinearLayoutCompat? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE_LOGOUT) {
-                // Открыть AuthFragment
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_LOGOUT) {
+            if (data == null) {
+                return
+            }
+
+            val logoutResult = data.getBooleanExtra(EXTRA_LOGOUT_RESULT, false)
+            if (logoutResult) {
+                mainVM.changeUserAvatar("")
+
+                requireFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, AuthFragment.newInstance())
+                        .commit()
             }
         }
     }
@@ -82,29 +91,23 @@ class ProfileFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
         App[requireActivity().application].createProfileComponent().inject(this)
-
         mainVM = ViewModelProviders.of(requireActivity())[MainVM::class.java]
-
         profileVM = ViewModelProviders.of(requireActivity(), factory)[ProfileVM::class.java]
-        profileVM.getUser(UserConfig.getUserId(requireContext()))
+
         profileVM.user.observe(this, Observer {
             nameText.text = it.name
             updateAvatar(it.avatarUrl)
             updateKarma(it.karma)
             regDate.text = getString(R.string.reg_date, TimeFormatter.convertRegDate(context, it.createdDateRFC))
-            updatePaidIcon(it.tjSubscriptionActive)
-            //updateAccounts(it.socialAccounts)
-
-            //commentsCountText.text = it.counters.comments.toString()
-            //favoritesCountText.text = it.counters.favorites.toString()
-
-            authLayout.visibility = GONE
-            profileLayout.visibility = VISIBLE
+            updatePaidIcon(it.advancedAccess.tjSubscription.isActive)
         })
         profileVM.error.observe(this, Observer {
+            App.d("Ошибка при получении данных пользователя: $it")
+        })
 
+        profileVM.userAvatar.observe(this, Observer {
+            App.d("Аватарка пользователя: $it")
         })
     }
 
@@ -113,28 +116,21 @@ class ProfileFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainVM.setToolbarTitle(getString(R.string.profile))
+        mainVM.changeToolbarTitle(R.string.profile)
+        profileVM.getUser(UserConfig.getUserId(requireContext()))
+    }
 
-        avatarImage.setOnClickListener {
-            //val position = ViewPosition.from(avatarImage)
-            //PhotoActivity.show(requireActivity(), position, preferences.getString(KEY_AVATAR_URL, ""))
-        }
-        paidIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_check_decagram, R.color.accent))
-        contactsLayout.setTitle(R.string.contacts_info)
-
-        accountsView = LinearLayoutCompat(requireContext())
-        accountsView?.orientation = LinearLayoutCompat.VERTICAL
-        contactsLayout.addChildView(accountsView)
-
-        commentsLayout.setOnClickListener {
-            Toast.makeText(requireContext(), "Open comments", Toast.LENGTH_SHORT).show()
-        }
-        favoritesLayout.setOnClickListener {
-            Toast.makeText(requireContext(), "Open favorites", Toast.LENGTH_SHORT).show()
+    override fun onClick(v: View?) {
+        if (v == avatarImage) {
+            val position = ViewPosition.from(avatarImage)
+            PhotoActivity.show(requireActivity(), position, preferences.getString(SharedPrefs.KEY_LOCAL_USER_AVATAR, "")!!)
+        } else if (v == paidIcon) {
+            Toast.makeText(requireContext(), R.string.advanced_account, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun updateAvatar(url: String) {
+        avatarImage.setOnClickListener(this)
         imageLoader.load(url, R.drawable.placeholder_circle, R.drawable.error_circle, object: Target {
             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
                 avatarImage.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.placeholder_circle))
@@ -173,20 +169,22 @@ class ProfileFragment: Fragment() {
     }
 
     private fun updatePaidIcon(paid: Boolean) {
+        paidIcon.setOnClickListener(this)
+        paidIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_check_decagram, R.color.accent))
         paidIcon.visibility = if (paid) VISIBLE else GONE
     }
 
-    private fun updateAccounts(accounts: List<SocialAccount>) {
+    /*private fun updateAccounts(accounts: List<SocialAccount>) {
         for (acc in accounts) {
             addSocialAccount(acc)
         }
-    }
+    }*/
 
-    private fun addSocialAccount(account: SocialAccount) {
+    /*private fun addSocialAccount(account: SocialAccount) {
         val socialView = SocialView(requireContext())
         socialView.setAccount(account)
         accountsView?.addView(socialView)
-    }
+    }*/
 
     /*private fun showRemaining() {
         val milliseconds = preferences.getLong(KEY_UNTIL, 0L)

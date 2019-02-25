@@ -51,5 +51,4 @@ public class FromListViewListener<ID> extends FromBaseListener<ListView, ID> {
     void scrollToPosition(ListView list, int pos) {
         list.setSelection(pos);
     }
-
 }

@@ -8,4 +8,7 @@ data class Size (
     @Expose @SerializedName("width") val width: Long,
     @Expose @SerializedName("height") val height: Long,
     @Expose @SerializedName("ratio") val ratio: Double
-): Serializable
+): Serializable {
+
+    fun mediaRatio() = width / height
+}

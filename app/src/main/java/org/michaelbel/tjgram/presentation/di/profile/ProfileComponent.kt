@@ -6,5 +6,5 @@ import org.michaelbel.tjgram.presentation.features.profile.ProfileFragment
 @ProfileScope
 @Subcomponent(modules = [ProfileModule::class])
 interface ProfileComponent {
-    fun inject(fragment: ProfileFragment)
+    fun inject(target: ProfileFragment)
 }

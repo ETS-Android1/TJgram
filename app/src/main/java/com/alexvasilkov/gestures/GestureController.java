@@ -425,7 +425,6 @@ public class GestureController implements View.OnTouchListener {
         }
     }
 
-
     // -------------------
     //  Gestures handling
     // -------------------
@@ -843,7 +842,6 @@ public class GestureController implements View.OnTouchListener {
         }
     }
 
-
     // -------------------
     //  Listeners
     // -------------------
@@ -976,7 +974,6 @@ public class GestureController implements View.OnTouchListener {
         }
     }
 
-
     /**
      * All listeners in one class.
      * It will also allow us to make all methods protected to cleanup public API.
@@ -1065,5 +1062,4 @@ public class GestureController implements View.OnTouchListener {
         }
 
     }
-
 }

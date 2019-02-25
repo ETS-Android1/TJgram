@@ -5,8 +5,10 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.*
+import android.view.View.*
 import android.view.animation.OvershootInterpolator
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -15,12 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_entry.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.core.imageload.ImageLoader
-import org.michaelbel.tjgram.core.imageload.transform.CircleTransform
+import org.michaelbel.tjgram.core.imageloader.ImageLoader
+import org.michaelbel.tjgram.core.imageloader.transform.CircleTransform
 import org.michaelbel.tjgram.core.time.TimeFormatter
-import org.michaelbel.tjgram.core.views.DeviceUtil
 import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.data.api.results.LikesResult
+import org.michaelbel.tjgram.data.entities.Author
 import org.michaelbel.tjgram.data.entities.Entry
 import org.michaelbel.tjgram.data.entities.Likes
 import org.michaelbel.tjgram.data.net.UserConfig
@@ -28,14 +30,21 @@ import java.util.*
 
 class EntriesAdapter(
         private val entriesListener: Listener,
-        private val imageLoader: ImageLoader)
-: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        private val imageLoader: ImageLoader
+): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         internal const val PAYLOAD_LIKE = "like"
         internal const val PAYLOAD_DATE = "date"
         internal const val PAYLOAD_INTRO = "intro"
         internal const val PAYLOAD_TITLE = "title"
+
+        internal const val GIF_LOOPING_PLAY = true
+
+        internal const val LIKE_ANIM_DURATION = 350L
+        internal const val DOUBLE_TAP_LIKE_ANIM_DURATION = 450L
+
+        internal val INTERPOLATOR = OvershootInterpolator()
     }
 
     interface Listener {
@@ -46,15 +55,19 @@ class EntriesAdapter(
         fun likeEntry(entry: Entry, sign: Int)
     }
 
+    private var measuredWidth = 0
+    private var ratio = 0.0F
+
     private val entries = ArrayList<Entry>()
 
     fun setEntries(results: List<Entry>) {
-        this.entries.addAll(results)
+        entries.addAll(results)
         notifyItemRangeInserted(entries.size + 1, results.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_entry, parent, false)
+        measuredWidth = parent.measuredWidth
         return EntriesViewHolder(view, entriesListener, imageLoader)
     }
 
@@ -75,7 +88,7 @@ class EntriesAdapter(
                     viewHolder.updateLikes(bundle.getSerializable(PAYLOAD_LIKE) as Likes)
                 }
 
-                // fixme работают ли методы ниже, я хз, не тестировал пока.
+                // fixme тестировать
                 if (key == PAYLOAD_DATE) {
                     viewHolder.updateDate(bundle.getString(PAYLOAD_DATE)!!)
                 }
@@ -93,7 +106,7 @@ class EntriesAdapter(
 
     override fun getItemCount(): Int = entries.size
 
-    fun swapEntries(newEntries: ArrayList<Entry>) {
+    fun swapEntries(newEntries: List<Entry>) {
         val diffUtils = EntriesDiffUtils(entries, newEntries)
         val diffResult = DiffUtil.calculateDiff(diffUtils)
         diffResult.dispatchUpdatesTo(this)
@@ -101,10 +114,10 @@ class EntriesAdapter(
         entries.addAll(newEntries)
     }
 
-    fun changeLikes(entry: Entry) {
+    fun changeLikes(entry: Entry?) {
         val pos = entries.indexOf(entry)
         val payload = Bundle()
-        payload.putSerializable(PAYLOAD_LIKE, entry.likes)
+        payload.putSerializable(PAYLOAD_LIKE, entry?.likes)
         notifyItemChanged(pos, payload)
     }
 
@@ -167,45 +180,19 @@ class EntriesAdapter(
         }
     }
 
-    private class EntriesViewHolder (
-            override val containerView: View,
-            private val entriesListener: Listener,
-            private val imageLoader: ImageLoader
+    inner class EntriesViewHolder (override val containerView: View,
+            private val entriesListener: Listener, private val imageLoader: ImageLoader
     ): RecyclerView.ViewHolder(containerView), LayoutContainer {
-
-        companion object {
-            private const val GIF_LOOPING_PLAY = true
-
-            private const val LIKE_ANIM_DURATION = 350L
-            private const val DOUBLE_TAP_LIKE_ANIM_DURATION = 450L
-
-            private val INTERPOLATOR = OvershootInterpolator()
-        }
 
         private val context: Context get() = containerView.context
         private val detector: GestureDetector = GestureDetector(context, GestureListener())
 
         fun bind(entry: Entry) {
-            val author = entry.author!!
-            imageLoader.load(author.avatarUrl, authorIcon, R.drawable.placeholder_circle, R.drawable.error_circle, CircleTransform())
-            authorName.text = author.name
-
-            authorCard.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    entriesListener.onAuthorClick(author.id)
-                }
-            }
-
-            authorCard.setOnLongClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    entriesListener.onAuthorLongClick(author.id)
-                    return@setOnLongClickListener true
-                }
-                return@setOnLongClickListener false
-            }
+            val author = entry.author ?: return
+            updateAuthor(author)
 
             pinImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_pin, R.color.icon_active_unfocused))
-            pinImage.visibility = if (entry.isPinned) View.VISIBLE else View.GONE
+            pinImage.visibility = if (entry.isPinned) VISIBLE else GONE
 
             menuImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_dots_vertical, R.color.icon_active_unfocused))
             menuImage.setOnClickListener {
@@ -214,31 +201,25 @@ class EntriesAdapter(
                 }
             }
 
-            updateDate(entry.dateRFC)
+            // todo Дата должна будет отобразиться как 'Unknown Date'
+            val date = entry.dateRFC ?: ""
+            updateDate(date)
 
             val cover = entry.cover
-            mediaLayout.visibility = if (cover != null) View.VISIBLE else View.GONE
+            mediaLayout.visibility = if (cover != null) VISIBLE else GONE
             mediaLayout.setOnTouchListener {_, event -> detector.onTouchEvent(event) }
+            cover?.let {
+                val coverW = it.size.width.toFloat()
+                val coverH = cover.size.height.toFloat()
+                ratio = coverW / coverH
 
-            if (cover != null) {
-                if (cover.isImage()) {
-                    if (cover.additionalData.isGif()) {
-                        gifLayout.visibility = View.VISIBLE
+                val measuredHeight = (measuredWidth / ratio)
+                mediaLayout.layoutParams.width = measuredWidth
+                mediaLayout.layoutParams.height = measuredHeight.toInt()
+                mediaLayout.requestLayout()
 
-                        videoView.layoutParams.height = DeviceUtil.dp(context, cover.size.height.toFloat())
-                        videoView.setVideoPath(cover.url)
-                        videoView.seekTo(1)
-                        videoView.setOnPreparedListener { mp ->
-                            mp.isLooping = GIF_LOOPING_PLAY
-                            videoView.start()
-                        }
-                        videoView.setOnErrorListener {_,_,_ -> true }
-                    } else if (cover.additionalData.isImage()) {
-                        gifLayout.visibility = View.GONE
-                        imageLoader.load(cover.thumbnailUrl, coverImage, R.drawable.placeholder_rectangle, R.drawable.error_rectangle)
-                        // fixme высота медиа не должна превышать width * 1.5
-                    }
-                }
+                imageLoader.load(cover.thumbnailUrl, coverImage, R.drawable.placeholder_rectangle, R.drawable.error_rectangle)
+                gifBadge.visibility = if (cover.additionalData.isGif()) VISIBLE else GONE
             }
 
             updateTitle(entry.title)
@@ -250,13 +231,50 @@ class EntriesAdapter(
 
             doubleTapHeart.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_heart, R.color.double_heart))
 
-            val likes = entry.likes
+            val likes = entry.likes ?: return
             updateLikes(likes)
+            tickerView.typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
         }
 
-        fun updateDate(dateRFC: String?) {
-            val date = TimeFormatter.getTimeAgo(context, dateRFC)
-            dateText.text = date
+        /**
+         * Set up author name and avatarUrl safety.
+         */
+        private fun updateAuthor(author: Author) {
+            authorName.text = author.name
+
+            /**
+             * 1. Аватарка пользователя обрезается по размеру родительской вьюхи: 40x40 dp.
+             * 2. Плейсхолдер во время загрузки [R.drawable.placeholder_circle]
+             * 3. Плейсхолдер во время ошибки [R.drawable.error_circle]
+             * 4. У пользователя может быть аватарка, совпадающая по цвету с карточкой записи
+             * (белая или прозрачная для текущей темы приложения), для этого вокруг аватарки
+             * отрисовывается рамка шириной 1px [R.drawable.avatar_frame]
+             */
+            imageLoader.load(
+                    author.avatarUrl, authorIcon,
+                    R.dimen.timeline_entry_avatar_size, R.dimen.timeline_entry_avatar_size,
+                    R.drawable.placeholder_circle, R.drawable.error_circle,
+                    CircleTransform()
+            )
+
+            with(authorCard) {
+                setOnClickListener {
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        entriesListener.onAuthorClick(author.id)
+                    }
+                }
+                setOnLongClickListener {
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        entriesListener.onAuthorLongClick(author.id)
+                        return@setOnLongClickListener true
+                    }
+                    return@setOnLongClickListener false
+                }
+            }
+        }
+
+        fun updateDate(dateRFC: String) {
+            dateText.text = TimeFormatter.getTimeAgo(context, dateRFC)
         }
 
         fun updateTitle(title: String) {
@@ -264,73 +282,87 @@ class EntriesAdapter(
         }
 
         fun updateIntro(intro: String) {
-            introText.visibility = if (intro.isEmpty()) View.GONE else View.VISIBLE
+            introText.visibility = if (intro.isEmpty()) GONE else VISIBLE
             introText.text = intro
         }
 
         // For unauthorized users.
-        fun updateLikes(likes: Likes?) {
-            likesCount.setCurrentText(likes?.summ.toString())
-            textLike1.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
-            textLike2.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
+        fun updateLikes(likes: Likes) {
             heartImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_heart_outline, R.color.icon_active_unfocused))
+            tickerView.textColor = ContextCompat.getColor(context, R.color.icon_active_unfocused)
+            tickerView.setText(likes.summ.toString(), false)
             updateLikesAuth(likes)
         }
 
         // For authorized users.
-        private fun updateLikesAuth(likes: Likes?) {
+        private fun updateLikesAuth(likes: Likes) {
             when {
-                likes?.isLiked == LikesResult.Status.LIKED -> {
-                    textLike1.setTextColor(ContextCompat.getColor(context, if (likes.summ <= 0) R.color.icon_active_unfocused else R.color.instagram_like))
-                    textLike2.setTextColor(ContextCompat.getColor(context, if (likes.summ <= 0) R.color.icon_active_unfocused else R.color.instagram_like))
+                likes.isLiked == LikesResult.Status.LIKED -> {
                     heartImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_heart, R.color.instagram_like))
+                    tickerView.textColor = ContextCompat.getColor(context, if (likes.summ <= 0) R.color.icon_active_unfocused else R.color.instagram_like)
                 }
-                likes?.isLiked == LikesResult.Status.NEUTRAL -> {
-                    textLike1.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
-                    textLike2.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
+                likes.isLiked == LikesResult.Status.NEUTRAL -> {
                     heartImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_heart_outline, R.color.icon_active_unfocused))
+                    tickerView.textColor = ContextCompat.getColor(context, R.color.icon_active_unfocused)
                 }
-                likes?.isLiked == LikesResult.Status.DISLIKED -> {
-                    textLike1.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
-                    textLike2.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
+                likes.isLiked == LikesResult.Status.DISLIKED -> {
                     heartImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_heart_outline, R.color.icon_active_unfocused))
+                    tickerView.textColor = ContextCompat.getColor(context, R.color.icon_active_unfocused)
                 }
             }
         }
 
-        private fun likeEntry(likes: Int, sign: Int) {
+        private fun likeEntryRuntime(likes: Int, sign: Int) {
             val newLikes = likes + sign
-            likesCount.setText(newLikes.toString())
+            tickerView.setText(newLikes.toString(), true)
 
             when (sign) {
                 -1 -> {
                     // Liked > Neutral
-                    textLike1.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
-                    textLike2.setTextColor(ContextCompat.getColor(context, R.color.icon_active_unfocused))
-                    animateLike(false)
+                    animHeartIcon(false)
+                    tickerView.textColor = ContextCompat.getColor(context, R.color.icon_active_unfocused)
                 }
                 1 -> {
                     // Neutral > Liked
-                    textLike1.setTextColor(ContextCompat.getColor(context, if (newLikes <= 0) R.color.icon_active_unfocused else R.color.instagram_like))
-                    textLike2.setTextColor(ContextCompat.getColor(context, if (newLikes <= 0) R.color.icon_active_unfocused else R.color.instagram_like))
-                    animateLike(true)
+                    animHeartIcon(true)
+                    tickerView.textColor = ContextCompat.getColor(context, if (newLikes <= 0) R.color.icon_active_unfocused else R.color.instagram_like)
                 }
                 2 -> {
                     // Disliked > Liked
-                    textLike1.setTextColor(ContextCompat.getColor(context, if (newLikes <= 0) R.color.icon_active_unfocused else R.color.instagram_like))
-                    textLike2.setTextColor(ContextCompat.getColor(context, if (newLikes <= 0) R.color.icon_active_unfocused else R.color.instagram_like))
-                    animateLike(true)
+                    animHeartIcon(true)
+                    tickerView.textColor = ContextCompat.getColor(context, if (newLikes <= 0) R.color.icon_active_unfocused else R.color.instagram_like)
                 }
             }
         }
 
-        /*private void dislikeEntry(int likes, int sign) {
-            int newLikes = likes + sign;
-            likesValue.setText(String.valueOf(newLikes));
+        /*private fun dislikeEntryRuntime(likes: Int, sign: Int) {
+            val newLikes = likes + sign
+            tickerView.setText(newLikes.toString(), true)
+
+            when (sign) {
+                -1 -> {
+                    // Disliked > Neutral
+                    animHeartIcon(false)
+                    tickerView.textColor = ContextCompat.getColor(context, R.color.icon_active_unfocused)
+                }
+                -2 -> {
+                    // Disliked > Liked
+                    animHeartIcon(true)
+                    tickerView.textColor = ContextCompat.getColor(context, if (newLikes <= 0) R.color.icon_active_unfocused else R.color.instagram_like)
+                }
+                1 -> {
+                    // Liked > Disliked
+                    animHeartIcon(true)
+                    tickerView.textColor = ContextCompat.getColor(context, if (newLikes <= 0) R.color.icon_active_unfocused else R.color.instagram_like)
+                }
+            }
         }*/
 
-        private fun animateLike(state: Boolean) {
-            heartImage.setImageDrawable(ViewUtil.getIcon(context, if (state) R.drawable.ic_heart else R.drawable.ic_heart_outline, if (state) R.color.instagram_like else R.color.icon_active_unfocused))
+        private fun animHeartIcon(state: Boolean) {
+            heartImage.setImageDrawable(ViewUtil.getIcon(context,
+                    if (state) R.drawable.ic_heart else R.drawable.ic_heart_outline,
+                    if (state) R.color.instagram_like else R.color.icon_active_unfocused)
+            )
             val set = AnimatorSet()
             set.playTogether(
                     ObjectAnimator.ofFloat(heartImage, "scaleX", 0.2F, 1F),
@@ -338,13 +370,10 @@ class EntriesAdapter(
             )
             set.duration = LIKE_ANIM_DURATION
             set.interpolator = INTERPOLATOR
-            set.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {}
-            })
             set.start()
         }
 
-        private fun doubleTapLike() {
+        private fun animDoubleTapLike() {
             val set = AnimatorSet()
             set.playTogether(
                     ObjectAnimator.ofFloat(doubleTapHeart, "alpha", 0.5f, 1f),
@@ -353,13 +382,13 @@ class EntriesAdapter(
             )
             set.duration = DOUBLE_TAP_LIKE_ANIM_DURATION
             set.interpolator = INTERPOLATOR
-            set.addListener(object : AnimatorListenerAdapter() {
+            set.addListener(object: AnimatorListenerAdapter() {
                 override fun onAnimationStart(animation: Animator, isReverse: Boolean) {
-                    doubleTapHeart.visibility = View.VISIBLE
+                    doubleTapHeart.visibility = VISIBLE
                 }
 
                 override fun onAnimationEnd(animation: Animator) {
-                    doubleTapHeart.visibility = View.INVISIBLE
+                    doubleTapHeart.visibility = INVISIBLE
                 }
             })
             set.start()
@@ -385,9 +414,9 @@ class EntriesAdapter(
                 val likes = entry.likes
                 if (likes != null) {
                     when {
-                        likes.isLiked == LikesResult.Status.NEUTRAL -> likeEntry(likes.summ, 1)
-                        likes.isLiked == LikesResult.Status.LIKED -> likeEntry(likes.summ, -1)
-                        likes.isLiked == LikesResult.Status.DISLIKED -> likeEntry(likes.summ, 2)
+                        likes.isLiked == LikesResult.Status.NEUTRAL -> likeEntryRuntime(likes.summ, 1)
+                        likes.isLiked == LikesResult.Status.LIKED -> likeEntryRuntime(likes.summ, -1)
+                        likes.isLiked == LikesResult.Status.DISLIKED -> likeEntryRuntime(likes.summ, 2)
                     }
 
                     entriesListener.likeEntry(entry, if (likes.isLiked == LikesResult.Status.LIKED) 0 else 1)
@@ -395,25 +424,22 @@ class EntriesAdapter(
             }
         }
 
-        /*private void dislikeEntry(EntriesViewHolder holder) {
-            if (!UserConfig.isAuthorized(holder.getContext())) {
-                entriesListener.doLoginFirst();
-                return;
+        /*private fun dislikeEntry(entry: Entry) {
+            if (!UserConfig.isAuthorized(context)) {
+                entriesListener.doLoginFirst()
+                return
             }
 
-            int pos = holder.getAdapterPosition();
-            if (pos != RecyclerView.NO_POSITION) {
-                Likes likes = getEntries().get(pos).likes;
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                val likes = entry.likes
                 if (likes != null) {
-                    if (likes.isLiked == LikesKt.NEUTRAL) {
-                        holder.dislikeEntry(likes.summ, -1);
-                    } else if (likes.isLiked == LikesKt.LIKED) {
-                        holder.dislikeEntry(likes.summ, -2);
-                    } else if (likes.isLiked == LikesKt.DISLIKED) {
-                        holder.dislikeEntry(likes.summ, 1);
+                    when {
+                        likes.isLiked == LikesResult.Status.NEUTRAL -> likeEntry(likes.summ, -1)
+                        likes.isLiked == LikesResult.Status.LIKED -> likeEntry(likes.summ, -2)
+                        likes.isLiked == LikesResult.Status.DISLIKED -> likeEntry(likes.summ, 1)
                     }
 
-                    entriesListener.likeEntry(getEntries().get(pos), likes.isLiked == LikesKt.DISLIKED ? 0 : -1);
+                    entriesListener.likeEntry(entry, if (likes.isLiked == LikesResult.Status.DISLIKED) 0 else -1)
                 }
             }
         }*/
@@ -424,7 +450,7 @@ class EntriesAdapter(
 
             override fun onDoubleTap(e: MotionEvent): Boolean {
                 heartImage.performClick()
-                doubleTapLike()
+                animDoubleTapLike()
                 return true
             }
         }

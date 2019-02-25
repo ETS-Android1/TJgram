@@ -1,13 +1,12 @@
 package org.michaelbel.tjgram.presentation.features.main
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
@@ -18,11 +17,11 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_timeline.*
+import kotlinx.android.synthetic.main.activity_main.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.core.ext.replaceFragment
-import org.michaelbel.tjgram.core.ext.toast
-import org.michaelbel.tjgram.core.views.DeviceUtil
+import org.michaelbel.tjgram.core.imageloader.ImageLoader
+import org.michaelbel.tjgram.core.imageloader.transform.CircleTransform
+import org.michaelbel.tjgram.core.persistense.SharedPrefs
 import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.data.api.results.EntriesResult
 import org.michaelbel.tjgram.data.net.UserConfig
@@ -31,12 +30,13 @@ import org.michaelbel.tjgram.presentation.features.addpost.PostActivity
 import org.michaelbel.tjgram.presentation.features.auth.AuthFragment
 import org.michaelbel.tjgram.presentation.features.profile.ProfileFragment
 import org.michaelbel.tjgram.presentation.features.timeline.TimelineFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity: AppCompatActivity() {
 
     companion object {
-        const val NEW_ENTRY_RESULT = "new_entry_created"
+        const val EXTRA_NEW_ENTRY = "new_entry_created"
 
         private const val REQUEST_CODE_NEW_ENTRY = 201
 
@@ -45,12 +45,18 @@ class MainActivity: AppCompatActivity() {
         private const val USER_TAB = 2
     }
 
-    private var snackbar: Snackbar? = null
+    private var snackBar: Snackbar? = null
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
+
+    @Inject
+    lateinit var preferences: SharedPreferences
 
     @Inject
     lateinit var factory: MainVMFactory
 
-    private lateinit var viewModel: MainVM
+    private lateinit var mainVM: MainVM
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_NEW_ENTRY) {
@@ -58,10 +64,9 @@ class MainActivity: AppCompatActivity() {
                 return
             }
 
-            val isEntryCreated = data.getBooleanExtra(NEW_ENTRY_RESULT, false)
+            val isEntryCreated = data.getBooleanExtra(EXTRA_NEW_ENTRY, false)
             if (isEntryCreated) {
-                //Toast.makeText(this, R.string.msg_posted_successfully, Toast.LENGTH_LONG).show()
-                toast(R.string.msg_posted_successfully, Toast.LENGTH_LONG)
+                Toast.makeText(this, R.string.msg_posted_successfully, Toast.LENGTH_LONG).show()
             }
         }
 
@@ -74,19 +79,22 @@ class MainActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_timeline)
+        setContentView(R.layout.activity_main)
 
         App[application].createMainComponent().inject(this)
 
         initToolbar()
         initBottomBar()
 
-        viewModel = ViewModelProviders.of(this, factory)[MainVM::class.java]
-        viewModel.snackbarMessage.observe(this, Observer {
-            showSnackbar(it)
+        mainVM = ViewModelProviders.of(this, factory)[MainVM::class.java]
+        mainVM.snackBarMessage.observe(this, Observer {
+            showSnackbar(it.peekContent())
         })
-        viewModel.toolbarTitle.observe(this, Observer {
-            supportActionBar!!.title = it
+        mainVM.toolbarTitle.observe(this, Observer {
+            supportActionBar!!.setTitle(it.peekContent())
+        })
+        mainVM.userAvatar.observe(this, Observer {
+            updateUserAvatar(it)
         })
 
         if (savedInstanceState == null) {
@@ -96,14 +104,18 @@ class MainActivity: AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        snackbar?.dismiss()
+        Timber.d("MainActivity onPause")
+        snackBar?.dismiss()
     }
 
     private fun initToolbar() {
         setSupportActionBar(toolbar)
 
-        val params = fullToolbar.layoutParams as FrameLayout.LayoutParams
-        params.topMargin = DeviceUtil.statusBarHeight(this)
+        if (Build.VERSION.SDK_INT >= 21) {
+            appBarLayout.stateListAnimator = null
+        }
+
+        ViewCompat.setElevation(appBarLayout, resources.getDimension(R.dimen.toolbar_elevation))
     }
 
     private fun initBottomBar() {
@@ -133,25 +145,32 @@ class MainActivity: AppCompatActivity() {
             override fun onItemSelected(position: Int) {
                 when (position) {
                     MAIN_TAB -> {
-                        setActionBarBehavior(SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS, 1.5F)
-                        replaceFragment(R.id.fragmentView, TimelineFragment.newInstance(EntriesResult.Sorting.NEW))
                         prevPosition = MAIN_TAB
+                        setActionBarBehavior(SCROLL_FLAG_SCROLL or SCROLL_FLAG_ENTER_ALWAYS)
+                        supportFragmentManager.beginTransaction()
+                                .replace(container.id, TimelineFragment.newInstance(EntriesResult.Sorting.NEW))
+                                .commit()
                     }
                     POST_TAB -> {
                         bottomBar.selectTab(prevPosition, false)
-
                         if (UserConfig.isAuthorized(this@MainActivity)) {
                             startActivityForResult(Intent(this@MainActivity, PostActivity::class.java), REQUEST_CODE_NEW_ENTRY)
                         } else {
-                            showSnackbar("")
+                            showSnackbar(R.string.msg_login_first)
                         }
                     }
                     USER_TAB -> {
-                        setActionBarBehavior(0, 1.5F)
+                        setActionBarBehavior(0)
                         if (UserConfig.isAuthorized(this@MainActivity)) {
-                            replaceFragment(R.id.fragmentView, ProfileFragment.newInstance())
+                            supportFragmentManager
+                                    .beginTransaction()
+                                    .replace(container.id, ProfileFragment.newInstance(), "auth")
+                                    .commit()
                         } else {
-                            replaceFragment(R.id.fragmentView, AuthFragment.newInstance())
+                            supportFragmentManager
+                                    .beginTransaction()
+                                    .replace(container.id, AuthFragment.newInstance(), "profile")
+                                    .commit()
                         }
 
                         prevPosition = USER_TAB
@@ -164,49 +183,35 @@ class MainActivity: AppCompatActivity() {
             override fun onItemReselected(position: Int) {}
         })
 
-        updateUserAvatar()
+        if (UserConfig.isAuthorized(this@MainActivity)) {
+            updateUserAvatar(preferences.getString(SharedPrefs.KEY_LOCAL_USER_AVATAR, "")!!)
+        }
     }
 
-    fun showSnackbar(message: String) {
-        val snack = Snackbar.make(coordinatorLayout, R.string.msg_login_first, Snackbar.LENGTH_LONG)
+    fun showSnackbar(@StringRes message: Int) {
+        val snack = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
 
         val params = snack.view.layoutParams as CoordinatorLayout.LayoutParams
-        val margin = DeviceUtil.dp(this, 4F)
+        val margin = resources.getDimension(R.dimen.snackbar_margin).toInt()
         params.setMargins(margin, 0, margin, bottomBar.height + margin)
         snack.view.layoutParams = params
 
         snack.setAction(R.string.action_go) { bottomBar.selectTab(2) }
         snack.show()
 
-        this.snackbar = snack
+        this.snackBar = snack
     }
 
-    private fun setActionBarBehavior(flags: Int, elevation: Float) {
+    private fun setActionBarBehavior(flags: Int) {
         ViewUtil.setScrollFlags(toolbar, flags)
-
-        if (Build.VERSION.SDK_INT >= 21) {
-            appBarLayout.stateListAnimator = null
-        }
-
-        ViewCompat.setElevation(appBarLayout, DeviceUtil.dp(this, elevation).toFloat())
     }
 
-    @SuppressLint("LogNotTimber")
-    private fun updateUserAvatar() {
-        if (UserConfig.isAuthorized(this)) {
-            val userId = UserConfig.getUserId(this)
-            Log.e("2580", "User ID: $userId")
+    private fun updateUserAvatar(avatar: String) {
+        if (avatar == "") {
+            bottomBar.getImageViewByTabItemPosition(USER_TAB).setImageDrawable(null)
+            return
         }
 
-        val userId = UserConfig.getUserId(this)
-
-        /*disposable.add(viewModel.localUser(userId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Picasso.get().load(it.avatarUrl).transform(CircleTransform()).into(bottomBar.getImageViewByTabItemPosition(USER_TAB))
-            }, { error -> Timber.e(error) }))*/
-    }
-
-    fun clearBottomAvatar() {
-        bottomBar.getImageViewByTabItemPosition(USER_TAB).setImageDrawable(null)
+        imageLoader.load(avatar, bottomBar.getImageViewByTabItemPosition(USER_TAB), CircleTransform())
     }
 }

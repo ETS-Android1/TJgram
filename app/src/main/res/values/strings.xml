@@ -1,95 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TJgram</string>
     <string name="language_code">en</string>
-    <!--menu-->
-    <string name="menu_report">Report</string>
-    <string name="menu_open_entry">Open Entry</string>
-    <string name="menu_copy_link">Copy Link</string>
-    <string name="menu_share_link">Share Link</string>
-    <string name="menu_publish">Publish</string>
-    <string name="menu_camera">Take Photo</string>
-    <string name="menu_gallery">Choose from Gallery</string>
-    <string name="menu_save">Save</string>
-    <string name="menu_share">Share</string>
-    <!--timeline-->
-
     <!--auth-->
-    <string name="rationale_camera">This app needs access to your camera so you can scan QR code.</string>
-    <!--profile-->
     <string name="login">Login</string>
-    <string name="profile">Profile</string>
-    <string name="login_qr">Authorization with QR</string>
-    <string name="position_qr_code">Position QR Code</string>
+    <string name="auth_with_qr">Authorization with QR</string>
+    <string name="position_code">Position QR Code</string>
     <string name="enable_flash">Enable flash light</string>
     <string name="disable_flash">Disable flash light</string>
+    <string name="msg_pre_auth">Please sign in to start voting and bookmarking</string>
+    <string name="rationale_camera">This app needs access to your camera so you can scan QR code</string>
+    <string name="msg_qr_camera_not_open">Could not open your camera</string>
+    <string name="msg_qr_code_not_read">Could not open scan content</string>
+    <string name="err_invalid_token">Error while scanning code</string>
+    <string name="err_auth">Error while authorization</string>
+    <!--profile-->
+    <string name="profile">Profile</string>
     <string name="reg_date">Sign up: %1$s</string>
     <string name="contacts_info">Contact info</string>
     <string name="comments">Comments</string>
     <string name="favorites">Favorites</string>
     <string name="loading">Loading…</string>
-    <!--add post-->
-    <string name="item_camera">Camera</string>
-    <string name="item_gallery">Gallery</string>
-    <string name="gallery_grant_permission">Grant permission</string>
-    <!--photo view-->
-    <string name="photo_of">%1$d of %2$d</string>
-    <!--settings-->
-    <string name="settings">Settings</string>
-    <string name="category_general">General</string>
-    <string name="in_app_browser">In-App Browser</string>
-    <string name="in_app_browser_info">Open external links within the app</string>
-    <string name="preference_logout">Log out</string>
-    <string name="logout_dialog_message">Are you sure you want to log out?</string>
-
-    <string name="msg_pre_auth">Please sign in to start voting and bookmarking</string>
-    <string name="msg_complaint_sent">Complaint was sent</string>
+    <string name="advanced_account">Advanced account</string>
+    <!--timeline-->
+    <string name="menu_report">Report</string>
+    <string name="menu_open_entry">Open Entry</string>
+    <string name="menu_copy_link">Copy Link</string>
+    <string name="menu_share_link">Share Link</string>
+    <string name="msg_complaint_sent">Complaint sent successfully</string>
+    <string name="err_complaint_sent">Error while sending complaint</string>
     <string name="msg_author_url_copied">Author Url copied to clipboard</string>
     <string name="msg_link_copied">Link copied to clipboard</string>
     <string name="msg_login_first">Please, login first</string>
     <string name="msg_like_old_entry">&#129412; Entry is too old for voting</string>
-    <string name="msg_qr_camera_not_open">Could not open your camera</string>
-    <string name="msg_qr_code_not_read">Could not open scan content</string>
-    <string name="msg_gallery_permission_stub">Post photos from your phone on TJgram</string>
-    <string name="msg_permission_camera">Please go to the Permissions section inside the application Settings and toggle the Camera permission switch</string>
-    <string name="msg_permission_storage">Please go to the Permissions section inside the application Settings and toggle the Storage permission switch</string>
-    <string name="msg_permission_camera_storage">Please go to the Permissions section inside the application Settings and toggle the Camera and Storage permissions switch</string>
-    <string name="msg_wait_image_load">Please wait image to load</string>
-    <string name="msg_enter_header">Please enter a header</string>
-    <string name="msg_posted_successfully">Posted successfully</string>
-
-    <string name="err_complaint_sent">Error while sending complaint</string>
-    <string name="err_invalid_token">Error while scanning code</string>
     <string name="err_load_data">Error loading data</string>
-    <string name="err_auth">Error while authorization</string>
+    <string name="action_go">Go it</string>
+    <string name="action_retry">Retry</string>
+    <string name="gif" translatable="false">GIF</string>
+    <string name="msg_posted_successfully">Posted successfully</string>
+    <!--photo viewer-->
+    <string name="menu_save">Save</string>
+    <string name="menu_share">Share</string>
+    <string name="photo_of">%1$d of %2$d</string>
+    <!--add post-->
+    <string name="post_entry">Post entry</string>
+    <string name="menu_publish">Publish</string>
+    <string name="item_camera">Camera</string>
+    <string name="item_gallery">Gallery</string>
+    <string name="gallery_grant_permission">Grant permission</string>
     <string name="err_loading_image">Error loading image</string>
     <string name="err_while_posting">Error while posting</string>
-
-    <string name="action_ok">OK</string>
-    <string name="action_go">Go it</string>
-    <string name="action_cancel">Cancel</string>
-    <string name="action_retry">Retry</string>
-    <string name="action_turn_on">Turn On</string>
-
-    <string name="sign_in">Authorization</string>
-
-    <string name="advanced_account">Advanced account</string>
-    <string name="account">Account</string>
-    <string name="permission_denied">Permission denied</string>
-    <string name="header">Header</string>
-    <string name="entry_text">Entry text…</string>
-    <string name="choose_photo">Select photo</string>
-    <string name="post_entry">Post entry</string>
-    
-    <plurals name="paid_days_until">
-        <item quantity="zero">Subscription ends today</item>
-        <item quantity="one">%1$d day left</item>
-        <item quantity="two">%1$d days left</item>
-        <item quantity="few">%1$d days left</item>
-        <item quantity="many">%1$d days left</item>
-        <item quantity="other">%1$d days left</item>
-    </plurals>
-
-    <!--Entry Date Formats-->
+    <string name="tint_header">Header</string>
+    <string name="tint_entry_text">Entry text…</string>
+    <string name="msg_enter_header">Please enter a header</string>
+    <string name="rationale_storage">This app needs access to your gallery so you can choose images</string>
+    <!--settings-->
+    <string name="settings">Settings</string>
+    <string name="category_general">General</string>
+    <string name="in_app_browser">In-App Browser</string>
+    <string name="in_app_browser_summary">Open external links within the app</string>
+    <string name="preference_logout">Log out</string>
+    <string name="logout_dialog_message">Are you sure you want to log out?</string>
+    <string name="dialog_action_ok">OK</string>
+    <string name="dialog_action_cancel">Cancel</string>
+    <!--time-->
     <string name="just_now">just now</string>
     <string name="minute_ago">a minute ago</string>
     <string name="hour_ago">a hour ago</string>
@@ -97,7 +71,6 @@
     <string name="yesterday_at">yesterday at %s</string>
     <string name="default_date">%1$s at %2$s</string>
     <string name="unknown_date">unknown date</string>
-
     <plurals name="minutes">
         <item quantity="zero">@string/just_now</item>
         <item quantity="one">@string/minute_ago</item>
@@ -106,7 +79,6 @@
         <item quantity="many">%1$d min ago</item>
         <item quantity="other">%1$d min ago</item>
     </plurals>
-
     <plurals name="hours">
         <item quantity="zero">59 min ago</item>
         <item quantity="one">@string/hour_ago</item>
@@ -115,17 +87,4 @@
         <item quantity="many">%1$d hours ago</item>
         <item quantity="other">%1$d hours ago</item>
     </plurals>
-
-    <string name="gif" translatable="false">GIF</string>
-
-    <string name="hint_search" translatable="false">hs</string>
-    <string name="activity_gallery_image_transition" translatable="false">%s[image]</string>
-    <string name="activity_gallery_checkbox_transition" translatable="false">%s[checkbox]</string>
-
-    <string name="rationale_ask">This app may not work correctly without the requested permissions.</string>
-    <string name="rationale_ask_again">
-        This app may not work correctly without the requested permissions.
-        Open the app settings screen to modify app permissions.
-    </string>
-    <string name="title_settings_dialog">Permissions Required</string>
 </resources>

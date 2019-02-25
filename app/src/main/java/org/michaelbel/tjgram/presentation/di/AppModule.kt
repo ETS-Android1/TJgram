@@ -6,8 +6,8 @@ import android.content.SharedPreferences
 import com.squareup.picasso.Picasso
 import dagger.Module
 import dagger.Provides
-import org.michaelbel.tjgram.core.imageload.ImageLoader
-import org.michaelbel.tjgram.core.imageload.PicassoImageLoader
+import org.michaelbel.tjgram.core.imageloader.ImageLoader
+import org.michaelbel.tjgram.core.imageloader.PicassoImageLoader
 import org.michaelbel.tjgram.core.persistense.SharedPrefs.SP_NAME
 import javax.inject.Singleton
 

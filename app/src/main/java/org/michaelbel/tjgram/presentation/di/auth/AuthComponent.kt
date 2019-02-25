@@ -6,5 +6,5 @@ import org.michaelbel.tjgram.presentation.features.auth.AuthFragment
 @AuthScope
 @Subcomponent(modules = [AuthModule::class])
 interface AuthComponent {
-    fun inject(fragment: AuthFragment)
+    fun inject(target: AuthFragment)
 }

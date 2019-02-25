@@ -2,6 +2,7 @@ package org.michaelbel.tjgram.presentation
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import com.facebook.stetho.Stetho
 import com.singhajit.sherlock.core.Sherlock
 import com.squareup.leakcanary.LeakCanary
@@ -32,6 +33,10 @@ class App: Application() {
         operator fun get(context: Context): App {
             return context as App
         }
+
+        @JvmStatic fun d(msg: String) {
+            Log.e(TAG, msg)
+        }
     }
 
     private lateinit var mainComponent: MainComponent
@@ -60,6 +65,10 @@ class App: Application() {
     fun createMainComponent(): MainSubComponent = mainComponent.plus(MainModule())
     fun createAuthComponent(): AuthComponent = mainComponent.plus(AuthModule())
 
+    /**
+     * Логгер работающий поверх обычного Log.
+     * Для дебажных сборок и крэшлитики.
+     */
     private fun initLogger() {
         if (DEBUG) {
             Timber.plant(Timber.DebugTree())
@@ -67,27 +76,50 @@ class App: Application() {
         }
     }
 
+    /**
+     * Отладка  RxJava2 с улучшенными трассировками стека.
+     * К исходным исключениям добавляются источники ассинхронных вызовов.
+     */
     private fun initTraceur() {
         if (DEBUG) {
             Traceur.enableLogging()
         }
     }
 
+    /**
+     * Отслеживает любые сбои в приложении и сообщает в уведомлении.
+     */
     private fun initSherlock() {
         if (DEBUG) {
             Sherlock.init(this)
         }
     }
 
-    private fun initLeakCanary() {
-        if (DEBUG) {
-            LeakCanary.install(this)
-        }
-    }
-
+    /**
+     * Отладочный мост для OkHttp от книгалицо.
+     */
     private fun initStetho() {
         if (DEBUG) {
             Stetho.initializeWithDefaults(this)
         }
+    }
+
+    /**
+     * Обнаружение утечек памяти в приложении.
+     */
+    private fun initLeakCanary() {
+        if (DEBUG) {
+            if (LeakCanary.isInAnalyzerProcess(this)) {
+                // This process is dedicated to LeakCanary for heap analysis.
+                // You should not init your app in this process.
+                return
+            }
+            LeakCanary.install(this)
+        }
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        Traceur.disableLogging()
     }
 }

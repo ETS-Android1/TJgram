@@ -11,7 +11,6 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
@@ -25,17 +24,18 @@ public class CircleImageView extends AppCompatImageView {
     private boolean isCircle;
 
     public CircleImageView(Context context) {
-        this(context, null, 0);
+        this(context, null);
     }
 
     public CircleImageView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        super(context, attrs);
         init();
     }
+
+    /*public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init();
+    }*/
 
     private void init() {
         if (bitmapPaint == null) {

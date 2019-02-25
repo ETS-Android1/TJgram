@@ -7,9 +7,8 @@ import android.content.Context
 import android.os.Build
 import android.view.View
 import android.view.ViewAnimationUtils
-import org.michaelbel.tjgram.R
 import com.ashokvarma.bottomnavigation.utils.Utils
-import org.michaelbel.tjgram.core.views.DeviceUtil
+import org.michaelbel.tjgram.R
 
 object BottomNavigationHelper {
 
@@ -49,11 +48,10 @@ object BottomNavigationHelper {
      * @return min and max width of each tab
      */
     fun getMeasurementsForShiftingMode(context: Context, screenWidth: Int, noOfTabs: Int, scrollable: Boolean): IntArray {
-
         val result = IntArray(2)
 
-        val minWidth = DeviceUtil.dp(context, 64f)
-        val maxWidth = DeviceUtil.dp(context, 96f)
+        val minWidth = context.resources.getDimension(R.dimen.shifting_min_width_inactive).toInt()
+        val maxWidth = context.resources.getDimension(R.dimen.shifting_max_width_inactive).toInt()
 
         val minPossibleWidth = minWidth * (noOfTabs + 0.5)
         val maxPossibleWidth = maxWidth * (noOfTabs + 0.75)

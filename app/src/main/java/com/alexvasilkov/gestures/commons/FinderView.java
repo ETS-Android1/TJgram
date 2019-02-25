@@ -183,5 +183,4 @@ public class FinderView extends View {
 
         canvas.drawRoundRect(strokeRect, rx, ry, paintStroke);
     }
-
 }

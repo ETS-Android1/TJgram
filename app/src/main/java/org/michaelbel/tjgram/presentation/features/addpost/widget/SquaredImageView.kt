@@ -6,9 +6,9 @@ import androidx.appcompat.widget.AppCompatImageView
 
 class SquaredImageView: AppCompatImageView {
 
-    constructor(context: Context) : super(context)
+    constructor(context: Context): super(context)
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet): super(context, attrs)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)

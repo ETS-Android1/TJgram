@@ -76,7 +76,7 @@
             android:layout_marginEnd="@dimen/auth_login_btn_text_margin_end"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"
-            android:text="@string/login_qr"
+            android:text="@string/auth_with_qr"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/auth_login_btn_text_size"/>
 

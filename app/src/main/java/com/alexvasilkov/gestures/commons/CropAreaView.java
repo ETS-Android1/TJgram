@@ -410,5 +410,4 @@ public class CropAreaView extends View {
             return false;
         }
     }
-
 }

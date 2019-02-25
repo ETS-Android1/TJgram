@@ -10,7 +10,6 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 import android.widget.FrameLayout
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.core.views.DeviceUtil
 
 class ShiftingBottomNavigationTab : BottomNavigationTab {
 
@@ -24,8 +23,8 @@ class ShiftingBottomNavigationTab : BottomNavigationTab {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     internal override fun init() {
-        paddingTopActive = DeviceUtil.dp(context, 0F)
-        paddingTopInActive = DeviceUtil.dp(context, 10F)
+        paddingTopActive = context.resources.getDimension(R.dimen.shifting_height_top_padding_active).toInt()
+        paddingTopInActive = context.resources.getDimension(R.dimen.shifting_height_top_padding_inactive).toInt()
 
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.bnb_shifting_item, this, true)

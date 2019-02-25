@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.blikoon.qrcodescanner.QrCodeActivity
 import kotlinx.android.synthetic.main.fragment_auth.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.core.ext.startFragment
 import org.michaelbel.tjgram.core.persistense.SharedPrefs
 import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.presentation.App
@@ -28,10 +27,10 @@ import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
 import javax.inject.Inject
 
-class AuthFragment: Fragment(), EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
+class AuthFragment: Fragment(), EasyPermissions.PermissionCallbacks {
 
     companion object {
-        private const val REQUEST_CODE_SCAN_QR = 101
+        private const val REQUEST_CODE_SCAN_QR = 100
 
         /**
          * Значение не должно превышать 128.
@@ -51,24 +50,22 @@ class AuthFragment: Fragment(), EasyPermissions.PermissionCallbacks, EasyPermiss
     private lateinit var authVM: AuthVM
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE_SCAN_QR) {
-                val tokenStr = data?.getStringExtra(QrCodeActivity.QR_SCAN_RESULT)
+        if (resultCode == Activity.RESULT_OK &&  requestCode == REQUEST_CODE_SCAN_QR) {
+            val tokenStr = data?.getStringExtra(QrCodeActivity.EXTRA_QR_SCAN_RESULT)
 
-                if (tokenStr == null || TextUtils.isEmpty(tokenStr)) {
-                    Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
-                    return
-                }
-
-                val separated = tokenStr.split("\\|".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                if (separated.size != 2) {
-                    Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
-                    return
-                }
-
-                val token = separated[1]
-                authVM.authQr(token)
+            if (tokenStr == null || TextUtils.isEmpty(tokenStr)) {
+                Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
+                return
             }
+
+            val separated = tokenStr.split("\\|".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            if (separated.size != 2) {
+                Toast.makeText(requireContext(), R.string.err_invalid_token, Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val token = separated[1]
+            authVM.authQr(token)
         }
     }
 
@@ -81,8 +78,8 @@ class AuthFragment: Fragment(), EasyPermissions.PermissionCallbacks, EasyPermiss
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             AppSettingsDialog.Builder(this)
                     .setRationale(R.string.rationale_camera)
-                    .setPositiveButton(R.string.action_ok)
-                    .setNegativeButton(R.string.action_cancel)
+                    .setPositiveButton(R.string.dialog_action_ok)
+                    .setNegativeButton(R.string.dialog_action_cancel)
                     .build()
                     .show()
         } else {
@@ -92,14 +89,6 @@ class AuthFragment: Fragment(), EasyPermissions.PermissionCallbacks, EasyPermiss
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         Timber.d("onPermissionsGranted")
-    }
-
-    override fun onRationaleAccepted(requestCode: Int) {
-        Timber.d("onRationaleAccepted")
-    }
-
-    override fun onRationaleDenied(requestCode: Int) {
-        Timber.d("onRationaleDenied")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -120,12 +109,9 @@ class AuthFragment: Fragment(), EasyPermissions.PermissionCallbacks, EasyPermiss
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
         App[requireActivity().application].createAuthComponent().inject(this)
-
-        mainVM = ViewModelProviders.of(requireActivity())[MainVM::class.java]
-
         authVM = ViewModelProviders.of(requireActivity(), factory)[AuthVM::class.java]
+
         authVM.token.observe(this, Observer {
             preferences.edit {
                 putString(SharedPrefs.KEY_X_DEVICE_TOKEN, it)
@@ -134,12 +120,21 @@ class AuthFragment: Fragment(), EasyPermissions.PermissionCallbacks, EasyPermiss
         authVM.user.observe(this, Observer {
             preferences.edit {
                 putInt(SharedPrefs.KEY_LOCAL_USER_ID, it.id)
+                putString(SharedPrefs.KEY_LOCAL_USER_AVATAR, it.avatarUrl)
             }
 
-            requireActivity().startFragment(R.id.fragmentView, ProfileFragment.newInstance())
+            mainVM.changeUserAvatar(it.avatarUrl)
+
+            requireFragmentManager().beginTransaction().replace(R.id.container, ProfileFragment.newInstance()).commit()
+            requireFragmentManager().beginTransaction().remove(requireFragmentManager().findFragmentByTag("auth")!!)
+
+            val removeAuthFragment = requireActivity().supportFragmentManager.fragments.remove(AuthFragment.newInstance())
+            App.d("remove auth fragment from fragmentManager: $removeAuthFragment")
         })
         authVM.error.observe(this, Observer {
-            Toast.makeText(requireContext(), R.string.err_auth, Toast.LENGTH_SHORT).show()
+            if (it != null) {
+                Toast.makeText(requireContext(), R.string.err_auth, Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
@@ -148,7 +143,8 @@ class AuthFragment: Fragment(), EasyPermissions.PermissionCallbacks, EasyPermiss
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainVM.setToolbarTitle(getString(R.string.login))
+        mainVM = ViewModelProviders.of(requireActivity())[MainVM::class.java]
+        mainVM.changeToolbarTitle(R.string.login)
 
         qrIcon.setImageDrawable(ViewUtil.getIcon(requireContext(), R.drawable.ic_qr, R.color.icon_active))
         loginButton.setOnClickListener {

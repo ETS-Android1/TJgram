@@ -83,5 +83,4 @@ class ImageViewHelper {
                 return null;
         }
     }
-
 }

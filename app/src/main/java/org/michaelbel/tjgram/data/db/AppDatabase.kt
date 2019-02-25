@@ -6,7 +6,7 @@ import org.michaelbel.tjgram.data.db.dao.EntryDao
 import org.michaelbel.tjgram.data.db.dao.UserDao
 import org.michaelbel.tjgram.data.db.entities.UserData
 
-@Database(entities = [UserData::class], version = 6, exportSchema = false)
+@Database(entities = [UserData::class], version = 7, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun entryDao(): EntryDao

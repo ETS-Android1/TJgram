@@ -20,9 +20,9 @@ import javax.inject.Singleton
     (DataModule::class)
 ])
 interface MainComponent {
-    fun plus(timelineModule: TimelineModule): TimelineComponent
-    fun plus(profileModule: ProfileModule): ProfileComponent
-    fun plus(authModule: AuthModule): AuthComponent
-    fun plus(postModule: PostModule): PostComponent
-    fun plus(mainModule: MainModule): MainSubComponent
+    fun plus(target: TimelineModule): TimelineComponent
+    fun plus(target: ProfileModule): ProfileComponent
+    fun plus(target: AuthModule): AuthComponent
+    fun plus(target: PostModule): PostComponent
+    fun plus(target: MainModule): MainSubComponent
 }

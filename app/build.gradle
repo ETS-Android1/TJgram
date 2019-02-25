@@ -90,13 +90,15 @@ android {
     }
 
     lintOptions {
+        // if set to true (default), stops the build if errors are found.
+        abortOnError false
+
         //textOutput "stdout"
         //textReport true
         //checkAllWarnings true
         //warningsAsErrors true
         //showAll true
         //explainIssues true
-        //abortOnError true
         //ignoreWarnings false
         //checkReleaseBuilds true
         //htmlReport true
@@ -146,10 +148,15 @@ dependencies {
     implementation deps.material
     implementation deps.appcompat
     implementation deps.cardview
-    implementation deps.preference
     implementation deps.supportV4
     implementation deps.vectordrawable
     implementation deps.interpolator
+
+    /**
+     * В версии alpha01 исправлен баг с отображением
+     * отступа iconSpaceReserved для preference Category.
+     */
+    implementation deps.preference
 
     implementation deps.constraintlayout.runtime
 
@@ -175,14 +182,25 @@ dependencies {
     implementation deps.rxkotlin
     implementation deps.rxandroid
 
-    implementation deps.chuck
+    implementation deps.exoplayer.runtime
+    implementation deps.exoplayer.core
+    implementation deps.exoplayer.dash
+    implementation deps.exoplayer.ui
+
+    //implementation deps.exoplayer.hls
+    //implementation deps.exoplayer.smoothstreaming
+
+    implementation deps.stetho.okhttp
+
     implementation deps.zxing
-    implementation deps.timber
-    implementation deps.stetho
-    implementation deps.traceur
     implementation deps.picasso
-    implementation deps.sherlock
     implementation deps.jsonSimple
-    implementation deps.leakCanary
+
+    implementation deps.timber
+    implementation deps.traceur
     implementation deps.okhttpLoggingInterceptor
+
+    debugImplementation deps.chuckDebug
+    debugImplementation deps.sherlockDebug
+    debugImplementation deps.leakCanary.debug
 }

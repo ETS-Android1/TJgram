@@ -12,32 +12,29 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_camera.*
 import org.michaelbel.tjgram.R
+import org.michaelbel.tjgram.core.imageloader.ImageLoader
 import org.michaelbel.tjgram.core.views.ViewUtil
 import java.io.File
 import java.util.*
 
-class GalleryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GalleryAdapter(
+        private val listener: Listener,
+        private val imageLoader: ImageLoader
+): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        private const val PHOTO_SIZE = 320
-
         private const val VIEW_TYPE_MEDIA = 1
         private const val VIEW_TYPE_CAMERA = 2
         private const val VIEW_TYPE_GALLERY = 3
     }
 
-    interface PhotoClickListener {
+    interface Listener {
         fun onPhotoClick(photo: File)
         fun onCameraClick()
         fun onGalleryClick()
     }
 
     private val photos = ArrayList<File>()
-    private var photoClickListener: PhotoClickListener? = null
-
-    fun addListener(listener: PhotoClickListener) {
-        photoClickListener = listener
-    }
 
     fun swapData(list: List<File>) {
         photos.addAll(list)
@@ -96,9 +93,9 @@ class GalleryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onClick(v: View) {
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 if (adapterPosition == 0) {
-                    photoClickListener?.onCameraClick()
+                    listener.onCameraClick()
                 } else {
-                    photoClickListener?.onGalleryClick()
+                    listener.onGalleryClick()
                 }
             }
         }
@@ -109,13 +106,16 @@ class GalleryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(image: Uri) {
             containerView.setOnClickListener(this)
-            Picasso.get().load(image).resize(PHOTO_SIZE, PHOTO_SIZE).centerCrop()
-                .placeholder(R.drawable.placeholder_rectangle).error(R.drawable.error_rectangle).into(imageView)
+            imageLoader.load(
+                    image, imageView,
+                    R.dimen.post_photo_view_size, R.dimen.post_photo_view_size,
+                    R.drawable.placeholder_rectangle, R.drawable.error_rectangle
+            )
         }
 
         override fun onClick(v: View) {
             if (adapterPosition != RecyclerView.NO_POSITION) {
-                photoClickListener!!.onPhotoClick(photos[adapterPosition])
+                listener.onPhotoClick(photos[adapterPosition])
             }
         }
     }

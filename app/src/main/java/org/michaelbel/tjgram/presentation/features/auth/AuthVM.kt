@@ -9,8 +9,8 @@ import org.michaelbel.tjgram.data.api.remote.TjApi
 import org.michaelbel.tjgram.data.db.dao.UserDao
 import org.michaelbel.tjgram.data.db.entities.UserData
 import org.michaelbel.tjgram.data.entities.User
+import org.michaelbel.tjgram.presentation.App
 import org.michaelbel.tjgram.presentation.base.BaseVM
-import timber.log.Timber
 
 class AuthVM(
         private val service: TjApi, private val dataSource: UserDao
@@ -68,8 +68,7 @@ class AuthVM(
                 tjSubscriptionActive = user.advancedAccess.tjSubscription.isActive,
                 tjSubscriptionActiveUntil = user.advancedAccess.tjSubscription.activeUntil
         )
-        Timber.d("Успешно добавлена информация о текущем юзере в рум: $localUser")
-
+        App.d("добавить авторизованного юзера в room: $localUser")
         return dataSource.insertUser(localUser)
     }
 }

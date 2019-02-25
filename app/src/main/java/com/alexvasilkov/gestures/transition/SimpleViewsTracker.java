@@ -20,5 +20,4 @@ public abstract class SimpleViewsTracker implements ViewsTracker<Integer> {
     public Integer getIdForPosition(int position) {
         return position;
     }
-
 }

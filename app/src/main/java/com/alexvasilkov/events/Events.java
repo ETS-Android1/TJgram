@@ -82,7 +82,6 @@ public class Events {
         return new Event.Builder(dispatcher, eventKey).post();
     }
 
-
     /**
      * <p>Method marked with this annotation will receive events with specified key on main thread.
      * </p>
@@ -206,5 +205,4 @@ public class Events {
     public @interface Failure {
         String value() default EventsParams.EMPTY_KEY;
     }
-
 }

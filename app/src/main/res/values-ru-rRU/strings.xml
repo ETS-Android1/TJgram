@@ -1,76 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TJgram</string>
     <string name="language_code">ru</string>
-    <!--timeline-->
-    <!--create post-->
-    <string name="item_camera">Камера</string>
-    <string name="item_gallery">Галерея</string>
-    <!--profile-->
-
+    <!--auth-->
+    <string name="login">Войти</string>
+    <string name="auth_with_qr">Авторизация по QR-коду</string>
+    <string name="position_code">Поместите QR-Код в рамку</string>
+    <string name="enable_flash">Включить вспышку</string>
+    <string name="disable_flash">Отключить вспышку</string>
     <string name="msg_pre_auth">Авторизуйтесь, чтобы иметь возможность голосовать и добавлять в избранное</string>
-    <string name="msg_complaint_sent">Жалоба успешно отправлена</string>
-    <string name="msg_author_url_copied">Ссылка на автора скопирована</string>
-    <string name="msg_link_copied">Ссылка скопирована</string>
-    <string name="msg_login_first">Пожалуйста, сначала авторизуйтесь</string>
-    <string name="msg_like_old_entry">&#129412; Эту публикацию уже нельзя оценить, поздновато вы</string>
+    <string name="rationale_camera">Приложению нужен доступ к камере устройства, чтобы отсканировать QR-код</string>
     <string name="msg_qr_camera_not_open">Нет разрешения на использование камеры</string>
     <string name="msg_qr_code_not_read">Невозможно считать штрих-код</string>
-    <string name="msg_gallery_permission_stub">Публикуйте фотографии с вашего телефона в TJgram</string>
-    <string name="msg_permission_camera">Пожалуйста, перейдите в раздел «Разрешения» в настройках приложения и измените переключатель разрешения «Камера»</string>
-    <string name="msg_permission_storage">Пожалуйста, перейдите в раздел «Разрешения» в настройках приложения и измените переключатель разрешения «Память»</string>
-    <string name="msg_permission_camera_storage">Пожалуйста, перейдите в раздел «Разрешения» в настройках приложения и измените переключатели разрешений «Камера» и «Память»</string>
-    <string name="msg_wait_image_load">Пожалуйста дождитесь полной загрузки изображения</string>
-    <string name="msg_enter_header">Пожалуйста введите заголовок</string>
-    <string name="msg_posted_successfully">Запись успешно опубликована</string>
-
-    <string name="err_complaint_sent">Ошибка при отправке жалобы</string>
     <string name="err_invalid_token">Ошибка при сканировании кода</string>
-    <string name="err_load_data">При загрузке данных произошла ошибка</string>
     <string name="err_auth">Произошла ошибка при авторизации</string>
-    <string name="err_loading_image">При загрузке изображения произошла ошибка</string>
-    <string name="err_while_posting">При публикации записи произошла ошибка</string>
-
+    <!--profile-->
+    <string name="profile">Профиль</string>
+    <string name="reg_date">Дата регистрации: %s</string>
+    <string name="contacts_info">Контактная информация</string>
+    <string name="comments">Комментарии</string>
+    <string name="favorites">Закладки</string>
+    <string name="loading">Загрузка…</string>
+    <string name="advanced_account">Расширенный аккаунт</string>
+    <!--timeline-->
     <string name="menu_report">Пожаловаться</string>
     <string name="menu_open_entry">Открыть запись</string>
     <string name="menu_copy_link">Скопировать ссылку</string>
     <string name="menu_share_link">Поделиться ссылкой</string>
-    <string name="menu_publish">Опубликовать</string>
-    <string name="preference_logout">Выйти</string>
-    <string name="menu_camera">Сделать фото</string>
-    <string name="menu_gallery">Выбрать из галереи</string>
-
-    <string name="action_ok">OK</string>
+    <string name="msg_complaint_sent">Жалоба успешно отправлена</string>
+    <string name="err_complaint_sent">Ошибка при отправке жалобы</string>
+    <string name="msg_author_url_copied">Ссылка на автора скопирована</string>
+    <string name="msg_link_copied">Ссылка скопирована</string>
+    <string name="msg_login_first">Пожалуйста, сначала авторизуйтесь</string>
+    <string name="msg_like_old_entry">&#129412; Эту публикацию уже нельзя оценить, поздновато вы</string>
+    <string name="err_load_data">При загрузке данных произошла ошибка</string>
     <string name="action_go">Войти</string>
-    <string name="action_cancel">Отмена</string>
     <string name="action_retry">Повторить</string>
-    <string name="action_turn_on">Включить</string>
-
-    <string name="settings">Настройки</string>
-    <string name="sign_in">Авторизация</string>
-    <string name="profile">Профиль</string>
-    <string name="login_qr">Авторизация по QR-коду</string>
-    <string name="position_qr_code">Поместите QR-Код в рамку</string>
-    <string name="enable_flash">Включить вспышку</string>
-    <string name="disable_flash">Отключить вспышку</string>
-    <string name="reg_date">Дата регистрации: %s</string>
-    <string name="advanced_account">Расширенный аккаунт</string>
-    <string name="contacts_info">Контактная информация</string>
-    <string name="account">Аккаунт</string>
-    <string name="permission_denied">Доступ запрещен</string>
-    <string name="header">Заголовок</string>
-    <string name="entry_text">Текст записи…</string>
-    <string name="choose_photo">Выберите фото</string>
+    <string name="msg_posted_successfully">Запись успешно опубликована</string>
+    <!--photo viewer-->
+    <string name="menu_save">Сохранить</string>
+    <string name="menu_share">Поделиться</string>
+    <string name="photo_of">%1$d из %2$d</string>
+    <!--add post-->
     <string name="post_entry">Публикация записи</string>
-
-    <plurals name="paid_days_until">
-        <!--<item quantity="zero">Подписка закончится сегодня</item>-->
-        <item quantity="one">%1$d день до окончания подписки</item>
-        <!--<item quantity="two">%1$d дня до окончания подписки</item>-->
-        <item quantity="few">%1$d дня до окончания подписки</item>
-        <item quantity="many">%1$d дней до окончания подписки</item>
-        <item quantity="other">%1$d дней до окончания подписки</item>
-    </plurals>
-
+    <string name="menu_publish">Опубликовать</string>
+    <string name="item_camera">Камера</string>
+    <string name="item_gallery">Галерея</string>
+    <string name="gallery_grant_permission">Разрешить доступ</string>
+    <string name="err_loading_image">При загрузке изображения произошла ошибка</string>
+    <string name="err_while_posting">При публикации записи произошла ошибка</string>
+    <string name="tint_header">Заголовок</string>
+    <string name="tint_entry_text">Текст записи…</string>
+    <string name="msg_enter_header">Пожалуйста введите заголовок</string>
+    <string name="rationale_storage">Приложению нужен доступ к фотографиям на устройстве, чтобы прикрепить файл</string>
+    <!--settings-->
+    <string name="settings">Настройки</string>
+    <string name="category_general">Общие</string>
+    <string name="in_app_browser">Встроенный браузер</string>
+    <string name="in_app_browser_summary">Открывать внешние ссылки в приложении</string>
+    <string name="preference_logout">Выйти</string>
+    <string name="logout_dialog_message">Вы уверены, что хотите выйти?</string>
+    <string name="dialog_action_ok">OK</string>
+    <string name="dialog_action_cancel">Отмена</string>
+    <!--time-->
     <string name="just_now">только что</string>
     <string name="minute_ago">минуту назад</string>
     <string name="hour_ago">час назад</string>
@@ -78,7 +70,6 @@
     <string name="yesterday_at">вчера в %s</string>
     <string name="default_date">%1$s в %2$s</string>
     <string name="unknown_date">неизвестная дата</string>
-
     <plurals name="minutes">
         <!--<item quantity="zero">@string/just_now</item>-->
         <item quantity="one">%1$d минуту назад</item>
@@ -87,7 +78,6 @@
         <item quantity="many">%1$d минут назад</item>
         <item quantity="other">%1$d минут назад</item>
     </plurals>
-
     <plurals name="hours">
         <!--<item quantity="zero">59 минут назад</item>-->
         <item quantity="one">%1$d час назад</item>

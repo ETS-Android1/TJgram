@@ -174,7 +174,6 @@ public class RotationGestureDetector {
         return currAngle - prevAngle;
     }
 
-
     /**
      * The listener for receiving notifications when gestures occur.
      * <p>
@@ -221,5 +220,4 @@ public class RotationGestureDetector {
          */
         void onRotationEnd(RotationGestureDetector detector);
     }
-
 }

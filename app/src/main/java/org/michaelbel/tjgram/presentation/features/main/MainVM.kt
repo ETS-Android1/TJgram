@@ -1,28 +1,36 @@
 package org.michaelbel.tjgram.presentation.features.main
 
+import androidx.annotation.StringRes
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.michaelbel.tjgram.data.db.dao.UserDao
 import org.michaelbel.tjgram.presentation.base.BaseVM
+import org.michaelbel.tjgram.presentation.base.Event
 
-// fixme использовать Event для передачи событий между views
 class MainVM(private val dataSource: UserDao): BaseVM() {
 
-    val snackbarMessage = MutableLiveData<String>()
+    private val _snackBarMessage = MutableLiveData<Event<Int>>()
+    val snackBarMessage: LiveData<Event<Int>>
+        get() = _snackBarMessage
 
-    fun showSnackbar(message: String) {
-        snackbarMessage.value = message
+    private val _toolbarTitle = MutableLiveData<Event<Int>>()
+    val toolbarTitle: LiveData<Event<Int>>
+        get() = _toolbarTitle
+
+    /// test
+    private val _userAvatar = MutableLiveData<String>()
+    val userAvatar: LiveData<String>
+        get() = _userAvatar
+
+    fun showSnackBarMessage(@StringRes message: Int) {
+        _snackBarMessage.value = Event(message)
     }
 
-    val toolbarTitle = MutableLiveData<String>()
-
-    fun setToolbarTitle(title: String) {
-        toolbarTitle.value = title
+    fun changeToolbarTitle(@StringRes title: Int) {
+        _toolbarTitle.value = Event(title)
     }
 
-   /*
-
-    // todo test
-    fun userAvatar(userId: Int): Flowable<String> {
-        return dataSource.getUserAvatarById(userId)
-    }*/
+    fun changeUserAvatar(avatar: String) {
+        _userAvatar.value = avatar
+    }
 }

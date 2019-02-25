@@ -6,5 +6,5 @@ import org.michaelbel.tjgram.presentation.features.addpost.PostFragment
 @PostScope
 @Subcomponent(modules = [PostModule::class])
 interface PostComponent {
-    fun inject(fragment: PostFragment)
+    fun inject(target: PostFragment)
 }

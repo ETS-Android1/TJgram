@@ -1,13 +1,12 @@
 package org.michaelbel.tjgram.presentation.features.addpost
 
-import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.appbar.*
+import kotlinx.android.synthetic.main.activity_post.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.core.ext.replaceFragment
-import org.michaelbel.tjgram.core.ext.setAppBarElevation
-import org.michaelbel.tjgram.core.views.ViewUtil
+import org.michaelbel.tjgram.core.ext.setStateListAnimatorNull
+import org.michaelbel.tjgram.core.ext.setViewElevation
 
 class PostActivity: AppCompatActivity() {
 
@@ -17,21 +16,24 @@ class PostActivity: AppCompatActivity() {
         initToolbar()
 
         if (savedInstanceState == null) {
-            replaceFragment(R.id.fragmentView, PostFragment.newInstance())
+            supportFragmentManager.beginTransaction()
+                .replace(container.id, PostFragment.newInstance())
+                .commit()
         }
     }
 
-    private fun initToolbar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            appBarLayout.stateListAnimator = null
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == android.R.id.home) {
+            finish()
         }
+        return super.onOptionsItemSelected(item)
+    }
 
-        setAppBarElevation(appBarLayout, R.dimen.toolbar_elevation)
+    private fun initToolbar() {
+        setStateListAnimatorNull(appBarLayout)
+        setViewElevation(appBarLayout, R.dimen.toolbar_elevation)
 
         setSupportActionBar(toolbar)
-        toolbar.navigationIcon = ViewUtil.getIcon(this, R.drawable.ic_arrow_back, R.color.icon_active)
-        toolbar.setNavigationOnClickListener{finish()}
-
-        supportActionBar?.setTitle(R.string.post_entry)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }

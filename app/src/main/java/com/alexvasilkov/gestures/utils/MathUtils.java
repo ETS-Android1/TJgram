@@ -130,5 +130,4 @@ public class MathUtils {
         finalState.get(tmpMatrix);
         tmpMatrix.mapPoints(point);
     }
-
 }

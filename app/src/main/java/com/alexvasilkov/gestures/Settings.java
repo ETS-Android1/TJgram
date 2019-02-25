@@ -715,7 +715,6 @@ public class Settings {
         return animationsDuration;
     }
 
-
     /**
      * @return Whether at least one of pan, zoom, rotation or double tap are enabled or not
      */
@@ -723,7 +722,6 @@ public class Settings {
         return isGesturesEnabled()
                 && (isPanEnabled || isZoomEnabled || isRotationEnabled || isDoubleTapEnabled);
     }
-
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted") // Public API
     public boolean hasImageSize() {
@@ -733,7 +731,6 @@ public class Settings {
     public boolean hasViewportSize() {
         return viewportW != 0 && viewportH != 0;
     }
-
 
     public enum Fit {
         /**
@@ -813,5 +810,4 @@ public class Settings {
          */
         NONE
     }
-
 }

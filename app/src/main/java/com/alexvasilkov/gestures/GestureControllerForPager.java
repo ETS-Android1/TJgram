@@ -26,7 +26,6 @@ public class GestureControllerForPager extends GestureController {
     private static final Matrix tmpMatrix = new Matrix();
     private static final RectF tmpRectF = new RectF();
 
-
     /**
      * Because ViewPager will immediately return true from onInterceptTouchEvent() method during
      * settling animation, we will have no chance to prevent it from doing this.
@@ -424,5 +423,4 @@ public class GestureControllerForPager extends GestureController {
         matrix.preTranslate(view.getLeft(), view.getTop());
         matrix.preConcat(view.getMatrix());
     }
-
 }

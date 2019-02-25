@@ -10,8 +10,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.michaelbel.tjgram.BuildConfig
-import org.michaelbel.tjgram.data.api.remote.TjApi
+import org.michaelbel.tjgram.BuildConfig.DEBUG
 import org.michaelbel.tjgram.data.net.TjConfig
 import org.michaelbel.tjgram.data.net.interceptors.UserInterceptor
 import retrofit2.Retrofit
@@ -34,14 +33,15 @@ class NetworkModule(private val baseUrl: String, val context: Context) {
                 .build()
     }
 
-    @Singleton
-    @Provides
-    fun provideTjApi(retrofit: Retrofit): TjApi = retrofit.create(TjApi::class.java)
-
     private fun okHttpClient(): OkHttpClient {
         val okHttpClient = OkHttpClient().newBuilder()
         okHttpClient.networkInterceptors().add(UserInterceptor(context))
-        if (BuildConfig.DEBUG) {
+        if (DEBUG) {
+            /**
+             * Встроенный HTTP-инспектор.
+             * Перехватывает и сохраняет все http-запросы внутри приложения,
+             * а также предоставляет UI для проверки их содержимого.
+             */
             okHttpClient.interceptors().add(ChuckInterceptor(context))
             okHttpClient.interceptors().add(httpLoggingInterceptor())
             okHttpClient.networkInterceptors().add(StethoInterceptor())
