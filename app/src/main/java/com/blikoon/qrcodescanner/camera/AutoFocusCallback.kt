@@ -3,6 +3,7 @@ package com.blikoon.qrcodescanner.camera
 import android.hardware.Camera
 import android.os.Handler
 
+@Suppress("deprecation")
 class AutoFocusCallback: Camera.AutoFocusCallback {
 
     companion object {

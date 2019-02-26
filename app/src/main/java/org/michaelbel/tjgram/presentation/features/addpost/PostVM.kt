@@ -10,10 +10,11 @@ import okhttp3.RequestBody
 import org.michaelbel.tjgram.data.api.remote.TjApi
 import org.michaelbel.tjgram.data.entities.AttachResponse
 import org.michaelbel.tjgram.data.entities.Entry
+import org.michaelbel.tjgram.domain.usecases.CreatePost
 import org.michaelbel.tjgram.presentation.base.BaseVM
 import java.io.File
 
-class PostVM(private val service: TjApi): BaseVM() {
+class PostVM(private val service: TjApi, private val createPost: CreatePost): BaseVM() {
 
     private val _attaches = MutableLiveData<AttachResponse>()
     val attaches: LiveData<AttachResponse>
@@ -43,9 +44,8 @@ class PostVM(private val service: TjApi): BaseVM() {
     }
 
     fun createEntry(title: String, text: String, subsiteId: Long, attaches: Map<String, String>) {
-        disposable.add(service.entryCreate(title, text, subsiteId, attaches).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                { entryResult -> _entryCreate.value = entryResult.result },
-                { throwable -> _entryError.value = throwable.message })
+        disposable.add(createPost.createEntry(title, text, subsiteId, attaches)
+                .subscribe({ _entryCreate.value = it }, { _entryError.value = it.message })
         )
     }
 }

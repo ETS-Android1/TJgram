@@ -86,6 +86,7 @@ class GalleryAdapter(
             RecyclerView.ViewHolder(containerView), View.OnClickListener, LayoutContainer {
 
         fun bind(@StringRes textId: Int, @DrawableRes iconId: Int) {
+            containerView.setOnClickListener(this)
             textView.text = containerView.context.getString(textId)
             imageView.setImageDrawable(ViewUtil.getIcon(containerView.context, iconId, R.color.icon_active))
         }

@@ -2,6 +2,8 @@ package org.michaelbel.tjgram.presentation.features.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.michaelbel.tjgram.data.entities.User
 import org.michaelbel.tjgram.data.repository.UsersRemoteRepository
 import org.michaelbel.tjgram.presentation.base.BaseVM
@@ -21,7 +23,9 @@ class ProfileVM(private val repository: UsersRemoteRepository): BaseVM() {
         get() = _userAvatar
 
     fun getUser(id: Int) {
-        disposable.add(repository.getUserMe().subscribe {
+        disposable.add(repository.userMe()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe {
             _user.value = it.result
         })
 

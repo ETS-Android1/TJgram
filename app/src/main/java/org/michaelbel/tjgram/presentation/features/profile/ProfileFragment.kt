@@ -21,7 +21,7 @@ import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.core.imageloader.ImageLoader
-import org.michaelbel.tjgram.core.persistense.SharedPrefs
+import org.michaelbel.tjgram.core.persistence.SharedPrefs
 import org.michaelbel.tjgram.core.time.TimeFormatter
 import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.data.net.UserConfig

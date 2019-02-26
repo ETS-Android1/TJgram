@@ -9,7 +9,7 @@ import android.view.Display
 import androidx.core.content.edit
 import org.michaelbel.tjgram.BuildConfig
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.core.persistense.SharedPrefs
+import org.michaelbel.tjgram.core.persistence.SharedPrefs
 import java.util.*
 
 object UserConfig {

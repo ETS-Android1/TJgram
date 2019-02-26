@@ -9,12 +9,11 @@ import org.michaelbel.tjgram.data.api.remote.TjApi
 import org.michaelbel.tjgram.data.db.dao.UserDao
 import org.michaelbel.tjgram.data.db.entities.UserData
 import org.michaelbel.tjgram.data.entities.User
+import org.michaelbel.tjgram.domain.usecases.AuthQr
 import org.michaelbel.tjgram.presentation.App
 import org.michaelbel.tjgram.presentation.base.BaseVM
 
-class AuthVM(
-        private val service: TjApi, private val dataSource: UserDao
-): BaseVM() {
+class AuthVM(private val authQr: AuthQr): BaseVM() {
 
     private val _token = MutableLiveData<String>()
     val token: LiveData<String>
@@ -29,25 +28,25 @@ class AuthVM(
         get() = _error
 
     fun authQr(token: String) {
-        disposable.add(service.authQr(token).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {  }
-                .doAfterTerminate {  }
-                .subscribe({ response ->
-                    if (response.isSuccessful) {
-                        val xDeviceToken = response.headers().get("X-Device-Token")
-                        _token.value = xDeviceToken
+        disposable.add(authQr.authQr(token)
+                .doOnSubscribe {}
+                .doAfterTerminate {}
+                .subscribe ({
+                    val xDeviceToken = it.headers().get("X-Device-Token")
+                    _token.value = xDeviceToken
 
-                        val userResult = response.body()
-                        if (userResult != null) {
-                            val user = userResult.result
+                    val userResult = it.body()
+                    if (userResult != null) {
+                        val user = userResult.result
+                        if (user != null) {
                             _user.value = user
-                            updateUser(user!!)
                         }
                     }
-                }, { throwable -> _error.value = throwable.message }))
+                }, { throwable -> _error.value = throwable.message })
+        )
     }
 
-    private fun updateUser(user: User): Completable {
+    /*private fun updateUser(user: User): Completable {
         val localUser = UserData(
                 id = user.id,
                 name = user.name,
@@ -68,7 +67,6 @@ class AuthVM(
                 tjSubscriptionActive = user.advancedAccess.tjSubscription.isActive,
                 tjSubscriptionActiveUntil = user.advancedAccess.tjSubscription.activeUntil
         )
-        App.d("добавить авторизованного юзера в room: $localUser")
         return dataSource.insertUser(localUser)
-    }
+    }*/
 }

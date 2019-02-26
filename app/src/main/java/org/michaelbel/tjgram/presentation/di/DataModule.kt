@@ -16,14 +16,11 @@ import javax.inject.Singleton
 @Module
 class DataModule {
 
-    @Singleton
-    @Provides
-    fun provideTjApi(retrofit: Retrofit): TjApi = retrofit.create(TjApi::class.java)
-
     @Provides
     @Singleton
-    fun provideRoomDatabase(context: Context): AppDatabase {
+    fun provideDatabase(context: Context): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, "tjgram_db")
+                // todo Пока без миграций.
                 .fallbackToDestructiveMigration()
                 .build()
     }
@@ -36,11 +33,17 @@ class DataModule {
     @Singleton
     fun provideEntryDao(db: AppDatabase): EntryDao = db.entryDao()
 
-    @Provides
     @Singleton
-    fun provideUsersRepository(service: TjApi, dataSource: UserDao): UsersRemoteRepository = UsersRemoteRepository(service, dataSource)
+    @Provides
+    fun provideTjApi(retrofit: Retrofit): TjApi = retrofit.create(TjApi::class.java)
 
     @Provides
     @Singleton
-    fun provideEntriesRepository(service: TjApi): EntriesRemoteRepository = EntriesRemoteRepository(service)
+    fun provideUsersRepository(service: TjApi): UsersRemoteRepository =
+            UsersRemoteRepository(service)
+
+    @Provides
+    @Singleton
+    fun provideEntriesRepository(service: TjApi): EntriesRemoteRepository =
+            EntriesRemoteRepository(service)
 }

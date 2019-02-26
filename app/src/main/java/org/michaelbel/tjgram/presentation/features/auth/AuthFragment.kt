@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.blikoon.qrcodescanner.QrCodeActivity
 import kotlinx.android.synthetic.main.fragment_auth.*
 import org.michaelbel.tjgram.R
-import org.michaelbel.tjgram.core.persistense.SharedPrefs
+import org.michaelbel.tjgram.core.persistence.SharedPrefs
 import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.presentation.App
 import org.michaelbel.tjgram.presentation.features.main.MainVM

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import androidx.core.net.toUri
 import java.io.ByteArrayOutputStream
 
 object FileUtil {
@@ -12,7 +13,7 @@ object FileUtil {
         val bytes = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, image, "Title", null)
-        return Uri.parse(path)
+        return path.toUri()
     }
 
     fun getRealPathFromURI(context: Context, uri: Uri): String {

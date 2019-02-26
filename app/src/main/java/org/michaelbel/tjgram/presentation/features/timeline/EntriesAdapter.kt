@@ -248,7 +248,7 @@ class EntriesAdapter(
              * 3. Плейсхолдер во время ошибки [R.drawable.error_circle]
              * 4. У пользователя может быть аватарка, совпадающая по цвету с карточкой записи
              * (белая или прозрачная для текущей темы приложения), для этого вокруг аватарки
-             * отрисовывается рамка шириной 1px [R.drawable.avatar_frame]
+             * отрисовывается рамка шириной 2px [R.drawable.avatar_frame]
              */
             imageLoader.load(
                     author.avatarUrl, authorIcon,

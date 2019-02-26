@@ -1,4 +1,4 @@
-package org.michaelbel.tjgram.core.persistense
+package org.michaelbel.tjgram.core.persistence
 
 object SharedPrefs {
     const val SP_NAME = "mainconfig"

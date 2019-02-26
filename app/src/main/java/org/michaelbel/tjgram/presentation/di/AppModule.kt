@@ -8,7 +8,7 @@ import dagger.Module
 import dagger.Provides
 import org.michaelbel.tjgram.core.imageloader.ImageLoader
 import org.michaelbel.tjgram.core.imageloader.PicassoImageLoader
-import org.michaelbel.tjgram.core.persistense.SharedPrefs.SP_NAME
+import org.michaelbel.tjgram.core.persistence.SharedPrefs.SP_NAME
 import javax.inject.Singleton
 
 @Module

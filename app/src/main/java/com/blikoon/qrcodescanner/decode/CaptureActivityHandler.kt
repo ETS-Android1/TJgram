@@ -8,7 +8,7 @@ import com.google.zxing.Result
 import org.michaelbel.tjgram.R
 import timber.log.Timber
 
-class CaptureActivityHandler(private val activity: QrCodeActivity) : Handler() {
+class CaptureActivityHandler(private val activity: QrCodeActivity): Handler() {
 
     private val decodeThread: DecodeThread = DecodeThread(activity)
     private var state: State? = null
