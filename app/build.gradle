@@ -145,6 +145,8 @@ dependencies {
 
     implementation deps.anko.coroutines
 
+    implementation deps.browser
+
     implementation deps.material
     implementation deps.appcompat
     implementation deps.cardview
