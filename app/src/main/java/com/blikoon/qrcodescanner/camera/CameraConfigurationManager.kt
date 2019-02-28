@@ -7,6 +7,7 @@ import timber.log.Timber
 import java.util.*
 import java.util.regex.Pattern
 
+@Suppress("deprecation")
 class CameraConfigurationManager(private val context: Context) {
 
     companion object {

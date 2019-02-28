@@ -12,12 +12,13 @@ import android.view.WindowManager
 
 object DeviceUtil {
 
-    fun dp(context: Context, value: Float)/*: Int*/ = Math.ceil((context.resources.displayMetrics.density * value).toDouble()).toInt()
+    /*fun dp(context: Context, value: Float) =
+            Math.ceil((context.resources.displayMetrics.density * value).toDouble()).toInt()*/
 
-    @Suppress("unused")
-    fun isLandscape(context: Context)/*: Boolean*/ = context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    /*fun isLandscape(context: Context) =
+            context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE*/
 
-    fun statusBarHeight(context: Context): Int {
+    /*fun statusBarHeight(context: Context): Int {
         var result = 0
         val resId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
 
@@ -26,7 +27,7 @@ object DeviceUtil {
         }
 
         return result
-    }
+    }*/
 
     fun getScreenWidth(context: Context): Int {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -51,35 +52,5 @@ object DeviceUtil {
     fun isAppInstalled(context: Context, uri: String): Boolean {
         context.packageManager.getPackageInfo(uri, PackageManager.GET_ACTIVITIES)
         return true
-    }
-
-    fun getDeviceName(): String? {
-        val manufacturer = Build.MANUFACTURER
-        val model = Build.MODEL
-        return if (model.startsWith(manufacturer)) {
-            capitalize(model)
-        } else capitalize(manufacturer) + " " + model
-    }
-
-    private fun capitalize(str: String): String? {
-        if (TextUtils.isEmpty(str)) {
-            return str
-        }
-        val arr = str.toCharArray()
-        var capitalizeNext = true
-
-        val phrase = StringBuilder()
-        for (c in arr) {
-            if (capitalizeNext && Character.isLetter(c)) {
-                phrase.append(Character.toUpperCase(c))
-                capitalizeNext = false
-                continue
-            } else if (Character.isWhitespace(c)) {
-                capitalizeNext = true
-            }
-            phrase.append(c)
-        }
-
-        return phrase.toString()
     }
 }

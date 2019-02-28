@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 open class LinearSmoothScrollerMiddle(context: Context): RecyclerView.SmoothScroller() {
 
     companion object {
-        private const val MILLISECONDS_PER_INCH = 25f
-        private const val TARGET_SEEK_EXTRA_SCROLL_RATIO = 1.2f
+        private const val MILLISECONDS_PER_INCH = 25F
+        private const val TARGET_SEEK_EXTRA_SCROLL_RATIO = 1.2F
         private const val TARGET_SEEK_SCROLL_DISTANCE_PX = 10000
     }
 
     private val mLinearInterpolator = LinearInterpolator()
-    private val mDecelerateInterpolator = DecelerateInterpolator(1.5f)
+    private val mDecelerateInterpolator = DecelerateInterpolator(1.5F)
 
     private val millisecondsPerPx: Float
     private var mTargetVector: PointF? = null
@@ -65,7 +65,7 @@ open class LinearSmoothScrollerMiddle(context: Context): RecyclerView.SmoothScro
     private fun updateActionForInterimTarget(action: RecyclerView.SmoothScroller.Action) {
         val scrollVector = computeScrollVectorForPosition(targetPosition)
 
-        if (scrollVector == null || scrollVector.x == 0f && scrollVector.y == 0f) {
+        if (scrollVector == null || scrollVector.x == 0F && scrollVector.y == 0F) {
             val target = targetPosition
             action.jumpTo(target)
             stop()

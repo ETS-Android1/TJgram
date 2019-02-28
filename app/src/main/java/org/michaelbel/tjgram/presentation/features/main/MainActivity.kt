@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.core.imageloader.ImageLoader
 import org.michaelbel.tjgram.core.imageloader.transform.CircleTransform
-import org.michaelbel.tjgram.core.persistense.SharedPrefs
+import org.michaelbel.tjgram.core.persistence.SharedPrefs
 import org.michaelbel.tjgram.core.views.ViewUtil
 import org.michaelbel.tjgram.data.api.results.EntriesResult
 import org.michaelbel.tjgram.data.net.UserConfig

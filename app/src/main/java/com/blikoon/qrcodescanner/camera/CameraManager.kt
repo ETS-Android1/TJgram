@@ -7,6 +7,7 @@ import android.view.SurfaceHolder
 
 import java.io.IOException
 
+@Suppress("deprecation")
 class CameraManager private constructor(context: Context) {
 
     companion object {

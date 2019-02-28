@@ -64,8 +64,9 @@ class PostFragment: Fragment(), GalleryAdapter.Listener, EasyPermissions.Permiss
         /**
          * Значение не должно быть больше 128.
          */
-        private const val REQUEST_PERMISSION_STORAGE = 2
-        private const val REQUEST_PERMISSION_CAMERA = 3
+        private const val REQUEST_PERMISSION_READ_STORAGE = 2
+        private const val REQUEST_PERMISSION_WRITE_STORAGE = 3
+        private const val REQUEST_PERMISSION_CAMERA = 4
 
         private const val REQUEST_IMAGE_CAPTURE = 201
         private const val REQUEST_SELECT_IMAGE = 301
@@ -147,11 +148,9 @@ class PostFragment: Fragment(), GalleryAdapter.Listener, EasyPermissions.Permiss
         } else {
             loadPhotos()
 
-            /*if (requestCode == REQUEST_PERMISSION_STORAGE) {
+            if (requestCode == REQUEST_PERMISSION_READ_STORAGE) {
                 loadPhotos()
-            } else if (requestCode == REQUEST_PERMISSION_CAMERA) {
-                takePhoto()
-            }*/
+            }
         }
     }
 
@@ -285,7 +284,7 @@ class PostFragment: Fragment(), GalleryAdapter.Listener, EasyPermissions.Permiss
         chooseFromGallery()
     }
 
-    @AfterPermissionGranted(REQUEST_PERMISSION_STORAGE)
+    @AfterPermissionGranted(REQUEST_PERMISSION_READ_STORAGE)
     private fun loadPhotos() {
         val permission = Manifest.permission.READ_EXTERNAL_STORAGE
         if (EasyPermissions.hasPermissions(requireContext(), permission)) {
@@ -301,7 +300,7 @@ class PostFragment: Fragment(), GalleryAdapter.Listener, EasyPermissions.Permiss
 
             animateImagesLayout(false)
         } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), REQUEST_PERMISSION_STORAGE, permission)
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), REQUEST_PERMISSION_READ_STORAGE, permission)
         }
     }
 
@@ -327,18 +326,27 @@ class PostFragment: Fragment(), GalleryAdapter.Listener, EasyPermissions.Permiss
         }
     }
 
+    @AfterPermissionGranted(REQUEST_PERMISSION_WRITE_STORAGE)
     private fun takePhoto() {
-        // todo Добавить camera permission
-        // Пока что будем надеяться, что юзер не запретит доступ к камере
-
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        if (EasyPermissions.hasPermissions(requireContext(), permission)) {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), REQUEST_PERMISSION_WRITE_STORAGE, permission)
+        }
     }
 
+    @AfterPermissionGranted(REQUEST_PERMISSION_WRITE_STORAGE)
     private fun chooseFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_SELECT_IMAGE)
+        val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        if (EasyPermissions.hasPermissions(requireContext(), permission)) {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_SELECT_IMAGE)
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage), REQUEST_PERMISSION_WRITE_STORAGE, permission)
+        }
     }
 
     private fun postEntry() {

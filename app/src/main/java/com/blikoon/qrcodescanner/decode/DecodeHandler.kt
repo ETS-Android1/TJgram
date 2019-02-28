@@ -11,7 +11,7 @@ import org.michaelbel.tjgram.R
 import timber.log.Timber
 import java.util.*
 
-class DecodeHandler(private val activity: QrCodeActivity) : Handler() {
+class DecodeHandler(private val activity: QrCodeActivity): Handler() {
 
     private val qrCodeReader: QRCodeReader = QRCodeReader()
     private val hints: MutableMap<DecodeHintType, Any>

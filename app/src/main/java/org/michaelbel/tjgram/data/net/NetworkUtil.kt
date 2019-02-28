@@ -12,9 +12,8 @@ object NetworkUtil {
         return activeNetwork != null && activeNetwork.isConnected
     }
 
-    @Suppress("unused")
-    fun getHttpCode(throwable: Throwable): Int = (throwable as HttpException).code()
+    /*fun getHttpCode(throwable: Throwable): Int = (throwable as HttpException).code()*/
 
-    @Suppress("unused")
-    fun isHttpStatusCode(throwable: Throwable, statusCode: Int): Boolean = throwable is HttpException && throwable.code() == statusCode
+    fun isHttpStatusCode(throwable: Throwable, statusCode: Int) =
+            throwable is HttpException && throwable.code() == statusCode
 }

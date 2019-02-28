@@ -25,6 +25,7 @@ import org.michaelbel.tjgram.R
 import org.michaelbel.tjgram.core.views.ViewUtil
 import timber.log.Timber
 
+@Suppress("deprecation")
 class QrCodeActivity: AppCompatActivity(), Callback {
 
     companion object {
@@ -138,7 +139,7 @@ class QrCodeActivity: AppCompatActivity(), Callback {
         playBeepSoundAndVibrate()
 
         if (null == result) {
-            decodeManager.showCouldNotReadQrCodeFromScanner(this, object : DecodeManager.OnRefreshCameraListener {
+            decodeManager.showCouldNotReadQrCodeFromScanner(this, object: DecodeManager.OnRefreshCameraListener {
                 override fun refresh() {
                     restartPreview()
                 }

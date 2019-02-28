@@ -191,6 +191,9 @@ class EntriesAdapter(
             val author = entry.author ?: return
             updateAuthor(author)
 
+            editorialIcon.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_check_decagram, R.color.md_amber_500))
+            editorialIcon.visibility = if (entry.isEditorial) VISIBLE else GONE
+
             pinImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_pin, R.color.icon_active_unfocused))
             pinImage.visibility = if (entry.isPinned) VISIBLE else GONE
 
@@ -248,11 +251,11 @@ class EntriesAdapter(
              * 3. Плейсхолдер во время ошибки [R.drawable.error_circle]
              * 4. У пользователя может быть аватарка, совпадающая по цвету с карточкой записи
              * (белая или прозрачная для текущей темы приложения), для этого вокруг аватарки
-             * отрисовывается рамка шириной 1px [R.drawable.avatar_frame]
+             * отрисовывается рамка шириной 2px [R.drawable.avatar_frame]
              */
             imageLoader.load(
                     author.avatarUrl, authorIcon,
-                    R.dimen.timeline_entry_avatar_size, R.dimen.timeline_entry_avatar_size,
+                    R.dimen.entry_avatar_size, R.dimen.entry_avatar_size,
                     R.drawable.placeholder_circle, R.drawable.error_circle,
                     CircleTransform()
             )

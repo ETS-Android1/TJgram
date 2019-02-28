@@ -2,7 +2,8 @@ package org.michaelbel.tjgram.core.views
 
 import android.view.View
 
-abstract class DebouncingOnClickListener : View.OnClickListener {
+@Suppress("unused")
+abstract class DebouncingOnClickListener: View.OnClickListener {
 
     companion object {
         var enabled = true

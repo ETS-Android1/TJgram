@@ -22,7 +22,8 @@ class InactivityTimer(private val activity: Activity) {
 
     fun onActivity() {
         cancel()
-        inactivityFuture = inactivityTimer.schedule(FinishListener(activity), INACTIVITY_DELAY_SECONDS.toLong(), TimeUnit.SECONDS)
+        inactivityFuture = inactivityTimer.schedule(FinishListener(activity),
+                INACTIVITY_DELAY_SECONDS.toLong(), TimeUnit.SECONDS)
     }
 
     private fun cancel() {
