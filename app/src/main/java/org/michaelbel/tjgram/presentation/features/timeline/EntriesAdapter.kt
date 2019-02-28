@@ -191,6 +191,9 @@ class EntriesAdapter(
             val author = entry.author ?: return
             updateAuthor(author)
 
+            editorialIcon.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_check_decagram, R.color.md_amber_500))
+            editorialIcon.visibility = if (entry.isEditorial) VISIBLE else GONE
+
             pinImage.setImageDrawable(ViewUtil.getIcon(context, R.drawable.ic_pin, R.color.icon_active_unfocused))
             pinImage.visibility = if (entry.isPinned) VISIBLE else GONE
 
@@ -252,7 +255,7 @@ class EntriesAdapter(
              */
             imageLoader.load(
                     author.avatarUrl, authorIcon,
-                    R.dimen.timeline_entry_avatar_size, R.dimen.timeline_entry_avatar_size,
+                    R.dimen.entry_avatar_size, R.dimen.entry_avatar_size,
                     R.drawable.placeholder_circle, R.drawable.error_circle,
                     CircleTransform()
             )

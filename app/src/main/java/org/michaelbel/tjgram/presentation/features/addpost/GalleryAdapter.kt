@@ -103,7 +103,7 @@ class GalleryAdapter(
     }
 
     private inner class MediaViewHolder(override val containerView: View):
-            RecyclerView.ViewHolder(containerView), View.OnClickListener, LayoutContainer {
+                RecyclerView.ViewHolder(containerView), View.OnClickListener, LayoutContainer {
 
         fun bind(image: Uri) {
             containerView.setOnClickListener(this)
